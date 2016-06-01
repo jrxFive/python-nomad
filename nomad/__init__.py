@@ -3,15 +3,15 @@ import api
 
 class Nomad(object):
 
-    def __init__(self,uri='127.0.0.1',port=4646,timeout=5,region=None):
-        self.uri = uri
+    def __init__(self,host='127.0.0.1',port=4646,timeout=5,region=None):
+        self.host = host
         self.port = port
         self.timeout = timeout
 
-        self.requester = api.Requester(uri,port,timeout)
+        self.requester = api.Requester(host,port,timeout)
 
         self._jobs = api.Jobs(self.requester)
-        self._nodes = api.Nodes()
+        self._nodes = api.Nodes(self.requester)
         self._allocations = api.Allocations()
         self._evaluations = api.Evaluations()
         self._agent = api.Agent()
