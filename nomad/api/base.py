@@ -6,6 +6,13 @@ class Requester(object):
         self.port = port
         self.timeout = timeout
         self.version = version
+        self.session = requests.Session()
+
+
+    def _endpointBuilder(self,*args):
+        if args:
+            u = "/".join(args)
+            return "{v}/".format(v=self.version) + u
 
 
     def _urlBuilder(self, endpoint):
@@ -17,7 +24,7 @@ class Requester(object):
         url = self._urlBuilder(endpoint)
 
         try:
-            response = requests.get(url,
+            response = self.session.get(url,
                                     params=params,
                                     timeout=self.timeout)
 
@@ -32,11 +39,8 @@ class Requester(object):
     def post(self, endpoint, data=None, json=None, headers=None):
         url = self._urlBuilder(endpoint)
 
-        print url
-
         try:
-            # r = requests.post("http://192.168.33.10:4646/v1/jobs",json=job,params=None,data=None,headers=None)
-            response = requests.post(url,json=json,headers=headers,data=data)
+            response = self.session.post(url,json=json,headers=headers,data=data)
 
             if response.ok:
                 return response

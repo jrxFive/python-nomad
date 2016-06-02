@@ -1,11 +1,10 @@
-import json
 
 
 class Jobs(object):
     ENDPOINT = "jobs"
 
     def __init__(self, requester):
-        self.requester = requester
+        self._requester = requester
 
 
     def __str__(self):
@@ -20,9 +19,9 @@ class Jobs(object):
         raise AttributeError(msg)
 
     def __contains__(self, item):
-        self.get()
+        jobs = self._get()
 
-        for j in self.jobs:
+        for j in jobs:
             if j["ID"] == item:
                 return True
             if j["Name"] == item:
@@ -31,13 +30,13 @@ class Jobs(object):
             return False
 
     def __len__(self):
-        self.get()
-        return len(self.jobs)
+        jobs = self._get()
+        return len(jobs)
 
     def __getitem__(self, item):
-        self.get()
+        jobs = self._get()
 
-        for j in self.jobs:
+        for j in jobs:
             if j["ID"] == item:
                 return j
             if j["Name"] == item:
@@ -46,24 +45,30 @@ class Jobs(object):
             raise KeyError
 
     def __iter__(self):
-        self.get()
-        return iter(self.jobs)
+        jobs = self._get()
+        return iter(jobs)
 
+    def _get(self,*args):
+        url = self._requester._endpointBuilder(Jobs.ENDPOINT,*args)
+        jobs = self._requester.get(url)
 
-    def get(self):
-        jobs = self.requester.get("/{v}/{endpoint}".format(v=self.requester.version,
-                                                                endpoint=Jobs.ENDPOINT))
-        self.jobs = jobs.json()
+        return jobs.json()
 
-        return self.jobs
+    def get_jobs(self):
+        return self._get()
 
+    def _post(self,*args,**kwargs):
+        url = self._requester._endpointBuilder(Jobs.ENDPOINT,*args)
 
-    def register_job(self, job):
-        url = "{v}/{endpoint}".format(v=self.requester.version, endpoint=Jobs.ENDPOINT)
-
-        response = self.requester.post(url,json=job)
+        if kwargs:
+            response = self._requester.post(url,json=kwargs["job"])
+        else:
+            response = self._requester.post(url)
 
         return response.json()
+
+    def register_job(self,job):
+        return self._post(job=job)
 
 
 
