@@ -14,16 +14,16 @@ def test_get_nodes(nomad_setup):
     assert isinstance(nomad_setup.nodes.get_nodes(),list) == True
 
 def test_dunder_getitem_exist(nomad_setup):
-    n = nomad_setup.nodes["localhost.localdomain"]
+    n = nomad_setup.nodes["pynomad1"]
     assert isinstance(n,dict)
 
 def test_dunder_getitem_not_exist(nomad_setup):
 
     with pytest.raises(KeyError):
-        j = nomad_setup.nodes["real.localdomain"]
+        j = nomad_setup.nodes["pynomad2"]
 
 def test_dunder_contain_exists(nomad_setup):
-    assert "localhost.localdomain" in nomad_setup.nodes
+    assert "pynomad1" in nomad_setup.nodes
 
 def test_dunder_contain_not_exist(nomad_setup):
     assert "real.localdomain"  not in nomad_setup.nodes

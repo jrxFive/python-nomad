@@ -51,7 +51,7 @@ if [ $(pgrep nomad) ]
     echo "Nomad running"
   else
     echo "Starting Nomad"
-    nohup nomad agent -dev -bind #{IP} > /dev/null 2>&1 &
+    nohup nomad agent -dev -bind #{IP} -node "pynomad1" > /dev/null 2>&1 &
 fi
 
 SHELL
