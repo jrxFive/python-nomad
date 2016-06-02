@@ -7,7 +7,7 @@ python:
 
 env:
   global:
-    - NOMAD_IP="127.0.0.1"
+    - NOMAD_IP="0.0.0.0"
     - NOMAD_PORT="4646"
   matrix:
     - NOMAD_VERSION="0.3.2"
