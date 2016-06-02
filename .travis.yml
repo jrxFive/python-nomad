@@ -6,10 +6,11 @@ python:
   - "3.5"
 
 env:
-  - NOMAD_VERSION="0.3.2"
-  - NOMAD_IP="127.0.0.1"
-  - NOMAD_PORT="4646"
-
+  global:
+    - NOMAD_IP="127.0.0.1"
+    - NOMAD_PORT="4646"
+  matrix:
+    - NOMAD_VERSION="0.3.2"
 
 before_install:
     - curl -L -o /tmp/$NOMAD_VERSION_linux_amd64.zip https://releases.hashicorp.com/nomad/$NOMAD_VERSION/nomad_$NOMAD_VERSION_linux_amd64.zip
