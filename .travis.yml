@@ -1,0 +1,26 @@
+langauge:python
+python:
+  - "2.7"
+  - "3.3"
+  - "3.4"
+  - "3.5"
+
+env:
+  - NOMAD_VERSION="0.3.2"
+  - NOMAD_IP="127.0.0.1"
+  - NOMAD_PORT="4646"
+
+
+before_install:
+    - curl -L -o /tmp/$NOMAD_VERSION_linux_amd64.zip https://releases.hashicorp.com/nomad/$NOMAD_VERSION/nomad_$NOMAD_VERSION_linux_amd64.zip
+    - unzip /tmp/$NOMAD_VERSION_linux_amd64.zip
+    - ./nomad agent -dev &
+
+install:
+  - pip install -r requirements-dev.txt
+
+script:
+  - py.test --cov=nomad --cov-report=term-missing --runxfail tests/
+
+after_success:
+  - coveralls
