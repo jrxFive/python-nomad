@@ -1,5 +1,5 @@
 import pytest
-import common
+import tests.common as common
 import nomad
 import json
 import requests

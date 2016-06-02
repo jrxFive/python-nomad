@@ -1,5 +1,5 @@
 
-import api
+import nomad.api as api
 
 class Nomad(object):
 
