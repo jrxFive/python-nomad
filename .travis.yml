@@ -20,9 +20,10 @@ before_install:
 
 install:
   - pip install -r requirements-dev.txt
+  - pip install codecov
 
 script:
   - py.test --cov=nomad --cov-report=term-missing --runxfail tests/
 
 after_success:
-  - coveralls
+  - codecov
