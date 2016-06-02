@@ -7,7 +7,7 @@ python:
 
 env:
   global:
-    - NOMAD_IP="0.0.0.0"
+    - NOMAD_IP="127.0.0.1"
     - NOMAD_PORT="4646"
   matrix:
     - NOMAD_VERSION="0.3.2"
@@ -15,7 +15,7 @@ env:
 before_install:
     - "curl -L -o /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip"
     - "yes | unzip -d /tmp /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip"
-    - "nohup /tmp/nomad agent -dev -bind ${NOMAD_IP} -node pynomad1 > /dev/null 2>&1 &"
+    - "/tmp/nomad agent -dev -bind ${NOMAD_IP} -node pynomad1 > /dev/null 2>&1 &"
 
 install:
   - pip install -r requirements-dev.txt
