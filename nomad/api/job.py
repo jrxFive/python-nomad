@@ -78,6 +78,14 @@ class Job(object):
     def periodic_job(self,id):
         return self._post(id,"periodic","force")
 
+    def _delete(self,*args):
+        url = self._requester._endpointBuilder(Job.ENDPOINT,*args)
+        job = self._requester.delete(url)
+
+        return job.json()
+
+    def deregister_job(self,id):
+        return self._delete(id)
 
 
 

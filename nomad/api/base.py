@@ -50,8 +50,18 @@ class Requester(object):
             raise
 
 
-    def delete(self):
-        raise NotImplementedError
+    def delete(self,endpoint,headers=None):
+        url = self._urlBuilder(endpoint)
+
+        try:
+            response = self.session.delete(url,headers=headers)
+
+            if response.ok:
+                return response
+            else:
+                raise requests.RequestException
+        except requests.RequestException:
+            raise
 
 
 
