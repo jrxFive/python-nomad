@@ -15,7 +15,7 @@ def test_get_regions(nomad_setup):
 
 def test_dunder_getitem_exist(nomad_setup):
     n = nomad_setup.regions["global"]
-    if sys.version[0] == 3:
+    if int(sys.version[0]) == 3:
         assert isinstance(n,str)
     else:
         assert isinstance(n,unicode)

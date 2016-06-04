@@ -11,7 +11,7 @@ def nomad_setup():
 
 #integration tests requires nomad Vagrant VM or Binary running
 def test_get_leader(nomad_setup):
-    if sys.version[0] == 3:
+    if int(sys.version[0]) == 3:
         assert isinstance(nomad_setup.status.leader.get_leader(),str) == True
     else:
         assert isinstance(nomad_setup.status.leader.get_leader(),unicode) == True
@@ -22,7 +22,7 @@ def test_get_peers(nomad_setup):
 
 def test_peers_dunder_getitem_exist(nomad_setup):
     n = nomad_setup.status.peers["{IP}:4647".format(IP=common.IP)]
-    if sys.version[0] == 3:
+    if int(sys.version[0]) == 3:
         assert isinstance(n,str)
     else:
         assert isinstance(n,unicode)
