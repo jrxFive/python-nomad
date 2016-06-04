@@ -36,11 +36,25 @@ class Requester(object):
             raise
 
 
-    def post(self, endpoint, data=None, json=None, headers=None):
+    def post(self, endpoint, params=None, data=None, json=None, headers=None):
         url = self._urlBuilder(endpoint)
 
         try:
-            response = self.session.post(url,json=json,headers=headers,data=data)
+            response = self.session.post(url,params=params,json=json,headers=headers,data=data)
+
+            if response.ok:
+                return response
+            else:
+                raise requests.RequestException
+        except requests.RequestException:
+            raise
+
+
+    def put(self, endpoint, params=None, data=None, headers=None):
+        url = self._urlBuilder(endpoint)
+
+        try:
+            response = self.session.put(url,params=params,headers=headers,data=data)
 
             if response.ok:
                 return response

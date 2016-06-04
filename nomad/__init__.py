@@ -14,13 +14,14 @@ class Nomad(object):
         self._jobs = api.Jobs(self.requester)
         self._job = api.Job(self.requester)
         self._nodes = api.Nodes(self.requester)
+        self._node = api.Node(self.requester)
         self._allocations = api.Allocations()
         self._evaluations = api.Evaluations()
         self._agent = api.Agent()
         self._client = api.Client()
-        self._regions = api.Regions()
-        self._status = api.Status()
-        self._system = api.System()
+        self._regions = api.Regions(self.requester)
+        self._status = api.Status(self.requester)
+        self._system = api.System(self.requester)
 
 
     @property
@@ -34,6 +35,10 @@ class Nomad(object):
     @property
     def nodes(self):
         return self._nodes
+
+    @property
+    def node(self):
+        return self._node
 
     @property
     def allocations(self):
