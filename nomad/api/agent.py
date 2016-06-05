@@ -26,13 +26,26 @@ class Agent(object):
     def get_members(self):
         return self._get("members")
 
+    def get_servers(self):
+        return self._get("servers")
+
     def _post(self, *args, **kwargs):
         url = self._requester._endpointBuilder(Agent.ENDPOINT, *args)
-        params = "address={address}".format(address=kwargs["address"])
 
-        response = self._requester.post(url, params=params)
+        if kwargs:
+            response = self._requester.post(url, params=kwargs["params"])
+        else:
+            response = self._requester.post(url)
 
-        return response.json()
+        try:
+            return response.json()
+        except ValueError:
+            return response.status_code
 
     def join_agent(self, address):
-        return self._post("join", address=address)
+        params = "address={address}".format(address=address)
+        return self._post("join", params=params)
+
+    def force_leave_agent(self, node):
+        params = "node={node}".format(node=node)
+        return self._post("force-leave", params=params)
