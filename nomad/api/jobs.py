@@ -1,18 +1,19 @@
 import nomad.api.exceptions
 
+
 class Jobs(object):
+
+    """ https://www.nomadproject.io/docs/http/jobs.html """
     ENDPOINT = "jobs"
 
     def __init__(self, requester):
         self._requester = requester
-
 
     def __str__(self):
         return "{0}".format(self.__dict__)
 
     def __repr__(self):
         return "{0}".format(self.__dict__)
-
 
     def __getattr__(self, item):
         msg = "{0} does not exist".format(item)
@@ -54,9 +55,9 @@ class Jobs(object):
         jobs = self._get()
         return iter(jobs)
 
-    def _get(self,*args):
+    def _get(self, *args):
         try:
-            url = self._requester._endpointBuilder(Jobs.ENDPOINT,*args)
+            url = self._requester._endpointBuilder(Jobs.ENDPOINT, *args)
             jobs = self._requester.get(url)
 
             return jobs.json()
@@ -64,14 +65,15 @@ class Jobs(object):
             raise
 
     def get_jobs(self):
+        """ Lists all the jobs registered with Nomad. """
         return self._get()
 
-    def _post(self,*args,**kwargs):
+    def _post(self, *args, **kwargs):
         try:
-            url = self._requester._endpointBuilder(Jobs.ENDPOINT,*args)
+            url = self._requester._endpointBuilder(Jobs.ENDPOINT, *args)
 
             if kwargs:
-                response = self._requester.post(url,json=kwargs["job"])
+                response = self._requester.post(url, json=kwargs["job"])
             else:
                 response = self._requester.post(url)
 
@@ -79,13 +81,12 @@ class Jobs(object):
         except:
             raise
 
-    def register_job(self,job):
+    def register_job(self, job):
+        """ Registers a new job.
+
+            parameters: job, python dictionary of a hcl job
+            raises:
+              - nomad.api.exceptions.URLNotFoundNomadException
+              - nomad.api.exceptions.BaseNomadException
+         """
         return self._post(job=job)
-
-
-
-
-
-
-
-

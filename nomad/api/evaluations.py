@@ -1,10 +1,11 @@
 import nomad.api.exceptions
 
+
 class Evaluations(object):
 
-    ENDPOINT="evaluations"
+    ENDPOINT = "evaluations"
 
-    def __init__(self,requester):
+    def __init__(self, requester):
         self._requester = requester
 
     def __str__(self):
@@ -48,9 +49,9 @@ class Evaluations(object):
         evaluations = self._get()
         return iter(evaluations)
 
-    def _get(self,*args):
+    def _get(self, *args):
         try:
-            url = self._requester._endpointBuilder(Evaluations.ENDPOINT,*args)
+            url = self._requester._endpointBuilder(Evaluations.ENDPOINT, *args)
             evaluations = self._requester.get(url)
 
             return evaluations.json()

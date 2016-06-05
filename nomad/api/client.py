@@ -1,9 +1,9 @@
 
 class Client(object):
 
-    ENDPOINT="client"
+    ENDPOINT = "client"
 
-    def __init__(self,requester):
+    def __init__(self, requester):
         self._requester = requester
         self.ls = ls(requester)
         self.cat = cat(requester)
@@ -18,12 +18,12 @@ class Client(object):
     def __getattr__(self, item):
         raise AttributeError
 
-
-    def _get(self,*args,**kwargs):
+    def _get(self, *args, **kwargs):
         try:
-            url = self._requester._endpointBuilder(Client.ENDPOINT,"fs",*args)
+            url = self._requester._endpointBuilder(
+                Client.ENDPOINT, "fs", *args)
 
-            response = self._requester.get(url,params=kwargs)
+            response = self._requester.get(url, params=kwargs)
 
             return response.json()
         except ValueError:
@@ -34,32 +34,32 @@ class Client(object):
 
 class ls(Client):
 
-    ENDPOINT="ls"
+    ENDPOINT = "ls"
 
-    def __init__(self,requester):
+    def __init__(self, requester):
         self._requester = requester
 
-    def list_files(self,id,path="/"):
-        return self._get(ls.ENDPOINT,id,path=path)
+    def list_files(self, id, path="/"):
+        return self._get(ls.ENDPOINT, id, path=path)
 
 
 class cat(Client):
 
-    ENDPOINT="cat"
+    ENDPOINT = "cat"
 
-    def __init__(self,requester):
+    def __init__(self, requester):
         self._requester = requester
 
+    def read_file(self, id, path="/"):
+        return self._get(cat.ENDPOINT, id, path=path)
 
-    def read_file(self,id,path="/"):
-        return self._get(cat.ENDPOINT,id,path=path)
 
 class stat(Client):
 
-    ENDPOINT="stat"
+    ENDPOINT = "stat"
 
-    def __init__(self,requester):
+    def __init__(self, requester):
         self._requester = requester
 
-    def stat_file(self,id,path="/"):
-        return self._get(stat.ENDPOINT,id,path=path)
+    def stat_file(self, id, path="/"):
+        return self._get(stat.ENDPOINT, id, path=path)

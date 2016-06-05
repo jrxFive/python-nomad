@@ -1,9 +1,9 @@
 
 class System(object):
 
-    ENDPOINT="system"
+    ENDPOINT = "system"
 
-    def __init__(self,requester):
+    def __init__(self, requester):
         self._requester = requester
 
     def __str__(self):
@@ -15,9 +15,9 @@ class System(object):
     def __getattr__(self, item):
         raise AttributeError
 
-    def _put(self,*args):
+    def _put(self, *args):
         try:
-            url = self._requester._endpointBuilder(System.ENDPOINT,*args)
+            url = self._requester._endpointBuilder(System.ENDPOINT, *args)
             response = self._requester.put(url)
 
             return response.ok

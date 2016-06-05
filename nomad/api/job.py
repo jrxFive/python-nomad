@@ -1,6 +1,7 @@
 import requests
 import nomad.api.exceptions
 
+
 class Job(object):
     ENDPOINT = "job"
 
@@ -12,7 +13,6 @@ class Job(object):
 
     def __repr__(self):
         return "{0}".format(self.__dict__)
-
 
     def __getattr__(self, item):
         msg = "{0} does not exist".format(item)
@@ -40,31 +40,30 @@ class Job(object):
         except nomad.api.exceptions.URLNotFoundNomadException:
             raise KeyError
 
-
-    def _get(self,*args):
+    def _get(self, *args):
         try:
-            url = self._requester._endpointBuilder(Job.ENDPOINT,*args)
+            url = self._requester._endpointBuilder(Job.ENDPOINT, *args)
             job = self._requester.get(url)
 
             return job.json()
         except:
             raise
 
-    def get_job(self,id):
+    def get_job(self, id):
         return self._get(id)
 
-    def get_allocations(self,id):
-        return self._get(id,"allocations")
+    def get_allocations(self, id):
+        return self._get(id, "allocations")
 
-    def get_evaluations(self,id):
-        return self._get(id,"evaluations")
+    def get_evaluations(self, id):
+        return self._get(id, "evaluations")
 
     def _post(self, *args, **kwargs):
         try:
-            url = self._requester._endpointBuilder(Job.ENDPOINT,*args)
+            url = self._requester._endpointBuilder(Job.ENDPOINT, *args)
 
             if kwargs:
-                response = self._requester.post(url,json=kwargs["job"])
+                response = self._requester.post(url, json=kwargs["job"])
             else:
                 response = self._requester.post(url)
 
@@ -72,40 +71,23 @@ class Job(object):
         except:
             raise
 
-    def register_job(self,id,job):
-        return self._post(id,job=job)
+    def register_job(self, id, job):
+        return self._post(id, job=job)
 
-    def evaluate_job(self,id):
-        return self._post(id,"evaluate")
+    def evaluate_job(self, id):
+        return self._post(id, "evaluate")
 
-    def periodic_job(self,id):
-        return self._post(id,"periodic","force")
+    def periodic_job(self, id):
+        return self._post(id, "periodic", "force")
 
-    def _delete(self,*args):
+    def _delete(self, *args):
         try:
-            url = self._requester._endpointBuilder(Job.ENDPOINT,*args)
+            url = self._requester._endpointBuilder(Job.ENDPOINT, *args)
             job = self._requester.delete(url)
 
             return job.json()
         except:
             raise
 
-    def deregister_job(self,id):
+    def deregister_job(self, id):
         return self._delete(id)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

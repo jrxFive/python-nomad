@@ -1,15 +1,16 @@
 
 import nomad.api as api
 
+
 class Nomad(object):
 
-    def __init__(self,host='127.0.0.1',port=4646,timeout=5,region=None,version='v1'):
+    def __init__(self, host='127.0.0.1', port=4646, timeout=5, region=None, version='v1'):
         self.host = host
         self.port = port
         self.timeout = timeout
         self.version = version
 
-        self.requester = api.Requester(host,port,timeout,version)
+        self.requester = api.Requester(host, port, timeout, version)
 
         self._jobs = api.Jobs(self.requester)
         self._job = api.Job(self.requester)
@@ -24,7 +25,6 @@ class Nomad(object):
         self._regions = api.Regions(self.requester)
         self._status = api.Status(self.requester)
         self._system = api.System(self.requester)
-
 
     @property
     def jobs(self):
@@ -77,4 +77,3 @@ class Nomad(object):
     @property
     def system(self):
         return self._system
-

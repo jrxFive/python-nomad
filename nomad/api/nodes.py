@@ -3,9 +3,9 @@ import nomad.api.exceptions
 
 class Nodes(object):
 
-    ENDPOINT="nodes"
+    ENDPOINT = "nodes"
 
-    def __init__(self,requester):
+    def __init__(self, requester):
         self._requester = requester
 
     def __str__(self):
@@ -53,9 +53,9 @@ class Nodes(object):
         nodes = self._get()
         return iter(nodes)
 
-    def _get(self,*args):
+    def _get(self, *args):
         try:
-            url = self._requester._endpointBuilder(Nodes.ENDPOINT,*args)
+            url = self._requester._endpointBuilder(Nodes.ENDPOINT, *args)
             nodes = self._requester.get(url)
 
             return nodes.json()
@@ -64,8 +64,3 @@ class Nodes(object):
 
     def get_nodes(self):
         return self._get()
-
-
-
-
-

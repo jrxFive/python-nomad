@@ -2,6 +2,7 @@ import requests
 import json
 import nomad.api.exceptions
 
+
 class Node(object):
     ENDPOINT = "node"
 
@@ -13,7 +14,6 @@ class Node(object):
 
     def __repr__(self):
         return "{0}".format(self.__dict__)
-
 
     def __getattr__(self, item):
         msg = "{0} does not exist".format(item)
@@ -41,28 +41,27 @@ class Node(object):
         except nomad.api.exceptions.URLNotFoundNomadException:
             raise KeyError
 
-
-    def _get(self,*args):
+    def _get(self, *args):
         try:
-            url = self._requester._endpointBuilder(Node.ENDPOINT,*args)
+            url = self._requester._endpointBuilder(Node.ENDPOINT, *args)
             node = self._requester.get(url)
 
             return node.json()
         except:
             raise
 
-    def get_node(self,id):
+    def get_node(self, id):
         return self._get(id)
 
-    def get_allocations(self,id):
-        return self._get(id,"allocations")
+    def get_allocations(self, id):
+        return self._get(id, "allocations")
 
     def _post(self, *args, **kwargs):
         try:
-            url = self._requester._endpointBuilder(Node.ENDPOINT,*args)
+            url = self._requester._endpointBuilder(Node.ENDPOINT, *args)
 
             if kwargs:
-                response = self._requester.post(url,params=kwargs["enable"])
+                response = self._requester.post(url, params=kwargs["enable"])
             else:
                 response = self._requester.post(url)
 
@@ -70,26 +69,8 @@ class Node(object):
         except:
             raise
 
-    def evaluate_node(self,id):
-        return self._post(id,"evaluate")
+    def evaluate_node(self, id):
+        return self._post(id, "evaluate")
 
-    def drain_node(self,id,enable=False):
-        return self._post(id,"drain",enable={"enable":enable})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    def drain_node(self, id, enable=False):
+        return self._post(id, "drain", enable={"enable": enable})

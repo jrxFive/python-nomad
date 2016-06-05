@@ -1,6 +1,7 @@
 import requests
 import nomad.api.exceptions
 
+
 class Evaluation(object):
     ENDPOINT = "evaluation"
 
@@ -12,7 +13,6 @@ class Evaluation(object):
 
     def __repr__(self):
         return "{0}".format(self.__dict__)
-
 
     def __getattr__(self, item):
         msg = "{0} does not exist".format(item)
@@ -36,10 +36,9 @@ class Evaluation(object):
         except nomad.api.exceptions.URLNotFoundNomadException:
             raise KeyError
 
-
-    def _get(self,*args):
+    def _get(self, *args):
         try:
-            url = self._requester._endpointBuilder(Evaluation.ENDPOINT,*args)
+            url = self._requester._endpointBuilder(Evaluation.ENDPOINT, *args)
             evaluation = self._requester.get(url)
 
             return evaluation.json()
@@ -47,8 +46,8 @@ class Evaluation(object):
         except:
             raise
 
-    def get_evaluation(self,id):
+    def get_evaluation(self, id):
         return self._get(id)
 
-    def get_allocations(self,id):
-        return self._get(id,"allocations")
+    def get_allocations(self, id):
+        return self._get(id, "allocations")

@@ -1,11 +1,12 @@
 import requests
 import nomad.api.exceptions
 
+
 class Allocation(object):
 
-    ENDPOINT="allocation"
+    ENDPOINT = "allocation"
 
-    def __init__(self,requester):
+    def __init__(self, requester):
         self._requester = requester
 
     def __str__(self):
@@ -35,14 +36,14 @@ class Allocation(object):
         except nomad.api.exceptions.URLNotFoundNomadException:
             raise KeyError
 
-    def _get(self,*args):
+    def _get(self, *args):
         try:
-            url = self._requester._endpointBuilder(Allocation.ENDPOINT,*args)
+            url = self._requester._endpointBuilder(Allocation.ENDPOINT, *args)
             response = self._requester.get(url)
 
             return response.json()
         except:
             raise
 
-    def get_allocation(self,id):
+    def get_allocation(self, id):
         return self._get(id)

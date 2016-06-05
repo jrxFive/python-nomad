@@ -3,9 +3,9 @@ import nomad.api.exceptions
 
 class Status(object):
 
-    ENDPOINT="status"
+    ENDPOINT = "status"
 
-    def __init__(self,requester):
+    def __init__(self, requester):
         self._requester = requester
         self.leader = Leader(requester)
         self.peers = Peers(requester)
@@ -19,10 +19,9 @@ class Status(object):
     def __getattr__(self, item):
         raise AttributeError
 
-
-    def _get(self,*args):
+    def _get(self, *args):
         try:
-            url = self._requester._endpointBuilder(Status.ENDPOINT,*args)
+            url = self._requester._endpointBuilder(Status.ENDPOINT, *args)
             nodes = self._requester.get(url)
 
             return nodes.json()
@@ -32,9 +31,9 @@ class Status(object):
 
 class Leader(Status):
 
-    ENDPOINT="leader"
+    ENDPOINT = "leader"
 
-    def __init__(self,requester):
+    def __init__(self, requester):
         self._requester = requester
 
     def __contains__(self, item):
@@ -58,9 +57,9 @@ class Leader(Status):
 
 class Peers(Status):
 
-    ENDPOINT="peers"
+    ENDPOINT = "peers"
 
-    def __init__(self,requester):
+    def __init__(self, requester):
         self._requester = requester
 
     def __contains__(self, item):

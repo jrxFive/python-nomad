@@ -3,6 +3,7 @@ import nomad.api.exceptions
 
 
 class Requester(object):
+
     def __init__(self, uri='127.0.0.1', port=4646, timeout=5, version='v1'):
         self.uri = uri
         self.port = port
@@ -10,12 +11,10 @@ class Requester(object):
         self.version = version
         self.session = requests.Session()
 
-
-    def _endpointBuilder(self,*args):
+    def _endpointBuilder(self, *args):
         if args:
             u = "/".join(args)
             return "{v}/".format(v=self.version) + u
-
 
     def _urlBuilder(self, endpoint):
         return "http://{uri}:{port}/{endpoint}".format(uri=self.uri,
@@ -27,8 +26,8 @@ class Requester(object):
 
         try:
             response = self.session.get(url,
-                                    params=params,
-                                    timeout=self.timeout)
+                                        params=params,
+                                        timeout=self.timeout)
 
             if response.ok:
                 return response
@@ -37,13 +36,13 @@ class Requester(object):
 
         except requests.RequestException:
             raise nomad.api.exceptions.BaseNomadException
-
 
     def post(self, endpoint, params=None, data=None, json=None, headers=None):
         url = self._urlBuilder(endpoint)
 
         try:
-            response = self.session.post(url,params=params,json=json,headers=headers,data=data,timeout=self.timeout)
+            response = self.session.post(
+                url, params=params, json=json, headers=headers, data=data, timeout=self.timeout)
 
             if response.ok:
                 return response
@@ -52,14 +51,13 @@ class Requester(object):
 
         except requests.RequestException:
             raise nomad.api.exceptions.BaseNomadException
-
-
 
     def put(self, endpoint, params=None, data=None, headers=None):
         url = self._urlBuilder(endpoint)
 
         try:
-            response = self.session.put(url,params=params,headers=headers,data=data,timeout=self.timeout)
+            response = self.session.put(
+                url, params=params, headers=headers, data=data, timeout=self.timeout)
 
             if response.ok:
                 return response
@@ -69,12 +67,12 @@ class Requester(object):
         except requests.RequestException:
             raise nomad.api.exceptions.BaseNomadException
 
-
-    def delete(self,endpoint,headers=None):
+    def delete(self, endpoint, headers=None):
         url = self._urlBuilder(endpoint)
 
         try:
-            response = self.session.delete(url,headers=headers,timeout=self.timeout)
+            response = self.session.delete(
+                url, headers=headers, timeout=self.timeout)
 
             if response.ok:
                 return response
