@@ -23,6 +23,9 @@ class Agent(object):
     def get_agent(self):
         return self._get("self")
 
+    def get_members(self):
+        return self._get("members")
+
     def _post(self, *args, **kwargs):
         url = self._requester._endpointBuilder(Agent.ENDPOINT, *args)
         params = "address={address}".format(address=kwargs["address"])
