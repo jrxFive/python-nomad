@@ -20,14 +20,16 @@ class Client(object):
 
 
     def _get(self,*args,**kwargs):
-        url = self._requester._endpointBuilder(Client.ENDPOINT,"fs",*args)
-
-        response = self._requester.get(url,params=kwargs)
-
         try:
+            url = self._requester._endpointBuilder(Client.ENDPOINT,"fs",*args)
+
+            response = self._requester.get(url,params=kwargs)
+
             return response.json()
         except ValueError:
             return response.text
+        except:
+            raise
 
 
 class ls(Client):

@@ -25,10 +25,13 @@ class Allocations(object):
         return iter(response)
 
     def _get(self,*args):
-        url = self._requester._endpointBuilder(Allocations.ENDPOINT,*args)
-        response = self._requester.get(url)
+        try:
+            url = self._requester._endpointBuilder(Allocations.ENDPOINT,*args)
+            response = self._requester.get(url)
 
-        return response.json()
+            return response.json()
+        except:
+            raise
 
     def get_allocations(self):
         return self._get()

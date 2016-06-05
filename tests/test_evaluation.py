@@ -25,7 +25,7 @@ def test_dunder_getitem_exist(nomad_setup):
 
 def test_dunder_getitem_not_exist(nomad_setup):
 
-    with pytest.raises(KeyError): #restucture try/except/raises
+    with pytest.raises(KeyError):
         _ = nomad_setup.evaluation["nope"]
 
 def test_dunder_contain_exists(nomad_setup):

@@ -1,5 +1,6 @@
 import requests
 import json
+import nomad.api.exceptions
 
 class Node(object):
     ENDPOINT = "node"
@@ -23,7 +24,7 @@ class Node(object):
         try:
             n = self._get(item)
             return True
-        except requests.RequestException:
+        except nomad.api.exceptions.URLNotFoundNomadException:
             return False
 
     def __getitem__(self, item):
@@ -37,15 +38,18 @@ class Node(object):
                 return n
             else:
                 raise KeyError
-        except requests.RequestException:
+        except nomad.api.exceptions.URLNotFoundNomadException:
             raise KeyError
 
 
     def _get(self,*args):
-        url = self._requester._endpointBuilder(Node.ENDPOINT,*args)
-        node = self._requester.get(url)
+        try:
+            url = self._requester._endpointBuilder(Node.ENDPOINT,*args)
+            node = self._requester.get(url)
 
-        return node.json()
+            return node.json()
+        except:
+            raise
 
     def get_node(self,id):
         return self._get(id)
@@ -54,14 +58,17 @@ class Node(object):
         return self._get(id,"allocations")
 
     def _post(self, *args, **kwargs):
-        url = self._requester._endpointBuilder(Node.ENDPOINT,*args)
+        try:
+            url = self._requester._endpointBuilder(Node.ENDPOINT,*args)
 
-        if kwargs:
-            response = self._requester.post(url,params=kwargs["enable"])
-        else:
-            response = self._requester.post(url)
+            if kwargs:
+                response = self._requester.post(url,params=kwargs["enable"])
+            else:
+                response = self._requester.post(url)
 
-        return response.json()
+            return response.json()
+        except:
+            raise
 
     def evaluate_node(self,id):
         return self._post(id,"evaluate")
