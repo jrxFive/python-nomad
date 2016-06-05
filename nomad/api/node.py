@@ -4,6 +4,13 @@ import nomad.api.exceptions
 
 
 class Node(object):
+
+    """
+    The node endpoint is used to query the a specific client node.
+    By default, the agent's local region is used.
+
+    https://www.nomadproject.io/docs/http/node.html
+    """
     ENDPOINT = "node"
 
     def __init__(self, requester):
@@ -51,9 +58,27 @@ class Node(object):
             raise
 
     def get_node(self, id):
+        """ Query the status of a client node registered with Nomad.
+
+           https://www.nomadproject.io/docs/http/node.html
+
+            returns: dict
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
         return self._get(id)
 
     def get_allocations(self, id):
+        """ Query the allocations belonging to a single node.
+
+           https://www.nomadproject.io/docs/http/node.html
+
+            returns: list
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
         return self._get(id, "allocations")
 
     def _post(self, *args, **kwargs):
@@ -70,7 +95,29 @@ class Node(object):
             raise
 
     def evaluate_node(self, id):
+        """ Creates a new evaluation for the given node.
+            This can be used to force run the 
+            scheduling logic if necessary.
+
+           https://www.nomadproject.io/docs/http/node.html
+
+            returns: dict
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
         return self._post(id, "evaluate")
 
     def drain_node(self, id, enable=False):
+        """ Toggle the drain mode of the node.
+            When enabled, no further allocations will be
+            assigned and existing allocations will be migrated.
+
+           https://www.nomadproject.io/docs/http/node.html
+
+            returns: dict
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
         return self._post(id, "drain", enable={"enable": enable})

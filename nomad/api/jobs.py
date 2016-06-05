@@ -3,7 +3,13 @@ import nomad.api.exceptions
 
 class Jobs(object):
 
-    """ https://www.nomadproject.io/docs/http/jobs.html """
+    """
+    The jobs endpoint is used to query the status of existing
+    jobs in Nomad and to register new jobs.
+    By default, the agent's local region is used.
+
+    https://www.nomadproject.io/docs/http/jobs.html
+    """
     ENDPOINT = "jobs"
 
     def __init__(self, requester):
@@ -65,7 +71,15 @@ class Jobs(object):
             raise
 
     def get_jobs(self):
-        """ Lists all the jobs registered with Nomad. """
+        """ Lists all the jobs registered with Nomad.
+
+           https://www.nomadproject.io/docs/http/jobs.html
+
+            returns: list
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
         return self._get()
 
     def _post(self, *args, **kwargs):
@@ -82,11 +96,13 @@ class Jobs(object):
             raise
 
     def register_job(self, job):
-        """ Registers a new job.
+        """ Lists all the jobs registered with Nomad.
 
-            parameters: job, python dictionary of a hcl job
+           https://www.nomadproject.io/docs/http/jobs.html
+
+            returns: dict
             raises:
-              - nomad.api.exceptions.URLNotFoundNomadException
               - nomad.api.exceptions.BaseNomadException
-         """
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
         return self._post(job=job)

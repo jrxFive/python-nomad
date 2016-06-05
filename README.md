@@ -28,4 +28,4 @@ n.job.deregister_job(j)
 ## TODO
 * functional tests
 * Inherit Base class, remove duplication and override parent dunders
-# readthedocs
+* readthedocs

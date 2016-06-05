@@ -3,6 +3,12 @@ import nomad.api.exceptions
 
 class Nodes(object):
 
+    """
+    The nodes endpoint is used to query the status of client nodes.
+    By default, the agent's local region is used
+
+    https://www.nomadproject.io/docs/http/nodes.html
+    """
     ENDPOINT = "nodes"
 
     def __init__(self, requester):
@@ -63,4 +69,13 @@ class Nodes(object):
             raise
 
     def get_nodes(self):
+        """ Lists all the client nodes registered with Nomad.
+
+           https://www.nomadproject.io/docs/http/nodes.html
+
+            returns: list
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
         return self._get()
