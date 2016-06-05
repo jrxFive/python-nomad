@@ -44,8 +44,7 @@ class Requester(object):
 
             if response.ok:
                 return response
-            else:
-                raise requests.RequestException
+
         except requests.RequestException:
             raise
 
@@ -58,8 +57,7 @@ class Requester(object):
 
             if response.ok:
                 return response
-            else:
-                raise requests.RequestException
+
         except requests.RequestException:
             raise
 
@@ -72,8 +70,7 @@ class Requester(object):
 
             if response.ok:
                 return response
-            else:
-                raise requests.RequestException
+
         except requests.RequestException:
             raise
 

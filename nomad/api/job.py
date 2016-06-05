@@ -24,8 +24,6 @@ class Job(object):
             return True
         except requests.RequestException:
             return False
-        except BaseException:
-            return False
 
     def __getitem__(self, item):
 
@@ -40,8 +38,6 @@ class Job(object):
                 raise KeyError
         except requests.RequestException:
             raise KeyError
-        except BaseException:
-            return KeyError
 
 
     def _get(self,*args):
