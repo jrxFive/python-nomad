@@ -18,8 +18,9 @@ class Nomad(object):
         self._allocations = api.Allocations(self.requester)
         self._allocation = api.Allocation(self.requester)
         self._evaluations = api.Evaluations(self.requester)
+        self._evaluation = api.Evaluation(self.requester)
         self._agent = api.Agent()
-        self._client = api.Client()
+        self._client = api.Client(self.requester)
         self._regions = api.Regions(self.requester)
         self._status = api.Status(self.requester)
         self._system = api.System(self.requester)
@@ -52,6 +53,10 @@ class Nomad(object):
     @property
     def evaluations(self):
         return self._evaluations
+
+    @property
+    def evaluation(self):
+        return self._evaluation
 
     @property
     def agent(self):
