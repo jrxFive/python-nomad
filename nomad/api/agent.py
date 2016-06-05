@@ -15,16 +15,16 @@ class Agent(object):
         raise AttributeError(msg)
 
     def _get(self, *args):
-        url = self._requester._endpointBuilder(Agent.ENDPOINT, 'self', *args)
+        url = self._requester._endpointBuilder(Agent.ENDPOINT, *args)
         agent = self._requester.get(url)
 
         return agent.json()
 
     def get_agent(self):
-        return self._get()
+        return self._get("self")
 
     def _post(self, *args, **kwargs):
-        url = self._requester._endpointBuilder(Agent.ENDPOINT, 'join', *args)
+        url = self._requester._endpointBuilder(Agent.ENDPOINT, *args)
         params = "address={address}".format(address=kwargs["address"])
 
         response = self._requester.post(url, params=params)
@@ -32,4 +32,4 @@ class Agent(object):
         return response.json()
 
     def join_agent(self, address):
-        return self._post(address=address)
+        return self._post("join", address=address)
