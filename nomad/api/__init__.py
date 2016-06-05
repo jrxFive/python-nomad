@@ -6,6 +6,7 @@ from nomad.api.nodes import Nodes
 from nomad.api.node import Node
 from nomad.api.agent import Agent
 from nomad.api.allocations import Allocations
+from nomad.api.allocation import Allocation
 from nomad.api.evaluations import Evaluations
 from nomad.api.client import Client
 from nomad.api.regions import Regions
