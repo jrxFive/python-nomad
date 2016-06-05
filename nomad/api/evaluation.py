@@ -32,8 +32,6 @@ class Evaluation(object):
 
             if e["ID"] == item:
                 return e
-            else:
-                raise KeyError
         except requests.RequestException:
             raise KeyError
 
