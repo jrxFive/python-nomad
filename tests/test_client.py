@@ -20,7 +20,7 @@ def test_register_job(nomad_setup):
 
 def test_ls_list_files(nomad_setup):
     test_register_job(nomad_setup)
-    time.sleep(2)
+
     i = 0
     while "example" not in nomad_setup.jobs:
         time.sleep(1)
@@ -28,8 +28,16 @@ def test_ls_list_files(nomad_setup):
         if i == 20:
             break
 
-    a = nomad_setup.allocations.get_allocations()[0]["ID"]
+    i = 0
+    while len(nomad_setup.allocations.get_allocations()) == 0:
+        time.sleep(1)
+        i += 1
+        if i == 20:
+            break
 
+    a = nomad_setup.allocations.get_allocations()[0]["ID"]
+    time.sleep(1)
+    
     i = 0
     while nomad_setup.allocations.get_allocations()[0]["TaskStates"]["redis"]["State"] == "pending":
         time.sleep(1)
@@ -42,7 +50,6 @@ def test_ls_list_files(nomad_setup):
 
 def test_stat_stat_file(nomad_setup):
     test_register_job(nomad_setup)
-    time.sleep(2)
     i = 0
     while "example" not in nomad_setup.jobs:
         time.sleep(1)
@@ -50,7 +57,15 @@ def test_stat_stat_file(nomad_setup):
         if i == 20:
             break
 
+    i = 0
+    while len(nomad_setup.allocations.get_allocations()) == 0:
+        time.sleep(1)
+        i += 1
+        if i == 20:
+            break
+
     a = nomad_setup.allocations.get_allocations()[0]["ID"]
+    time.sleep(1)
 
     i = 0
     while nomad_setup.allocations.get_allocations()[0]["TaskStates"]["redis"]["State"] == "pending":
@@ -64,7 +79,7 @@ def test_stat_stat_file(nomad_setup):
 
 def test_cat_read_file(nomad_setup):
     test_register_job(nomad_setup)
-    time.sleep(2)
+
     i = 0
     while "example" not in nomad_setup.jobs:
         time.sleep(1)
@@ -72,7 +87,15 @@ def test_cat_read_file(nomad_setup):
         if i == 20:
             break
 
+    i = 0
+    while len(nomad_setup.allocations.get_allocations()) == 0:
+        time.sleep(1)
+        i += 1
+        if i == 20:
+            break
+
     a = nomad_setup.allocations.get_allocations()[0]["ID"]
+    time.sleep(1)
 
     i = 0
     while nomad_setup.allocations.get_allocations()[0]["TaskStates"]["redis"]["State"] == "pending":
