@@ -20,7 +20,7 @@ class Nomad(object):
         self._evaluations = api.Evaluations(self.requester)
         self._evaluation = api.Evaluation(self.requester)
         self._agent = api.Agent(self.requester)
-        self._client = api.Client()
+        self._client = api.Client(self.requester)
         self._regions = api.Regions(self.requester)
         self._status = api.Status(self.requester)
         self._system = api.System(self.requester)
