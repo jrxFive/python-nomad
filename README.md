@@ -3,7 +3,7 @@
 
 Branch | Status | Coverage |
 ---| ---| --- 
-develop | [![Build Status](https://travis-ci.org/jrxFive/python-nomad.svg?branch=develop)](https://travis-ci.org/jrxFive/python-nomad) | [![codecov](https://codecov.io/gh/jrxFive/python-nomad/branch/develop/graph/badge.svg)](https://codecov.io/gh/jrxFive/python-nomad)
+master | [![Build Status](https://travis-ci.org/jrxFive/python-nomad.svg?branch=master)](https://travis-ci.org/jrxFive/python-nomad) | [![codecov](https://codecov.io/gh/jrxFive/python-nomad/branch/master/graph/badge.svg)](https://codecov.io/gh/jrxFive/python-nomad)
 
 
 ## Installation
