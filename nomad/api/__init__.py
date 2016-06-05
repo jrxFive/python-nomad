@@ -8,6 +8,7 @@ from nomad.api.agent import Agent
 from nomad.api.allocations import Allocations
 from nomad.api.allocation import Allocation
 from nomad.api.evaluations import Evaluations
+from nomad.api.evaluation import Evaluation
 from nomad.api.client import Client
 from nomad.api.regions import Regions
 from nomad.api.status import Status

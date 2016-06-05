@@ -13,8 +13,8 @@ def test_get_evaluations(nomad_setup):
     assert isinstance(nomad_setup.evaluations.get_evaluations(),list) == True
 
 def test_dunder_getitem_exist(nomad_setup):
-    eval_id = nomad_setup.job.get_allocations("example")[0]["EvalID"]
-    e = nomad_setup.evaluations[eval_id]
+    evalID = nomad_setup.job.get_allocations("example")[0]["EvalID"]
+    e = nomad_setup.evaluations[evalID]
     assert isinstance(e,dict)
 
 def test_dunder_getitem_not_exist(nomad_setup):
@@ -23,8 +23,8 @@ def test_dunder_getitem_not_exist(nomad_setup):
         j = nomad_setup.evaluations["nope"]
 
 def test_dunder_contain_exists(nomad_setup):
-    eval_id = nomad_setup.job.get_allocations("example")[0]["EvalID"]
-    assert eval_id in nomad_setup.evaluations
+    evalID = nomad_setup.job.get_allocations("example")[0]["EvalID"]
+    assert evalID in nomad_setup.evaluations
 
 def test_dunder_contain_not_exist(nomad_setup):
     assert "nope"  not in nomad_setup.evaluations

@@ -19,11 +19,11 @@ def test_get_allocations(nomad_setup):
     a = nomad_setup.node.get_allocations(nodeID)
     assert len(a) >= 0
 
-def test_evaluate_job(nomad_setup):
+def test_evaluate_node(nomad_setup):
     nodeID = nomad_setup.nodes["pynomad1"]["ID"]
     assert "EvalIDs" in nomad_setup.node.evaluate_node(nodeID)
 
-def test_drain_job(nomad_setup):
+def test_drain_node(nomad_setup):
     nodeID = nomad_setup.nodes["pynomad1"]["ID"]
     assert "EvalIDs" in nomad_setup.node.drain_node(nodeID)
     assert "EvalIDs" in nomad_setup.node.drain_node(nodeID,True)
