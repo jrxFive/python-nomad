@@ -32,10 +32,7 @@ class Agent(object):
     def _post(self, *args, **kwargs):
         url = self._requester._endpointBuilder(Agent.ENDPOINT, *args)
 
-        if kwargs:
-            response = self._requester.post(url, params=kwargs["params"])
-        else:
-            response = self._requester.post(url)
+        response = self._requester.post(url, params=kwargs["params"])
 
         try:
             return response.json()
