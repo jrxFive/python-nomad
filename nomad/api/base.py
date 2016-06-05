@@ -30,7 +30,6 @@ class Requester(object):
                                     params=params,
                                     timeout=self.timeout)
 
-            print response.__dict__
             if response.ok:
                 return response
             if response.status_code == 400 or response.status_code == 404 or response.status_code == 500:
