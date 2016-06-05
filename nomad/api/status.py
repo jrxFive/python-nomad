@@ -1,3 +1,5 @@
+import nomad.api.exceptions
+
 
 class Status(object):
 
@@ -19,10 +21,13 @@ class Status(object):
 
 
     def _get(self,*args):
-        url = self._requester._endpointBuilder(Status.ENDPOINT,*args)
-        nodes = self._requester.get(url)
+        try:
+            url = self._requester._endpointBuilder(Status.ENDPOINT,*args)
+            nodes = self._requester.get(url)
 
-        return nodes.json()
+            return nodes.json()
+        except:
+            raise
 
 
 class Leader(Status):
@@ -33,11 +38,14 @@ class Leader(Status):
         self._requester = requester
 
     def __contains__(self, item):
-        leader = self._get(Leader.ENDPOINT)
+        try:
+            leader = self._get(Leader.ENDPOINT)
 
-        if leader == item:
-            return True
-        else:
+            if leader == item:
+                return True
+            else:
+                return False
+        except nomad.api.exceptions.URLNotFoundNomadException:
             return False
 
     def __len__(self):
@@ -56,12 +64,15 @@ class Peers(Status):
         self._requester = requester
 
     def __contains__(self, item):
-        peers = self._get(Peers.ENDPOINT)
+        try:
+            peers = self._get(Peers.ENDPOINT)
 
-        for p in peers:
-            if p == item:
-                return True
-        else:
+            for p in peers:
+                if p == item:
+                    return True
+            else:
+                return False
+        except nomad.api.exceptions.URLNotFoundNomadException:
             return False
 
     def __len__(self):
@@ -69,12 +80,15 @@ class Peers(Status):
         return len(peers)
 
     def __getitem__(self, item):
-        peers = self._get(Peers.ENDPOINT)
+        try:
+            peers = self._get(Peers.ENDPOINT)
 
-        for p in peers:
-            if p == item:
-                return p
-        else:
+            for p in peers:
+                if p == item:
+                    return p
+            else:
+                raise KeyError
+        except nomad.api.exceptions.URLNotFoundNomadException:
             raise KeyError
 
     def __iter__(self):

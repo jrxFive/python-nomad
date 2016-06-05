@@ -1,4 +1,5 @@
 import requests
+import nomad.api.exceptions
 
 class Allocation(object):
 
@@ -22,7 +23,7 @@ class Allocation(object):
 
             if response["ID"] == item:
                 return True
-        except:
+        except nomad.api.exceptions.URLNotFoundNomadException:
             return False
 
     def __getitem__(self, item):
@@ -31,7 +32,7 @@ class Allocation(object):
 
             if response["ID"] == item:
                 return response
-        except:
+        except nomad.api.exceptions.URLNotFoundNomadException:
             raise KeyError
 
     def _get(self,*args):
@@ -40,7 +41,7 @@ class Allocation(object):
             response = self._requester.get(url)
 
             return response.json()
-        except requests.RequestException:
+        except:
             raise
 
     def get_allocation(self,id):

@@ -1,3 +1,4 @@
+import nomad.api.exceptions
 
 class Regions(object):
 
@@ -16,12 +17,15 @@ class Regions(object):
         raise AttributeError
 
     def __contains__(self, item):
-        regions = self._get()
+        try:
+            regions = self._get()
 
-        for r in regions:
-            if r == item:
-                return True
-        else:
+            for r in regions:
+                if r == item:
+                    return True
+            else:
+                return False
+        except nomad.api.exceptions.URLNotFoundNomadException:
             return False
 
     def __len__(self):
@@ -29,12 +33,15 @@ class Regions(object):
         return len(regions)
 
     def __getitem__(self, item):
-        regions = self._get()
+        try:
+            regions = self._get()
 
-        for r in regions:
-            if r == item:
-                return r
-        else:
+            for r in regions:
+                if r == item:
+                    return r
+            else:
+                raise KeyError
+        except nomad.api.exceptions.URLNotFoundNomadException:
             raise KeyError
 
     def __iter__(self):
@@ -42,10 +49,13 @@ class Regions(object):
         return iter(regions)
 
     def _get(self,*args):
-        url = self._requester._endpointBuilder(Regions.ENDPOINT,*args)
-        nodes = self._requester.get(url)
+        try:
+            url = self._requester._endpointBuilder(Regions.ENDPOINT,*args)
+            nodes = self._requester.get(url)
 
-        return nodes.json()
+            return nodes.json()
+        except:
+            raise
 
     def get_regions(self):
         return self._get()

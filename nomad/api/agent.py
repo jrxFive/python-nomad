@@ -15,10 +15,13 @@ class Agent(object):
         raise AttributeError(msg)
 
     def _get(self, *args):
-        url = self._requester._endpointBuilder(Agent.ENDPOINT, *args)
-        agent = self._requester.get(url)
+        try:
+            url = self._requester._endpointBuilder(Agent.ENDPOINT, *args)
+            agent = self._requester.get(url)
 
-        return agent.json()
+            return agent.json()
+        except:
+            raise
 
     def get_agent(self):
         return self._get("self")
@@ -30,11 +33,11 @@ class Agent(object):
         return self._get("servers")
 
     def _post(self, *args, **kwargs):
-        url = self._requester._endpointBuilder(Agent.ENDPOINT, *args)
-
-        response = self._requester.post(url, params=kwargs["params"])
-
         try:
+            url = self._requester._endpointBuilder(Agent.ENDPOINT, *args)
+
+            response = self._requester.post(url, params=kwargs["params"])
+
             return response.json()
         except ValueError:
             return response.status_code

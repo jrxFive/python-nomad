@@ -16,10 +16,13 @@ class System(object):
         raise AttributeError
 
     def _put(self,*args):
-        url = self._requester._endpointBuilder(System.ENDPOINT,*args)
-        response = self._requester.put(url)
+        try:
+            url = self._requester._endpointBuilder(System.ENDPOINT,*args)
+            response = self._requester.put(url)
 
-        return response.ok
+            return response.ok
+        except:
+            raise
 
     def initiate_garbage_collection(self):
         return self._put("gc")

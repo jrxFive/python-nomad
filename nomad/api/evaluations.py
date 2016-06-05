@@ -1,3 +1,5 @@
+import nomad.api.exceptions
+
 class Evaluations(object):
 
     ENDPOINT="evaluations"
@@ -15,12 +17,15 @@ class Evaluations(object):
         raise AttributeError
 
     def __contains__(self, item):
-        evaluations = self._get()
+        try:
+            evaluations = self._get()
 
-        for e in evaluations:
-            if e["ID"] == item:
-                return True
-        else:
+            for e in evaluations:
+                if e["ID"] == item:
+                    return True
+            else:
+                return False
+        except nomad.api.exceptions.URLNotFoundNomadException:
             return False
 
     def __len__(self):
@@ -28,12 +33,15 @@ class Evaluations(object):
         return len(evaluations)
 
     def __getitem__(self, item):
-        evaluations = self._get()
+        try:
+            evaluations = self._get()
 
-        for e in evaluations:
-            if e["ID"] == item:
-                return e
-        else:
+            for e in evaluations:
+                if e["ID"] == item:
+                    return e
+            else:
+                raise KeyError
+        except nomad.api.exceptions.URLNotFoundNomadException:
             raise KeyError
 
     def __iter__(self):
@@ -41,10 +49,13 @@ class Evaluations(object):
         return iter(evaluations)
 
     def _get(self,*args):
-        url = self._requester._endpointBuilder(Evaluations.ENDPOINT,*args)
-        evaluations = self._requester.get(url)
+        try:
+            url = self._requester._endpointBuilder(Evaluations.ENDPOINT,*args)
+            evaluations = self._requester.get(url)
 
-        return evaluations.json()
+            return evaluations.json()
+        except:
+            raise
 
     def get_evaluations(self):
         return self._get()

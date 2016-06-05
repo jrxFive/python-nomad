@@ -1,3 +1,5 @@
+import nomad.api.exceptions
+
 
 class Nodes(object):
 
@@ -16,14 +18,17 @@ class Nodes(object):
         raise AttributeError
 
     def __contains__(self, item):
-        nodes = self._get()
+        try:
+            nodes = self._get()
 
-        for n in nodes:
-            if n["ID"] == item:
-                return True
-            if n["Name"] == item:
-                return True
-        else:
+            for n in nodes:
+                if n["ID"] == item:
+                    return True
+                if n["Name"] == item:
+                    return True
+            else:
+                return False
+        except nomad.api.exceptions.URLNotFoundNomadException:
             return False
 
     def __len__(self):
@@ -31,14 +36,17 @@ class Nodes(object):
         return len(nodes)
 
     def __getitem__(self, item):
-        nodes = self._get()
+        try:
+            nodes = self._get()
 
-        for n in nodes:
-            if n["ID"] == item:
-                return n
-            if n["Name"] == item:
-                return n
-        else:
+            for n in nodes:
+                if n["ID"] == item:
+                    return n
+                if n["Name"] == item:
+                    return n
+            else:
+                raise KeyError
+        except nomad.api.exceptions.URLNotFoundNomadException:
             raise KeyError
 
     def __iter__(self):
@@ -46,10 +54,13 @@ class Nodes(object):
         return iter(nodes)
 
     def _get(self,*args):
-        url = self._requester._endpointBuilder(Nodes.ENDPOINT,*args)
-        nodes = self._requester.get(url)
+        try:
+            url = self._requester._endpointBuilder(Nodes.ENDPOINT,*args)
+            nodes = self._requester.get(url)
 
-        return nodes.json()
+            return nodes.json()
+        except:
+            raise
 
     def get_nodes(self):
         return self._get()
