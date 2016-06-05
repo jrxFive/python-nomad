@@ -1,4 +1,6 @@
 import requests
+import nomad.api.exceptions
+
 
 class Requester(object):
     def __init__(self, uri='127.0.0.1', port=4646, timeout=5, version='v1'):
@@ -30,53 +32,54 @@ class Requester(object):
 
             if response.ok:
                 return response
-            else:
-                raise requests.RequestException
+            if response.status_code == 400 or response.status_code == 404 or response.status_code == 500:
+                raise nomad.api.exceptions.URLNotFoundNomadException
+
         except requests.RequestException:
-            raise
+            raise nomad.api.exceptions.BaseNomadException
 
 
     def post(self, endpoint, params=None, data=None, json=None, headers=None):
         url = self._urlBuilder(endpoint)
 
         try:
-            response = self.session.post(url,params=params,json=json,headers=headers,data=data)
+            response = self.session.post(url,params=params,json=json,headers=headers,data=data,timeout=self.timeout)
 
             if response.ok:
                 return response
-            else:
-                raise requests.RequestException
+            if response.status_code == 400 or response.status_code == 404 or response.status_code == 500:
+                raise nomad.api.exceptions.URLNotFoundNomadException
+
         except requests.RequestException:
-            raise
+            raise nomad.api.exceptions.BaseNomadException
+
 
 
     def put(self, endpoint, params=None, data=None, headers=None):
         url = self._urlBuilder(endpoint)
 
         try:
-            response = self.session.put(url,params=params,headers=headers,data=data)
+            response = self.session.put(url,params=params,headers=headers,data=data,timeout=self.timeout)
 
             if response.ok:
                 return response
-            else:
-                raise requests.RequestException
+            if response.status_code == 400 or response.status_code == 404 or response.status_code == 500:
+                raise nomad.api.exceptions.URLNotFoundNomadException
+
         except requests.RequestException:
-            raise
+            raise nomad.api.exceptions.BaseNomadException
 
 
     def delete(self,endpoint,headers=None):
         url = self._urlBuilder(endpoint)
 
         try:
-            response = self.session.delete(url,headers=headers)
+            response = self.session.delete(url,headers=headers,timeout=self.timeout)
 
             if response.ok:
                 return response
-            else:
-                raise requests.RequestException
+            if response.status_code == 400 or response.status_code == 404 or response.status_code == 500:
+                raise nomad.api.exceptions.URLNotFoundNomadException
+
         except requests.RequestException:
-            raise
-
-
-
-
+            raise nomad.api.exceptions.BaseNomadException
