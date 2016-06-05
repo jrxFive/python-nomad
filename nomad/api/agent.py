@@ -42,12 +42,12 @@ class Agent(object):
         except ValueError:
             return response.status_code
 
-    def join_agent(self, address):
-        params = "address={address}".format(address=address)
+    def join_agent(self, addresses):
+        params = "address=" + "&address=".join(addresses)
         return self._post("join", params=params)
 
-    def update_servers(self, address):
-        params = "address={address}".format(address=address)
+    def update_servers(self, addresses):
+        params = "address=" + "&address=".join(addresses)
         return self._post("servers", params=params)
 
     def force_leave_agent(self, node):
