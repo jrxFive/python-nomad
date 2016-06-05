@@ -19,6 +19,10 @@ def test_register_job(nomad_setup):
 def test_get_job(nomad_setup):
     assert isinstance(nomad_setup.job.get_job("example"),dict) == True
 
+def test_get_job_region(nomad_setup):
+    n = nomad.Nomad(host=common.IP, port=common.NOMAD_PORT, region="global")
+    assert isinstance(n.job.get_job("example"),dict) == True
+
 def test_get_allocations(nomad_setup):
     j = nomad_setup.job["example"]
     a = nomad_setup.job.get_allocations("example")
