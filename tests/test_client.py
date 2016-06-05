@@ -30,6 +30,7 @@ def test_ls_list_files(nomad_setup):
             time.sleep(10)
 
             if i == 10:
+                assert 0
                 break
 
             a = nomad_setup.allocations.get_allocations()[0]["ID"]
@@ -56,6 +57,7 @@ def test_stat_stat_file(nomad_setup):
             time.sleep(10)
 
             if i == 10:
+                assert 0
                 break
 
             a = nomad_setup.allocations.get_allocations()[0]["ID"]
@@ -72,13 +74,14 @@ def test_stat_stat_file(nomad_setup):
 def test_cat_read_file(nomad_setup):
     test_register_job(nomad_setup)
 
-    i =0
+    i = 0
     while True:
         try:
             i += 1
             time.sleep(10)
 
             if i == 10:
+                assert 0
                 break
 
             a = nomad_setup.allocations.get_allocations()[0]["ID"]
