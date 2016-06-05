@@ -33,8 +33,6 @@ class Evaluations(object):
         for e in evaluations:
             if e["ID"] == item:
                 return e
-            if e["Name"] == item:
-                return e
         else:
             raise KeyError
 
