@@ -1,0 +1,24 @@
+site_name: python-nomad
+theme: readthedocs
+repo_url: https://github.com/jrxfive/python-nomad/
+repo_name: GitHub
+google_analytics: ['UA-36723568-3', 'mkdocs.org']
+pages:
+- Home: 'index.md'
+- Nomad:
+   - Examples: 'nomad/examples.md'
+- Api:
+   - Agent: 'api/agent.md'
+   - Allocation: 'api/allocation.md'
+   - Allocations: 'api/alocations.md'
+   - Client: 'api/client.md'
+   - Evaluations: 'api/evaluations.md'
+   - Evaluation: 'api/evaluation.md'
+   - Job: 'api/job.md'
+   - Jobs: 'api/jobs.md'
+   - Node: 'api/node.md'
+   - Nodes: 'api/nodes.md'
+   - Regions: 'api/regions.md'
+   - Status: 'api/status.md'
+   - System: 'api/system.md'
+- Contributing: 'contributing.md'
