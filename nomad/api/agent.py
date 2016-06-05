@@ -50,6 +50,6 @@ class Agent(object):
         params = "address=" + "&address=".join(addresses)
         return self._post("servers", params=params)
 
-    def force_leave_agent(self, node):
+    def force_leave(self, node):
         params = "node={node}".format(node=node)
         return self._post("force-leave", params=params)

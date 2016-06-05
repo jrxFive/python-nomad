@@ -31,7 +31,7 @@ def test_update_servers(nomad_setup):
     assert "two:4829" in nomad_setup.agent.get_servers()
 
 def test_force_leave(nomad_setup):
-    r = nomad_setup.agent.force_leave_agent("nope")
+    r = nomad_setup.agent.force_leave("nope")
     assert r == 200
 
 def test_dunder_str(nomad_setup):
