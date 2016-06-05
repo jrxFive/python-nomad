@@ -1,10 +1,14 @@
 import nomad.api.exceptions
 
+
 class Regions(object):
 
-    ENDPOINT="regions"
+    """
+    https://www.nomadproject.io/docs/http/regions.html
+    """
+    ENDPOINT = "regions"
 
-    def __init__(self,requester):
+    def __init__(self, requester):
         self._requester = requester
 
     def __str__(self):
@@ -48,9 +52,9 @@ class Regions(object):
         regions = self._get()
         return iter(regions)
 
-    def _get(self,*args):
+    def _get(self, *args):
         try:
-            url = self._requester._endpointBuilder(Regions.ENDPOINT,*args)
+            url = self._requester._endpointBuilder(Regions.ENDPOINT, *args)
             nodes = self._requester.get(url)
 
             return nodes.json()
@@ -58,4 +62,13 @@ class Regions(object):
             raise
 
     def get_regions(self):
+        """ Returns the known region names.
+
+            https://www.nomadproject.io/docs/http/regions.html
+
+            returns: list
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
         return self._get()

@@ -3,9 +3,14 @@ import nomad.api.exceptions
 
 class Status(object):
 
-    ENDPOINT="status"
+    """
+    By default, the agent's local region is used
 
-    def __init__(self,requester):
+    https://www.nomadproject.io/docs/http/status.html
+    """
+    ENDPOINT = "status"
+
+    def __init__(self, requester):
         self._requester = requester
         self.leader = Leader(requester)
         self.peers = Peers(requester)
@@ -19,10 +24,9 @@ class Status(object):
     def __getattr__(self, item):
         raise AttributeError
 
-
-    def _get(self,*args):
+    def _get(self, *args):
         try:
-            url = self._requester._endpointBuilder(Status.ENDPOINT,*args)
+            url = self._requester._endpointBuilder(Status.ENDPOINT, *args)
             nodes = self._requester.get(url)
 
             return nodes.json()
@@ -32,9 +36,9 @@ class Status(object):
 
 class Leader(Status):
 
-    ENDPOINT="leader"
+    ENDPOINT = "leader"
 
-    def __init__(self,requester):
+    def __init__(self, requester):
         self._requester = requester
 
     def __contains__(self, item):
@@ -53,14 +57,23 @@ class Leader(Status):
         return len(leader)
 
     def get_leader(self):
+        """ Returns the address of the current leader in the region.
+
+            https://www.nomadproject.io/docs/http/status.html
+
+            returns: string
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
         return self._get(Leader.ENDPOINT)
 
 
 class Peers(Status):
 
-    ENDPOINT="peers"
+    ENDPOINT = "peers"
 
-    def __init__(self,requester):
+    def __init__(self, requester):
         self._requester = requester
 
     def __contains__(self, item):
@@ -96,4 +109,13 @@ class Peers(Status):
         return iter(peers)
 
     def get_peers(self):
+        """ Returns the set of raft peers in the region.
+
+            https://www.nomadproject.io/docs/http/status.html
+
+            returns: list
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
         return self._get(Peers.ENDPOINT)

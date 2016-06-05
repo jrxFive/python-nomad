@@ -1,9 +1,16 @@
 
 class Allocations(object):
 
-    ENDPOINT="allocations"
+    """
+    The allocations endpoint is used to query the status of allocations.
+    By default, the agent's local region is used; another region can be
+    specified using the ?region= query parameter.
 
-    def __init__(self,requester):
+    https://www.nomadproject.io/docs/http/allocs.html
+    """
+    ENDPOINT = "allocations"
+
+    def __init__(self, requester):
         self._requester = requester
 
     def __str__(self):
@@ -19,14 +26,13 @@ class Allocations(object):
         response = self._get()
         return len(response)
 
-
     def __iter__(self):
         response = self._get()
         return iter(response)
 
-    def _get(self,*args):
+    def _get(self, *args):
         try:
-            url = self._requester._endpointBuilder(Allocations.ENDPOINT,*args)
+            url = self._requester._endpointBuilder(Allocations.ENDPOINT, *args)
             response = self._requester.get(url)
 
             return response.json()
@@ -34,9 +40,13 @@ class Allocations(object):
             raise
 
     def get_allocations(self):
+        """ Lists all the allocations.
+
+           https://www.nomadproject.io/docs/http/allocs.html
+
+            returns: list
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
         return self._get()
-
-
-
-
-

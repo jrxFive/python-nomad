@@ -1,11 +1,20 @@
 import requests
 import nomad.api.exceptions
 
+
 class Allocation(object):
 
-    ENDPOINT="allocation"
+    """
+    The allocation endpoint is used to query the a specific allocation.
+    By default, the agent's local region is used; another region can be
+    specified using the ?region= query parameter.
 
-    def __init__(self,requester):
+    https://www.nomadproject.io/docs/http/alloc.html
+    """
+
+    ENDPOINT = "allocation"
+
+    def __init__(self, requester):
         self._requester = requester
 
     def __str__(self):
@@ -35,14 +44,23 @@ class Allocation(object):
         except nomad.api.exceptions.URLNotFoundNomadException:
             raise KeyError
 
-    def _get(self,*args):
+    def _get(self, *args):
         try:
-            url = self._requester._endpointBuilder(Allocation.ENDPOINT,*args)
+            url = self._requester._endpointBuilder(Allocation.ENDPOINT, *args)
             response = self._requester.get(url)
 
             return response.json()
         except:
             raise
 
-    def get_allocation(self,id):
+    def get_allocation(self, id):
+        """ Query a specific allocation.
+
+           https://www.nomadproject.io/docs/http/alloc.html
+
+            returns: dict
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
         return self._get(id)
