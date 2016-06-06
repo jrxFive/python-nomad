@@ -14,6 +14,8 @@ pip install python-nomad
 ## Examples
 ```python
 
+import nomad
+
 n = nomad.Nomad("172.16.100.10",timeout=5)
 
 "example" in n.jobs
@@ -25,7 +27,13 @@ example_allocation = n.allocation.get_allocations(j)
 n.job.deregister_job(j)
 ```
 
+## Development
+* create virtualenv and activate
+* install requirements-dev.txt
+* can either use the Vagrantfile for local integration testing or create environment variables `NOMAD_IP` and `NOMAD_PORT` that are assigned to a nomad binary that is running
+
 ## TODO
+* examples
 * functional tests
 * Inherit Base class, remove duplication and override parent dunders
 * readthedocs
