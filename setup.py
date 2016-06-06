@@ -9,7 +9,7 @@ setup(
     license='MIT',
     author='jrxfive',
     author_email='jrxfive@gmail.com',
-    description='HTTP API Wrapper for Hashicorp Nomad',
+    description='Client library for Hashicorp Nomad',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
@@ -19,5 +19,5 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
     ],
-    keywords='nomad hashicorp apiwrapper',
+    keywords='nomad hashicorp client',
 )
