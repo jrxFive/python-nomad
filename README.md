@@ -27,6 +27,24 @@ example_allocation = n.allocation.get_allocations(j)
 n.job.deregister_job(j)
 ```
 
+## Class Dunders
+| Class | contains | len | getitem | iter |
+|---|---|---|---|---|
+agent| N|N|N|N
+allocation|Y|N|Y|N
+allocations|N|Y|N|Y
+client|N|N|N|N
+evaluation|Y|N|Y|N
+evaluations|Y|Y|Y|Y
+job|Y|N|Y|N
+jobs|Y|Y|Y|Y
+node|Y|N|Y|N
+nodes|Y|Y|Y|Y
+regions|Y|Y|Y|Y
+status.leader|Y|Y|N|N
+status.peers|Y|Y|Y|Y
+system|N|N|N|N
+
 ## Development
 * create virtualenv and activate
 * install requirements-dev.txt
