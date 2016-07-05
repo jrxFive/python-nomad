@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 IP = "192.168.33.10"
-NOMAD_VERSION = "0.3.2"
+NOMAD_VERSION = "0.4.0"
 NOMAD_PORT_GUEST = 4646
 NOMAD_PORT_HOST = 4646
 
@@ -52,6 +52,7 @@ if [ $(pgrep nomad) ]
   else
     echo "Starting Nomad"
     nohup nomad agent -dev -bind #{IP} -node pynomad1 > /dev/null 2>&1 &
+    sleep 30
 fi
 
 SHELL

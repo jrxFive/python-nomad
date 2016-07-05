@@ -17,7 +17,7 @@ before_install:
     - "curl -L -o /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip"
     - "yes | unzip -d /tmp /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip"
     - "/tmp/nomad agent -dev -bind ${NOMAD_IP} -node pynomad1 > /dev/null 2>&1 &"
-    - "sleep 15" #wait for nomad to come up
+    - "sleep 30" #wait for nomad to come up
 
 install:
   - pip install -r requirements-dev.txt
