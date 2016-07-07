@@ -32,10 +32,10 @@ def test_join_agent(nomad_setup):
 
 
 def test_update_servers(nomad_setup):
-    r = nomad_setup.agent.update_servers(['one', 'two:4829'])
+    r = nomad_setup.agent.update_servers(['192.168.33.11', '10.1.10.200:4829'])
     assert r == 200
-    assert "one:4647" in nomad_setup.agent.get_servers()
-    assert "two:4829" in nomad_setup.agent.get_servers()
+    assert "192.168.33.11:4647" in nomad_setup.agent.get_servers()
+    assert "10.1.10.200:4829" in nomad_setup.agent.get_servers()
 
 
 def test_force_leave(nomad_setup):

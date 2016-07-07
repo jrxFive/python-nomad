@@ -50,6 +50,20 @@ system|N|N|N|N
 * install requirements-dev.txt
 * can either use the Vagrantfile for local integration testing or create environment variables `NOMAD_IP` and `NOMAD_PORT` that are assigned to a nomad binary that is running
 
+```
+virutalenv venv
+source venv/bin/activate
+pip install -r requirements-dev.txt
+```
+
+## Testing with vagrant and virtualbox
+```
+vagrant up --provider virtualbox
+py.test --cov=nomad --cov-report=term-missing --runxfail tests/
+```
+
+
+
 ## TODO
 * examples
 * functional tests
