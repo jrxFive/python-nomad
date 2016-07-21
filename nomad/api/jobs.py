@@ -96,7 +96,7 @@ class Jobs(object):
             raise
 
     def register_job(self, job):
-        """ Lists all the jobs registered with Nomad.
+        """ Register a job with Nomad.
 
            https://www.nomadproject.io/docs/http/jobs.html
 
