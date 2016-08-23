@@ -5,7 +5,7 @@ setup(
     version='0.0.2',
     install_requires=['requests'],
     packages=['nomad', 'nomad.api'],
-    url='github.com/jrxfive/python-nomad',
+    url='http://github.com/jrxfive/python-nomad',
     license='MIT',
     author='jrxfive',
     author_email='jrxfive@gmail.com',

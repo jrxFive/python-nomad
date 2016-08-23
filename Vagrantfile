@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 IP = "192.168.33.10"
-NOMAD_VERSION = "0.4.0"
+NOMAD_VERSION = "0.4.1"
 NOMAD_PORT_GUEST = 4646
 NOMAD_PORT_HOST = 4646
 
