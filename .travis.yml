@@ -1,35 +1,39 @@
 sudo: required
 
+deploy:
+  provider: pypi
+  user: jrxfive
+  password:
+    secure: KJFVOr1iqX1gh61IAzwztkn777Ya1bgN/Et+k5aI4hA+47n9kEPnoJLXP+Fak/OtwSx01oRElRgz/IP5y5yflLrnaTzLY4G7dpUsHf/bwOaWO4UEy43lnpTrjmhHEIUptHtufmue0FYSx4l/Os6XZYOZdUyJtLw+Zr72AuzMQlpgQhdwdjWngvI2FIX8gvoqda7rAJkyZyuW3vRJUdngDvzjWGhy8sRnZwCD56MLEbgnfD08Q2mSxbtHOb3B79EJdGZ3hqGV2AGdYuWfbf2q1yoUCH90AOCzKams8t+JCS/oRAOSlsG1iFMidpjtl+QKBashHrhJ/7xYNrmF49Hj6I8QFpZf4idUZQfo+uhoQd9YzzmEPb/Ys+PPD7Coy8RnD4xQpHQCMe6M+WJhEdFbXlNmjLLaNqm8Vfw9fnpWiFj3d64fZnr/TjTwKDLTVrITbEr95hs0jHx65VCon8ef2Yyt/w/rL66Nz7Skk7YzATloGaMNaennB7MzTxsTdjIvHmBFh2NlhRIAznYTzABewn7ktXHY6bAr7gIJRBr+2pdjQ+BMmtbvimHlUZ75xh94JpDv6vZKdyu2nkm9j444dwBEbCuqa8gPLasiik7OeKSoT0NtofwESb3lliHWsMDM1+kPx6aj1GYS1Kp7WndxVIKd3bEibhBgZY4JmuSWyuo=
+  on:
+    tags: true
+    repo: jrxFive/python-nomad
+    condition: $TRAVIS_PYTHON_VERSION = "2.7"
+    
 services:
-  - docker
-
-language: "python"
+- docker
+language: python
 python:
-  - "2.7"
-  - "3.3"
-  - "3.4"
-  - "3.5"
-
+- '2.7'
+- '3.3'
+- '3.4'
+- '3.5'
 env:
   global:
-    - NOMAD_IP="127.0.0.1"
-    - NOMAD_PORT="4646"
+  - NOMAD_IP="127.0.0.1"
+  - NOMAD_PORT="4646"
   matrix:
-    - NOMAD_VERSION="0.3.2"
-    - NOMAD_VERSION="0.4.0"
-
+  - NOMAD_VERSION="0.3.2"
+  - NOMAD_VERSION="0.4.0"
 before_install:
-    - "curl -L -o /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip"
-    - "yes | unzip -d /tmp /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip"
-    - "/tmp/nomad agent -dev -bind ${NOMAD_IP} -node pynomad1 > /dev/null 2>&1 &"
-    - "sleep 30" #wait for nomad to come up
-
+- curl -L -o /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip
+- yes | unzip -d /tmp /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip
+- /tmp/nomad agent -dev -bind ${NOMAD_IP} -node pynomad1 > /dev/null 2>&1 &
+- sleep 30
 install:
-  - pip install -r requirements-dev.txt
-  - pip install codecov
-
+- pip install -r requirements-dev.txt
+- pip install codecov
 script:
-  - py.test --cov=nomad --cov-report=term-missing --runxfail tests/
-
+- py.test --cov=nomad --cov-report=term-missing --runxfail tests/
 after_success:
-  - codecov
+- codecov
