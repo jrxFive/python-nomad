@@ -9,7 +9,7 @@ deploy:
     tags: true
     repo: jrxFive/python-nomad
     condition: $TRAVIS_PYTHON_VERSION = "2.7"
-    
+
 services:
 - docker
 language: python
@@ -25,6 +25,7 @@ env:
   matrix:
   - NOMAD_VERSION="0.3.2"
   - NOMAD_VERSION="0.4.0"
+  - NOMAD_VERSION="0.4.1"
 before_install:
 - curl -L -o /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip
 - yes | unzip -d /tmp /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip
