@@ -18,7 +18,13 @@ def test_get_agent(nomad_setup):
 
 def test_get_members(nomad_setup):
     m = nomad_setup.agent.get_members()
-    assert isinstance(m, list) == True
+
+    if isinstance(m, list):
+        assert True
+    elif isinstance(m, dict):
+        assert True
+    else:
+        assert False
 
 
 def test_get_servers(nomad_setup):

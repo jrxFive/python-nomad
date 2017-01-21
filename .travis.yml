@@ -24,8 +24,8 @@ env:
   - NOMAD_PORT="4646"
   matrix:
   - NOMAD_VERSION="0.3.2"
-  - NOMAD_VERSION="0.4.0"
   - NOMAD_VERSION="0.4.1"
+  - NOMAD_VERSION="0.5.2"
 before_install:
 - curl -L -o /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip
 - yes | unzip -d /tmp /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip
@@ -34,6 +34,9 @@ before_install:
 install:
 - pip install -r requirements-dev.txt
 - pip install codecov
+before_script:
+  - /tmp/nomad init
+  - /tmp/nomad run -output example.nomad > example.json
 script:
 - py.test --cov=nomad --cov-report=term-missing --runxfail tests/
 after_success:
