@@ -34,6 +34,9 @@ before_install:
 install:
 - pip install -r requirements-dev.txt
 - pip install codecov
+before_script:
+  - /tmp/nomad init
+  - /tmp/nomad run -output example.nomad > example.json
 script:
 - py.test --cov=nomad --cov-report=term-missing --runxfail tests/
 after_success:
