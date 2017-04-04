@@ -98,12 +98,13 @@ class Job(object):
         """
         return self._get(id, "evaluations")
 
-    def _post(self, *args, **kwargs):
+    def _post(self, *args, json_dict=False):
         try:
             url = self._requester._endpointBuilder(Job.ENDPOINT, *args)
+            print(url, json_dict, args)
 
-            if kwargs:
-                response = self._requester.post(url, json=kwargs["job"])
+            if json_dict:
+                response = self._requester.post(url, json=json_dict)
             else:
                 response = self._requester.post(url)
 
@@ -123,7 +124,7 @@ class Job(object):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._post(id, job=job)
+        return self._post(id, json_dict=job)
 
     def evaluate_job(self, id):
         """ Creates a new evaluation for the given job.
@@ -156,6 +157,23 @@ class Job(object):
               - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self._post(id, "periodic", "force")
+    
+    def dispatch_job(self, id, payload=None, meta=None):
+        """ Dispatches a new instance of a parameterized job.
+
+           https://www.nomadproject.io/docs/http/job.html
+
+            arguments:
+              - id
+              - payload
+              - meta
+            returns: dict
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
+        dispatch_json = {"Meta": meta, "Payload": payload}
+        return self._post(id, "dispatch", json_dict=dispatch_json)
 
     def _delete(self, *args):
         try:

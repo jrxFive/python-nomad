@@ -49,6 +49,14 @@ def test_delete_job(nomad_setup):
     test_register_job(nomad_setup)
 
 
+def test_dispatch_job(nomad_setup):
+    with open("example_batch_parameterized.json") as fh:
+        job = json.loads(fh.read())
+        nomad_setup.job.register_job("example-batch", job)
+    nomad_setup.job.dispatch_job("example-batch", meta={"time": "500"})
+    assert "example-batch" in nomad_setup.job
+
+
 def test_dunder_getitem_exist(nomad_setup):
     j = nomad_setup.job["example"]
     assert isinstance(j, dict)
