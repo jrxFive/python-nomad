@@ -98,13 +98,12 @@ class Job(object):
         """
         return self._get(id, "evaluations")
 
-    def _post(self, *args, json_dict=False):
+    def _post(self, *args, **kwargs):
         try:
             url = self._requester._endpointBuilder(Job.ENDPOINT, *args)
-            print(url, json_dict, args)
 
-            if json_dict:
-                response = self._requester.post(url, json=json_dict)
+            if kwargs:
+                response = self._requester.post(url, json=kwargs["json_dict"])
             else:
                 response = self._requester.post(url)
 
