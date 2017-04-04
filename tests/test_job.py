@@ -52,7 +52,7 @@ def test_delete_job(nomad_setup):
 
 
 @pytest.mark.skipif(os.environ.get("NOMAD_VERSION") in 
-    ["0.3.2", "0.4.1" "0.5.2"], reason="Nomad dispatch not supported")
+    ["0.3.2", "0.4.1", "0.5.2"], reason="Nomad dispatch not supported")
 def test_dispatch_job(nomad_setup):
     with open("example_batch_parameterized.json") as fh:
         job = json.loads(fh.read())
