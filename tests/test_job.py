@@ -51,17 +51,19 @@ def test_delete_job(nomad_setup):
     test_register_job(nomad_setup)
 
 
-@pytest.mark.skipif(os.environ.get("NOMAD_VERSION") in 
-    ["0.3.2", "0.4.1", "0.5.2"], reason="Nomad dispatch not supported")
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get(
+    "NOMAD_VERSION").split(".")) > (0, 5, 2),
+                    reason="Nomad dispatch not supported")
 def test_dispatch_job(nomad_setup):
     with open("example_batch_parameterized.json") as fh:
         job = json.loads(fh.read())
         nomad_setup.job.register_job("example-batch", job)
     try:
         nomad_setup.job.dispatch_job("example-batch", meta={"time": "500"})
-    except (exceptions.URLNotFoundNomadException, exceptions.BaseNomadException) as e:
-           print(e.nomad_resp.text)
-           raise e
+    except (exceptions.URLNotFoundNomadException,
+            exceptions.BaseNomadException) as e:
+        print(e.nomad_resp.text)
+        raise e
     assert "example-batch" in nomad_setup.job
 
 
