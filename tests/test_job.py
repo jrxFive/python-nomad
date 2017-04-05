@@ -2,6 +2,8 @@ import pytest
 import tests.common as common
 import nomad
 import json
+import os
+from nomad.api import exceptions
 
 
 @pytest.fixture
@@ -47,6 +49,22 @@ def test_delete_job(nomad_setup):
     assert "EvalID" in nomad_setup.job.deregister_job("example")
     assert "example" not in nomad_setup.job
     test_register_job(nomad_setup)
+
+
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get(
+    "NOMAD_VERSION").split(".")) < (0, 5, 3),
+                    reason="Nomad dispatch not supported")
+def test_dispatch_job(nomad_setup):
+    with open("example_batch_parameterized.json") as fh:
+        job = json.loads(fh.read())
+        nomad_setup.job.register_job("example-batch", job)
+    try:
+        nomad_setup.job.dispatch_job("example-batch", meta={"time": "500"})
+    except (exceptions.URLNotFoundNomadException,
+            exceptions.BaseNomadException) as e:
+        print(e.nomad_resp.text)
+        raise e
+    assert "example-batch" in nomad_setup.job
 
 
 def test_dunder_getitem_exist(nomad_setup):
