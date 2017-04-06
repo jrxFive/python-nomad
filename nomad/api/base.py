@@ -70,13 +70,13 @@ class Requester(object):
         except requests.RequestException:
             raise nomad.api.exceptions.BaseNomadException(response)
 
-    def delete(self, endpoint, headers=None):
+    def delete(self, endpoint, params=None, headers=None):
         url = self._urlBuilder(endpoint)
         response = None
 
         try:
             response = self.session.delete(
-                url, headers=headers, timeout=self.timeout)
+                url, params=params, headers=headers, timeout=self.timeout)
 
             if response.ok:
                 return response
