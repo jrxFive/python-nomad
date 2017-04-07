@@ -98,12 +98,26 @@ class Job(object):
         """
         return self._get(id, "evaluations")
 
+    def get_summary(self, id):
+        """ Query the summary of a job.
+
+           https://www.nomadproject.io/docs/http/job.html
+
+            arguments:
+              - id
+            returns: dict
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
+        return self._get(id, "summary")
+
     def _post(self, *args, **kwargs):
         try:
             url = self._requester._endpointBuilder(Job.ENDPOINT, *args)
 
             if kwargs:
-                response = self._requester.post(url, json=kwargs["json_dict"])
+                response = self._requester.post(url, json=kwargs["json_dict"], params=kwargs.get("params", None))
             else:
                 response = self._requester.post(url)
 
@@ -139,6 +153,22 @@ class Job(object):
               - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self._post(id, "evaluate")
+
+    def plan_job(self, id, job, diff=False):
+        """ Invoke a dry-run of the scheduler for the job.
+
+           https://www.nomadproject.io/docs/http/job.html
+
+            arguments:
+              - id
+              - job, dict
+              - diff, optional boolean
+            returns: dict
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
+        return self._post(id, "plan", json_dict=job, params={"diff": diff})
 
     def periodic_job(self, id):
         """ Forces a new instance of the periodic job. A new instance will be

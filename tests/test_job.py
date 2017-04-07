@@ -51,9 +51,7 @@ def test_delete_job(nomad_setup):
     test_register_job(nomad_setup)
 
 
-@pytest.mark.skipif(tuple(int(i) for i in os.environ.get(
-    "NOMAD_VERSION").split(".")) < (0, 5, 3),
-                    reason="Nomad dispatch not supported")
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 5, 3), reason="Nomad dispatch not supported")
 def test_dispatch_job(nomad_setup):
     with open("example_batch_parameterized.json") as fh:
         job = json.loads(fh.read())
@@ -65,6 +63,19 @@ def test_dispatch_job(nomad_setup):
         print(e.nomad_resp.text)
         raise e
     assert "example-batch" in nomad_setup.job
+
+
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 5, 3), reason="Nomad dispatch not supported")
+def test_summary_job(nomad_setup):
+    j = nomad_setup.job["example"]
+    assert "JobID" in nomad_setup.job.get_summary(j["ID"])
+
+
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 4, 0), reason="Not supported in version")
+def test_plan_job(nomad_setup):
+    with open("example.json") as fh:
+        job = json.loads(fh.read())
+        assert "Index" in nomad_setup.job.plan_job(nomad_setup.job["example"]["ID"],job)
 
 
 def test_dunder_getitem_exist(nomad_setup):

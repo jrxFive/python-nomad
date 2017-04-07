@@ -25,6 +25,7 @@ class Nomad(object):
         self._regions = api.Regions(self.requester)
         self._status = api.Status(self.requester)
         self._system = api.System(self.requester)
+        self._operator = api.Operator(self.requester)
 
     @property
     def jobs(self):
@@ -77,3 +78,7 @@ class Nomad(object):
     @property
     def system(self):
         return self._system
+
+    @property
+    def operator(self):
+        return self._operator
