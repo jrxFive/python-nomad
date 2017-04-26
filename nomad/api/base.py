@@ -4,11 +4,12 @@ import nomad.api.exceptions
 
 class Requester(object):
 
-    def __init__(self, uri='127.0.0.1', port=4646, timeout=5, version='v1'):
+    def __init__(self, uri='127.0.0.1', port=4646, timeout=5, version='v1', verify=False):
         self.uri = uri
         self.port = port
         self.timeout = timeout
         self.version = version
+        self.verify = verify
         self.session = requests.Session()
 
     def _endpointBuilder(self, *args):
@@ -17,9 +18,17 @@ class Requester(object):
             return "{v}/".format(v=self.version) + u
 
     def _urlBuilder(self, endpoint):
-        return "http://{uri}:{port}/{endpoint}".format(uri=self.uri,
-                                                       port=self.port,
-                                                       endpoint=endpoint)
+        if self.verify:
+            proto = 'https'
+        else:
+            proto = 'http'
+
+        return "{proto}://{uri}:{port}/{endpoint}".format(
+            proto=proto,
+            uri=self.uri,
+            port=self.port,
+            verify=self.verify,
+            endpoint=endpoint)
 
     def get(self, endpoint, params=None):
         url = self._urlBuilder(endpoint)
