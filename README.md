@@ -1,4 +1,4 @@
-#python-nomad
+# python-nomad
 
 
 Branch | Status | Coverage |
@@ -65,7 +65,7 @@ py.test --cov=nomad --cov-report=term-missing --runxfail tests/
 
 
 ## TODO
-* examples
-* functional tests
-* Inherit Base class, remove duplication and override parent dunders
-* readthedocs
+- [ ] examples
+- [ ] functional tests
+- [ ] Inherit Base class, remove duplication and override parent dunders
+- [ ] readthedocs
