@@ -16,7 +16,7 @@ pip install python-nomad
 
 import nomad
 
-# For non-HTTPS Nomad instances
+# For HTTP Nomad instances
 n = nomad.Nomad("172.16.100.10",timeout=5)
 
 # For HTTPS Nomad instances with non-self-signed SSL certificates
