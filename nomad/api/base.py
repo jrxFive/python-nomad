@@ -37,6 +37,7 @@ class Requester(object):
         try:
             response = self.session.get(url,
                                         params=params,
+                                        verify=self.verify,
                                         timeout=self.timeout)
 
             if response.ok:
@@ -53,7 +54,7 @@ class Requester(object):
 
         try:
             response = self.session.post(
-                url, params=params, json=json, headers=headers, data=data, timeout=self.timeout)
+                url, params=params, json=json, headers=headers, data=data, verify=self.verify, timeout=self.timeout)
 
             if response.ok:
                 return response
@@ -69,7 +70,7 @@ class Requester(object):
 
         try:
             response = self.session.put(
-                url, params=params, headers=headers, data=data, timeout=self.timeout)
+                url, params=params, headers=headers, data=data, verify=self.verify, timeout=self.timeout)
 
             if response.ok:
                 return response
@@ -85,7 +86,7 @@ class Requester(object):
 
         try:
             response = self.session.delete(
-                url, params=params, headers=headers, timeout=self.timeout)
+                url, params=params, headers=headers, verify=self.verify, timeout=self.timeout)
 
             if response.ok:
                 return response

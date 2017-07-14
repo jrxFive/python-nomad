@@ -2,7 +2,7 @@
 
 
 Branch | Status | Coverage |
----| ---| --- 
+---| ---| ---
 develop | [![Build Status](https://travis-ci.org/jrxFive/python-nomad.svg?branch=develop)](https://travis-ci.org/jrxFive/python-nomad) | [![codecov](https://codecov.io/gh/jrxFive/python-nomad/branch/develop/graph/badge.svg)](https://codecov.io/gh/jrxFive/python-nomad)
 
 
@@ -16,13 +16,20 @@ pip install python-nomad
 
 import nomad
 
+# For non-HTTPS Nomad instances
 n = nomad.Nomad("172.16.100.10",timeout=5)
+
+# For HTTPS Nomad instances with non-self-signed SSL certificates
+n = nomad.Nomad("172.16.100.10",timeout=5,verify=True)
+
+# For HTTPS Nomad instances with self-signed SSL certificates
+n = nomad.Nomad("172.16.100.10",timeout=5,verify="/path/to/certfile") # See http://docs.python-requests.org/en/master/user/advanced/#ssl-cert-verification
 
 "example" in n.jobs
 
 j = n.jobs["example"]["ID"]
 
-example_allocation = n.allocation.get_allocations(j)
+example_allocation = n.job.get_allocations(j)
 
 n.job.deregister_job(j)
 ```
