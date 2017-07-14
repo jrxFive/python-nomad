@@ -27,7 +27,6 @@ class Requester(object):
             proto=proto,
             uri=self.uri,
             port=self.port,
-            verify=self.verify,
             endpoint=endpoint)
 
     def get(self, endpoint, params=None):
