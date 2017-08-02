@@ -23,10 +23,13 @@ class Nomad(object):
         self._evaluation = api.Evaluation(self.requester)
         self._agent = api.Agent(self.requester)
         self._client = api.Client(self.requester)
+        self._deployments = api.Deployments(self.requester)
+        self._deployment = api.Deployment(self.requester)
         self._regions = api.Regions(self.requester)
         self._status = api.Status(self.requester)
         self._system = api.System(self.requester)
         self._operator = api.Operator(self.requester)
+        self._validate = api.Validate(self.requester)
 
     @property
     def jobs(self):
@@ -69,6 +72,14 @@ class Nomad(object):
         return self._client
 
     @property
+    def deployments(self):
+        return self._deployments
+
+    @property
+    def deployment(self):
+        return self._deployment
+
+    @property
     def regions(self):
         return self._regions
 
@@ -83,3 +94,7 @@ class Nomad(object):
     @property
     def operator(self):
         return self._operator
+
+    @property
+    def validate(self):
+        return self._validate

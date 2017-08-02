@@ -43,3 +43,15 @@ class System(object):
               - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self._put("gc")
+
+    def reconcile_summaries(self):
+        """ This endpoint reconciles the summaries of all registered jobs.
+
+            https://www.nomadproject.io/docs/http/system.html
+
+            returns: None
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
+        return self._put("reconcile", "summaries")
