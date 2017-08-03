@@ -51,6 +51,9 @@ regions|Y|Y|Y|Y
 status.leader|Y|Y|N|N
 status.peers|Y|Y|Y|Y
 system|N|N|N|N
+validate|N|N|N|N
+deployments|Y|Y|Y|Y
+deployment|Y|N|Y|N
 
 ## Development
 * create virtualenv and activate
