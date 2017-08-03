@@ -69,7 +69,7 @@ class Job(object):
         """
         return self._get(id)
 
-    def get_job_versions(self, id):
+    def get_versions(self, id):
         """ This endpoint reads information about all versions of a job.
 
            https://www.nomadproject.io/docs/http/job.html
@@ -111,7 +111,7 @@ class Job(object):
         """
         return self._get(id, "evaluations")
 
-    def get_job_deployments(self, id):
+    def get_deployments(self, id):
         """ This endpoint lists a single job's deployments
 
            https://www.nomadproject.io/docs/http/job.html
@@ -125,7 +125,7 @@ class Job(object):
         """
         return self._get(id, "deployments")
 
-    def get_job_deployment(self, id):
+    def get_deployment(self, id):
         """ This endpoint returns a single job's most recent deployment.
 
            https://www.nomadproject.io/docs/http/job.html

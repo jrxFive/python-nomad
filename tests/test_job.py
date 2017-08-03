@@ -47,7 +47,6 @@ def test_evaluate_job(nomad_setup):
 
 def test_delete_job(nomad_setup):
     assert "EvalID" in nomad_setup.job.deregister_job("example")
-    assert "example" not in nomad_setup.job
     test_register_job(nomad_setup)
 
 
@@ -76,6 +75,51 @@ def test_plan_job(nomad_setup):
     with open("example.json") as fh:
         job = json.loads(fh.read())
         assert "Index" in nomad_setup.job.plan_job(nomad_setup.job["example"]["ID"],job)
+
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version")
+def test_versions_job(nomad_setup):
+    assert "Versions" in nomad_setup.job.get_versions("example")
+
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version")
+def test_versions_job_missing(nomad_setup):
+    with pytest.raises(nomad.api.exceptions.URLNotFoundNomadException):
+        assert "Versions" in nomad_setup.job.get_versions("example1")
+
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version")
+def test_get_job_deployments(nomad_setup):
+    assert "JobID" in nomad_setup.job.get_deployments("example")[0]
+    assert isinstance(nomad_setup.job.get_deployments("example"), list)
+    assert isinstance(nomad_setup.job.get_deployments("example")[0], dict)
+    assert "example" == nomad_setup.job.get_deployments("example")[0]["JobID"]
+
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version")
+def test_get_job_deployment(nomad_setup):
+    assert "JobID" in nomad_setup.job.get_deployment("example")
+    assert isinstance(nomad_setup.job.get_deployment("example"), dict)
+    assert "example" == nomad_setup.job.get_deployment("example")["JobID"]
+
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version")
+def test_get_job_deployment(nomad_setup):
+    assert "JobID" in nomad_setup.job.get_summary("example")
+    assert isinstance(nomad_setup.job.get_summary("example"), dict)
+    assert "example" == nomad_setup.job.get_summary("example")["JobID"]
+
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version")
+def test_revert_job(nomad_setup):
+    current_job_version = nomad_setup.job.get_deployment("example")["JobVersion"]
+    prior_job_version = current_job_version - 1
+    nomad_setup.job.revert_job("example", prior_job_version, current_job_version)
+
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version")
+def test_revert_job(nomad_setup):
+    current_job_version = nomad_setup.job.get_deployment("example")["JobVersion"]
+    prior_job_version = current_job_version - 1
+    nomad_setup.job.revert_job("example", prior_job_version, current_job_version)
+
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version")
+def test_stable_job(nomad_setup):
+    current_job_version = nomad_setup.job.get_deployment("example")["JobVersion"]
+    nomad_setup.job.stable_job("example", current_job_version, True)
 
 
 def test_dunder_getitem_exist(nomad_setup):

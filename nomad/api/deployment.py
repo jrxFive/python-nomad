@@ -102,7 +102,8 @@ class Deployment(object):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._post("fail", id)
+        fail_json = {"DeploymentID": id}
+        return self._post("fail", id, json_dict=fail_json)
 
     def pause_deployment(self, id, pause):
         """ This endpoint is used to pause or unpause a deployment.
@@ -118,7 +119,8 @@ class Deployment(object):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        pause_json = {"Pause": pause}
+        pause_json = {"Pause": pause,
+                      "DeploymentID": id}
         return self._post("pause", id, json_dict=pause_json)
 
     def promote_deployment_all(self, id, all=True):
@@ -135,7 +137,8 @@ class Deployment(object):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        promote_all_json = {"All": all}
+        promote_all_json = {"All": all,
+                            "DeploymentID": id}
         return self._post("promote", id, json_dict=promote_all_json)
 
     def promote_deployment_groups(self, id, groups=list()):
@@ -152,7 +155,8 @@ class Deployment(object):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        promote_groups_json = {"Groups": groups}
+        promote_groups_json = {"Groups": groups,
+                               "DeploymentID": id}
         return self._post("promote", id, json_dict=promote_groups_json)
 
     def deployment_allocation_health(self, id, healthy_allocations=list(), unhealthy_allocations=list()):
@@ -174,5 +178,6 @@ class Deployment(object):
               - nomad.api.exceptions.URLNotFoundNomadException
         """
         allocations = {"HealthyAllocationIDs": healthy_allocations,
-                               "UnHealthyAllocationIDs": unhealthy_allocations}
+                       "UnHealthyAllocationIDs": unhealthy_allocations,
+                       "DeploymentID": id}
         return self._post("allocation-health", id, json_dict=allocations)
