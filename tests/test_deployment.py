@@ -27,58 +27,43 @@ def test_get_deployment_allocations(nomad_setup):
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version")
 def test_fail_deployment(nomad_setup):
     deploymentID = nomad_setup.deployments.get_deployments()[0]["ID"]
-    with pytest.raises(nomad.api.exceptions.URLNotFoundNomadException):
-        try:
-            nomad_setup.deployment.fail_deployment(deploymentID)
-            raise Exception(None)
-        except nomad.api.exceptions.URLNotFoundNomadException as err:
-            assert err.nomad_resp.text == "can't fail terminal deployment"
-            raise nomad.api.exceptions.URLNotFoundNomadException(err.nomad_resp)
+    try:
+        nomad_setup.deployment.fail_deployment(deploymentID)
+    except nomad.api.exceptions.URLNotFoundNomadException as err:
+        assert err.nomad_resp.text == "can't fail terminal deployment"
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version")
 def test_pause_deployment(nomad_setup):
     deploymentID = nomad_setup.deployments.get_deployments()[0]["ID"]
-    with pytest.raises(nomad.api.exceptions.URLNotFoundNomadException):
-        try:
-            nomad_setup.deployment.pause_deployment(deploymentID, False)
-            raise Exception(None)
-        except nomad.api.exceptions.URLNotFoundNomadException as err:
-            assert err.nomad_resp.text == "can't resume terminal deployment"
-            raise nomad.api.exceptions.URLNotFoundNomadException(err.nomad_resp)
+    try:
+        nomad_setup.deployment.pause_deployment(deploymentID, False)
+    except nomad.api.exceptions.URLNotFoundNomadException as err:
+        assert err.nomad_resp.text == "can't resume terminal deployment"
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version")
 def test_promote_all_deployment(nomad_setup):
     deploymentID = nomad_setup.deployments.get_deployments()[0]["ID"]
-    with pytest.raises(nomad.api.exceptions.URLNotFoundNomadException):
-        try:
-            nomad_setup.deployment.promote_deployment_all(deploymentID)
-            raise Exception(None)
-        except nomad.api.exceptions.URLNotFoundNomadException as err:
-            assert err.nomad_resp.text == "can't promote terminal deployment"
-            raise nomad.api.exceptions.URLNotFoundNomadException(err.nomad_resp)
+    try:
+        nomad_setup.deployment.promote_deployment_all(deploymentID)
+    except nomad.api.exceptions.URLNotFoundNomadException as err:
+        assert err.nomad_resp.text == "can't promote terminal deployment"
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version")
 def test_promote_all_deployment(nomad_setup):
     deploymentID = nomad_setup.deployments.get_deployments()[0]["ID"]
-    with pytest.raises(nomad.api.exceptions.URLNotFoundNomadException):
-        try:
-            nomad_setup.deployment.promote_deployment_groups(deploymentID)
-            raise Exception(None)
-        except nomad.api.exceptions.URLNotFoundNomadException as err:
-            assert err.nomad_resp.text == "can't promote terminal deployment"
-            raise nomad.api.exceptions.URLNotFoundNomadException(err.nomad_resp)
+    try:
+        nomad_setup.deployment.promote_deployment_groups(deploymentID)
+    except nomad.api.exceptions.URLNotFoundNomadException as err:
+        assert err.nomad_resp.text == "can't promote terminal deployment"
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version")
 def test_deployment_allocation_health(nomad_setup):
     deploymentID = nomad_setup.deployments.get_deployments()[0]["ID"]
     allocationID = nomad_setup.deployment.get_deployment(deploymentID)["ID"]
-    with pytest.raises(nomad.api.exceptions.URLNotFoundNomadException):
-        try:
-            nomad_setup.deployment.deployment_allocation_health(deploymentID, unhealthy_allocations=[allocationID])
-            raise Exception(None)
-        except nomad.api.exceptions.URLNotFoundNomadException as err:
-            assert err.nomad_resp.text == "can't set health of allocations for a terminal deployment"
-            raise nomad.api.exceptions.URLNotFoundNomadException(err.nomad_resp)
+    try:
+        nomad_setup.deployment.deployment_allocation_health(deploymentID, unhealthy_allocations=[allocationID])
+    except nomad.api.exceptions.URLNotFoundNomadException as err:
+        assert err.nomad_resp.text == "can't set health of allocations for a terminal deployment"
 
 
 
