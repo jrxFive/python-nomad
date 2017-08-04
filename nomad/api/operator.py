@@ -48,6 +48,9 @@ class Operator(object):
             https://www.nomadproject.io/docs/http/operator.html
 
             returns: dict
+            optional arguments:
+              - stale, (defaults to False), Specifies if the cluster should respond without an active leader.
+                                            This is specified as a querystring parameter.
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
@@ -56,7 +59,7 @@ class Operator(object):
         params = {"stale": stale}
         return self._get("raft", "configuration", params=params)
 
-    def delete_peer(self, peer_address):
+    def delete_peer(self, peer_address, stale=False):
         """ Remove the Nomad server with given address from the Raft configuration.
             The return code signifies success or failure.
 
@@ -64,11 +67,15 @@ class Operator(object):
 
             arguments:
               - peer_address, The address specifies the server to remove and is given as an IP:port
+            optional arguments:
+              - stale, (defaults to False), Specifies if the cluster should respond without an active leader.
+                                            This is specified as a querystring parameter.
             returns: Ok status
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
 
-        params = {"address": peer_address}
+        params = {"address": peer_address,
+                  "stale": stale}
         return self._delete("raft", "peer", params=params)

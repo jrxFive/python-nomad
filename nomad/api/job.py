@@ -1,4 +1,3 @@
-import requests
 import nomad.api.exceptions
 
 
@@ -70,6 +69,20 @@ class Job(object):
         """
         return self._get(id)
 
+    def get_versions(self, id):
+        """ This endpoint reads information about all versions of a job.
+
+           https://www.nomadproject.io/docs/http/job.html
+
+            arguments:
+              - id
+            returns: list of dicts
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
+        return self._get(id, "versions")
+
     def get_allocations(self, id):
         """ Query the allocations belonging to a single job.
 
@@ -91,12 +104,40 @@ class Job(object):
 
             arguments:
               - id
-            returns: list
+            returns: dict
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self._get(id, "evaluations")
+
+    def get_deployments(self, id):
+        """ This endpoint lists a single job's deployments
+
+           https://www.nomadproject.io/docs/http/job.html
+
+            arguments:
+              - id
+            returns: dict
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
+        return self._get(id, "deployments")
+
+    def get_deployment(self, id):
+        """ This endpoint returns a single job's most recent deployment.
+
+           https://www.nomadproject.io/docs/http/job.html
+
+            arguments:
+              - id
+            returns: list of dicts
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
+        return self._get(id, "deployment")
 
     def get_summary(self, id):
         """ Query the summary of a job.
@@ -117,7 +158,7 @@ class Job(object):
             url = self._requester._endpointBuilder(Job.ENDPOINT, *args)
 
             if kwargs:
-                response = self._requester.post(url, json=kwargs["json_dict"], params=kwargs.get("params", None))
+                response = self._requester.post(url, json=kwargs.get("json_dict", None), params=kwargs.get("params", None))
             else:
                 response = self._requester.post(url)
 
@@ -203,6 +244,47 @@ class Job(object):
         """
         dispatch_json = {"Meta": meta, "Payload": payload}
         return self._post(id, "dispatch", json_dict=dispatch_json)
+
+    def revert_job(self, id, version, enforce_prior_version=None):
+        """ This endpoint reverts the job to an older version.
+
+           https://www.nomadproject.io/docs/http/job.html
+
+            arguments:
+              - id
+              - version, Specifies the job version to revert to.
+            optional_arguments:
+              - enforce_prior_version, Optional value specifying the current job's version.
+                                       This is checked and acts as a check-and-set value before reverting to the
+                                       specified job.
+            returns: dict
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
+        revert_json = {"JobID": id,
+                       "JobVersion": version,
+                       "EnforcePriorVersion": enforce_prior_version}
+        return self._post(id, "revert", json_dict=revert_json)
+
+    def stable_job(self, id, version, stable):
+        """ This endpoint sets the job's stability.
+
+           https://www.nomadproject.io/docs/http/job.html
+
+            arguments:
+              - id
+              - version, Specifies the job version to revert to.
+              - stable, Specifies whether the job should be marked as stable or not.
+            returns: dict
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
+        revert_json = {"JobID": id,
+                       "JobVersion": version,
+                       "Stable": stable}
+        return self._post(id, "stable", json_dict=revert_json)
 
     def _delete(self, *args):
         try:

@@ -1,4 +1,4 @@
-
+import nomad.api.exceptions
 from nomad.api.base import Requester
 from nomad.api.jobs import Jobs
 from nomad.api.job import Job
@@ -14,3 +14,7 @@ from nomad.api.regions import Regions
 from nomad.api.status import Status
 from nomad.api.system import System
 from nomad.api.operator import Operator
+from nomad.api.validate import Validate
+from nomad.api.deployments import Deployments
+from nomad.api.deployment import Deployment
+
