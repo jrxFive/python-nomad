@@ -4,14 +4,15 @@ import nomad.api as api
 
 class Nomad(object):
 
-    def __init__(self, host='127.0.0.1', port=4646, timeout=5, region=None, version='v1', verify=False):
+    def __init__(self, host='127.0.0.1', port=4646, timeout=5, region=None, version='v1', verify=False, cert=()):
         self.host = host
         self.port = port
         self.timeout = timeout
         self.version = version
         self.verify = verify
+        self.cert = cert
 
-        self.requester = api.Requester(host, port, timeout, version, verify)
+        self.requester = api.Requester(host, port, timeout, version, verify, cert)
 
         self._jobs = api.Jobs(self.requester)
         self._job = api.Job(self.requester)
