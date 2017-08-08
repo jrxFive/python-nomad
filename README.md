@@ -17,13 +17,16 @@ pip install python-nomad
 import nomad
 
 # For HTTP Nomad instances
-n = nomad.Nomad("172.16.100.10",timeout=5)
+n = nomad.Nomad("172.16.100.10", timeout=5)
 
 # For HTTPS Nomad instances with non-self-signed SSL certificates
-n = nomad.Nomad("172.16.100.10",timeout=5,verify=True)
+n = nomad.Nomad("172.16.100.10", timeout=5, verify=True)
 
 # For HTTPS Nomad instances with self-signed SSL certificates
-n = nomad.Nomad("172.16.100.10",timeout=5,verify="/path/to/certfile") # See http://docs.python-requests.org/en/master/user/advanced/#ssl-cert-verification
+n = nomad.Nomad("172.16.100.10", timeout=5, verify="/path/to/certfile") # See http://docs.python-requests.org/en/master/user/advanced/#ssl-cert-verification
+
+# For HTTPS Nomad instances with cert file and key
+n = nomad.Nomad("172.16.100.10", timeout=5, cert=("/path/to/certfile", "/path/to/key") # See http://docs.python-requests.org/en/master/user/advanced/#ssl-cert-verification
 
 "example" in n.jobs
 

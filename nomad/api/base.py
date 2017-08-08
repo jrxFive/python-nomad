@@ -4,12 +4,13 @@ import nomad.api.exceptions
 
 class Requester(object):
 
-    def __init__(self, uri='127.0.0.1', port=4646, timeout=5, version='v1', verify=False):
+    def __init__(self, uri='127.0.0.1', port=4646, timeout=5, version='v1', verify=False, cert=()):
         self.uri = uri
         self.port = port
         self.timeout = timeout
         self.version = version
         self.verify = verify
+        self.cert = cert
         self.session = requests.Session()
 
     def _endpointBuilder(self, *args):
@@ -18,7 +19,7 @@ class Requester(object):
             return "{v}/".format(v=self.version) + u
 
     def _urlBuilder(self, endpoint):
-        if self.verify:
+        if self.verify or self.cert:
             proto = 'https'
         else:
             proto = 'http'
@@ -37,6 +38,7 @@ class Requester(object):
             response = self.session.get(url,
                                         params=params,
                                         verify=self.verify,
+                                        cert=self.cert,
                                         timeout=self.timeout)
 
             if response.ok:
@@ -52,8 +54,14 @@ class Requester(object):
         response = None
 
         try:
-            response = self.session.post(
-                url, params=params, json=json, headers=headers, data=data, verify=self.verify, timeout=self.timeout)
+            response = self.session.post(url,
+                                         params=params,
+                                         json=json,
+                                         headers=headers,
+                                         data=data,
+                                         verify=self.verify,
+                                         cert=self.cert,
+                                         timeout=self.timeout)
 
             if response.ok:
                 return response
@@ -68,8 +76,13 @@ class Requester(object):
         response = None
 
         try:
-            response = self.session.put(
-                url, params=params, headers=headers, data=data, verify=self.verify, timeout=self.timeout)
+            response = self.session.put(url,
+                                        params=params,
+                                        headers=headers,
+                                        data=data,
+                                        verify=self.verify,
+                                        cert=self.cert,
+                                        timeout=self.timeout)
 
             if response.ok:
                 return response
@@ -84,8 +97,12 @@ class Requester(object):
         response = None
 
         try:
-            response = self.session.delete(
-                url, params=params, headers=headers, verify=self.verify, timeout=self.timeout)
+            response = self.session.delete(url,
+                                           params=params,
+                                           headers=headers,
+                                           verify=self.verify,
+                                           cert=self.cert,
+                                           timeout=self.timeout)
 
             if response.ok:
                 return response
