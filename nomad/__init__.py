@@ -33,6 +33,7 @@ class Nomad(object):
         self._system = api.System(self.requester)
         self._operator = api.Operator(self.requester)
         self._validate = api.Validate(self.requester)
+        self._namespaces = api.Namespaces(self.requester)
 
     @property
     def jobs(self):
@@ -101,3 +102,7 @@ class Nomad(object):
     @property
     def validate(self):
         return self._validate
+
+    @property
+    def namespaces(self):
+        return self._namespaces
