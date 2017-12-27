@@ -7,7 +7,7 @@ import requests
 
 @pytest.fixture
 def nomad_setup():
-    n = nomad.Nomad(host=common.IP, port=common.NOMAD_PORT)
+    n = nomad.Nomad(uri=common.URI, port=common.NOMAD_PORT)
     return n
 
 # integration tests requires nomad Vagrant VM or Binary running

@@ -1,0 +1,138 @@
+{
+    "Job": {
+        "Stop": null,
+        "Region": null,
+        "Namespace": null,
+        "ID": "example",
+        "ParentID": null,
+        "Name": "example",
+        "Type": "service",
+        "Priority": null,
+        "AllAtOnce": null,
+        "Datacenters": [
+            "dc1"
+        ],
+        "Constraints": null,
+        "TaskGroups": [
+            {
+                "Name": "cache",
+                "Count": 1,
+                "Constraints": null,
+                "Tasks": [
+                    {
+                        "Name": "redis",
+                        "Driver": "docker",
+                        "User": "",
+                        "Config": {
+                            "image": "redis:3.2",
+                            "port_map": [
+                                {
+                                    "db": 6379
+                                }
+                            ]
+                        },
+                        "Constraints": null,
+                        "Env": null,
+                        "Services": [
+                            {
+                                "Id": "",
+                                "Name": "global-redis-check",
+                                "Tags": [
+                                    "global",
+                                    "cache"
+                                ],
+                                "PortLabel": "db",
+                                "AddressMode": "",
+                                "Checks": [
+                                    {
+                                        "Id": "",
+                                        "Name": "alive",
+                                        "Type": "tcp",
+                                        "Command": "",
+                                        "Args": null,
+                                        "Path": "",
+                                        "Protocol": "",
+                                        "PortLabel": "",
+                                        "Interval": 10000000000,
+                                        "Timeout": 2000000000,
+                                        "InitialStatus": "",
+                                        "TLSSkipVerify": false,
+                                        "Header": null,
+                                        "Method": "",
+                                        "CheckRestart": null
+                                    }
+                                ],
+                                "CheckRestart": null
+                            }
+                        ],
+                        "Resources": {
+                            "CPU": 500,
+                            "MemoryMB": 256,
+                            "DiskMB": null,
+                            "IOPS": null,
+                            "Networks": [
+                                {
+                                    "Device": "",
+                                    "CIDR": "",
+                                    "IP": "",
+                                    "MBits": 10,
+                                    "ReservedPorts": null,
+                                    "DynamicPorts": [
+                                        {
+                                            "Label": "db",
+                                            "Value": 0
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "Meta": null,
+                        "KillTimeout": null,
+                        "LogConfig": null,
+                        "Artifacts": null,
+                        "Vault": null,
+                        "Templates": null,
+                        "DispatchPayload": null,
+                        "Leader": false,
+                        "ShutdownDelay": 0
+                    }
+                ],
+                "RestartPolicy": {
+                    "Interval": 300000000000,
+                    "Attempts": 10,
+                    "Delay": 25000000000,
+                    "Mode": "delay"
+                },
+                "EphemeralDisk": {
+                    "Sticky": null,
+                    "Migrate": null,
+                    "SizeMB": 300
+                },
+                "Update": null,
+                "Meta": null
+            }
+        ],
+        "Update": {
+            "Stagger": null,
+            "MaxParallel": 1,
+            "HealthCheck": null,
+            "MinHealthyTime": 10000000000,
+            "HealthyDeadline": 180000000000,
+            "AutoRevert": false,
+            "Canary": 0
+        },
+        "Periodic": null,
+        "ParameterizedJob": null,
+        "Payload": null,
+        "Meta": null,
+        "VaultToken": null,
+        "Status": null,
+        "StatusDescription": null,
+        "Stable": null,
+        "Version": null,
+        "SubmitTime": null,
+        "CreateIndex": null,
+        "ModifyIndex": null,
+        "JobModifyIndex": null
+    }
+}

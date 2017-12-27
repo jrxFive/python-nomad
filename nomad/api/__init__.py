@@ -17,4 +17,3 @@ from nomad.api.operator import Operator
 from nomad.api.validate import Validate
 from nomad.api.deployments import Deployments
 from nomad.api.deployment import Deployment
-
