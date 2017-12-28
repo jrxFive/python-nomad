@@ -7,10 +7,10 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 class Requester(object):
 
-    def __init__(self, uri='http://127.0.0.1', port=4646, namespace='', token='', timeout=5, version='v1', verify=False, cert=()):
+    def __init__(self, uri='http://127.0.0.1', port=4646, nspace='', token='', timeout=5, version='v1', verify=False, cert=()):
         self.uri = uri
         self.port = port
-        self.namespace = namespace
+        self.nspace = nspace
         self.token = token
         self.timeout = timeout
         self.version = version
@@ -25,7 +25,7 @@ class Requester(object):
 
     def _urlBuilder(self, endpoint):
         required_namespace=["job","jobs","allocation","allocations","deployment","deployments"]
-        if not self.namespace:
+        if not self.nspace:
             url = "{uri}:{port}/{endpoint}".format(
                 uri=self.uri,
                 port=self.port,
@@ -36,7 +36,7 @@ class Requester(object):
                     uri=self.uri,
                     port=self.port,
                     endpoint=endpoint,
-                    namespace=self.namespace)
+                    namespace=self.nspace)
             else:
                 url = "{uri}:{port}/{endpoint}".format(
                     uri=self.uri,

@@ -4,17 +4,17 @@ import nomad.api as api
 
 class Nomad(object):
 
-    def __init__(self, uri='http://127.0.0.1', port=4646, namespace='', token='', timeout=5, region=None, version='v1', verify=False, cert=()):
+    def __init__(self, uri='http://127.0.0.1', port=4646, nspace='', token='', timeout=5, region=None, version='v1', verify=False, cert=()):
         self.uri = uri
         self.port = port
-        self.namespace = namespace
+        self.nspace = nspace
         self.token = token
         self.timeout = timeout
         self.version = version
         self.verify = verify
         self.cert = cert
 
-        self.requester = api.Requester(uri, port, namespace, token, timeout, version, verify, cert)
+        self.requester = api.Requester(uri, port, nspace, token, timeout, version, verify, cert)
 
         self._jobs = api.Jobs(self.requester)
         self._job = api.Job(self.requester)
@@ -34,6 +34,7 @@ class Nomad(object):
         self._operator = api.Operator(self.requester)
         self._validate = api.Validate(self.requester)
         self._namespaces = api.Namespaces(self.requester)
+        self._namespace = api.Namespace(self.requester)
 
     @property
     def jobs(self):
@@ -106,3 +107,7 @@ class Nomad(object):
     @property
     def namespaces(self):
         return self._namespaces
+
+    @property
+    def namespace(self):
+        return self._namespace
