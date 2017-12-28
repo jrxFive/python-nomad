@@ -17,16 +17,19 @@ pip install python-nomad
 import nomad
 
 # For HTTP Nomad instances
-n = nomad.Nomad("172.16.100.10", timeout=5)
+n = nomad.Nomad(uri="http://172.16.100.10", timeout=5)
 
 # For HTTPS Nomad instances with non-self-signed SSL certificates
-n = nomad.Nomad("172.16.100.10", timeout=5, verify=True)
+n = nomad.Nomad(uri="https://172.16.100.10", timeout=5, verify=False)
 
-# For HTTPS Nomad instances with self-signed SSL certificates
-n = nomad.Nomad("172.16.100.10", timeout=5, verify="/path/to/certfile") # See http://docs.python-requests.org/en/master/user/advanced/#ssl-cert-verification
+# For HTTPS Nomad instances with self-signed SSL certificates that mus validate with cert
+n = nomad.Nomad(uri="https://172.16.100.10", timeout=5, verify=True, cert="/path/to/certfile") # See http://docs.python-requests.org/en/master/user/advanced/#ssl-cert-verification
 
 # For HTTPS Nomad instances with cert file and key
-n = nomad.Nomad("172.16.100.10", timeout=5, cert=("/path/to/certfile", "/path/to/key") # See http://docs.python-requests.org/en/master/user/advanced/#ssl-cert-verification
+n = nomad.Nomad(uri="https://172.16.100.10", timeout=5, verify=True, cert=("/path/to/certfile", "/path/to/key") # See http://docs.python-requests.org/en/master/user/advanced/#ssl-cert-verification
+
+# For HTTPS Nomad instances with namespace and acl token
+n = nomad.Nomad(uri="https://172.16.100.10", timeout=5, verify=False, nspace='Namespace-example',token='3f4a0fcd-7c42-773c-25db-2d31ba0c05fe')
 
 "example" in n.jobs
 
@@ -57,6 +60,10 @@ system|N|N|N|N
 validate|N|N|N|N
 deployments|Y|Y|Y|Y
 deployment|Y|N|Y|N
+namespace|Y|N|Y|N
+namespaces|Y|Y|Y|Y
+acl|Y|N|Y|N
+
 
 ## Development
 * create virtualenv and activate

@@ -35,6 +35,8 @@ class Nomad(object):
         self._validate = api.Validate(self.requester)
         self._namespaces = api.Namespaces(self.requester)
         self._namespace = api.Namespace(self.requester)
+        self._acl = api.Acl(self.requester)
+
 
     @property
     def jobs(self):
@@ -111,3 +113,7 @@ class Nomad(object):
     @property
     def namespace(self):
         return self._namespace
+
+    @property
+    def acl(self):
+        return self._acl

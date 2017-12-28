@@ -7,7 +7,7 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 class Requester(object):
 
-    def __init__(self, uri='http://127.0.0.1', port=4646, nspace='', token='', timeout=5, version='v1', verify=False, cert=()):
+    def __init__(self, uri='http://127.0.0.1', port=4646, nspace=None, token=None, timeout=5, version='v1', verify=False, cert=()):
         self.uri = uri
         self.port = port
         self.nspace = nspace
@@ -24,7 +24,7 @@ class Requester(object):
             return "{v}/".format(v=self.version) + u
 
     def _urlBuilder(self, endpoint):
-        required_namespace=["job","jobs","allocation","allocations","deployment","deployments"]
+        required_namespace=["job","jobs","allocation","allocations","deployment","deployments","acl"]
         if not self.nspace:
             url = "{uri}:{port}/{endpoint}".format(
                 uri=self.uri,
@@ -50,10 +50,10 @@ class Requester(object):
         url = self._urlBuilder(endpoint)
         if headers == None:
             headers = {}
-            if self.token != '':
+            if self.token is not None:
                 headers["X-Nomad-Token"] = self.token
         else:
-            if self.token != '':
+            if self.token is not None:
                 headers["X-Nomad-Token"] = self.token
         response = None
 
@@ -79,10 +79,10 @@ class Requester(object):
         url = self._urlBuilder(endpoint)
         if headers == None:
             headers = {}
-            if self.token != '':
+            if self.token is not None:
                 headers["X-Nomad-Token"] = self.token
         else:
-            if self.token != '':
+            if self.token is not None:
                 headers["X-Nomad-Token"] = self.token
         response = None
 

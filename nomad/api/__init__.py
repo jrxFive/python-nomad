@@ -19,3 +19,4 @@ from nomad.api.deployments import Deployments
 from nomad.api.deployment import Deployment
 from nomad.api.namespaces import Namespaces
 from nomad.api.namespace import Namespace
+from nomad.api.acl import Acl
