@@ -4,6 +4,11 @@ import nomad
 import json
 import os
 from nomad.api import exceptions
+from unittest.mock import patch
+from unittest.mock import ANY
+from unittest.mock import MagicMock
+import requests
+
 
 
 @pytest.fixture
@@ -14,18 +19,20 @@ def nomad_setup():
 # integration tests requires nomad Vagrant VM or Binary running
 
 
-def test_apply_namespace(nomad_setup):
+@patch('nomad.api.namespace.Namespace._post')
+def test_apply_namespace(mock_post, nomad_setup):
+    mock_post.return_value = requests.codes.ok
     namespace_api='{"Name":"api","Description":"api server namespace"}'
     namespace = json.loads(namespace_api)
-    nomad_setup.namespace.apply_namespace("api", namespace)
-    assert "api" in nomad_setup.namespace
+    assert 200 == nomad_setup.namespace.apply_namespace("api", namespace)
 
-def test_get_namespace(nomad_setup):
+@patch('nomad.api.namespace.Namespace._get')
+def test_get_namespace(mock_get, nomad_setup):
+    mock_get.return_value = {"Name":"api","Description":"api server namespace"}
     assert "api" in nomad_setup.namespace.get_namespace("api")["Name"]
 
-def test_delete_namespace(nomad_setup):
+@patch('nomad.api.namespace.Namespace._delete')
+def test_delete_namespace(mock_delete, nomad_setup):
+    mock_delete.return_value = {"Name":"api","Description":"api server namespace"}
     nomad_setup.namespace.delete_namespace("api")
-    try:
-        assert "api" != nomad_setup.namespace.get_namespace("api")["Name"]
-    except nomad.api.exceptions.URLNotFoundNomadException:
-        pass
+    assert "api" == nomad_setup.namespace.delete_namespace("api")["Name"]
