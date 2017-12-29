@@ -14,7 +14,7 @@ def nomad_setup():
     return n
 
 
-# integration tests requires nomad Vagrant VM or Binary running
+# integration tests was mocked. If you have an enterprise nomad please uncomenet ##### ENTERPRISE TEST #####
 
 @patch('nomad.api.namespaces.Namespaces._get')
 def test_get_namespaces(mock_get, nomad_setup):
@@ -33,3 +33,9 @@ def test_get_namespaces(mock_get, nomad_setup):
                                 }
                             ]
     assert isinstance(nomad_setup.namespaces.get_namespaces(), list) == True
+
+
+###### ENTERPRISE TEST ###########
+
+# def test_get_namespaces(nomad_setup):
+#     assert isinstance(nomad_setup.namespaces.get_namespaces(), list) == True
