@@ -2,10 +2,11 @@ import pytest
 import tests.common as common
 import nomad
 import json
-import requests
+from nomad.api import exceptions
 from unittest.mock import patch
 from unittest.mock import ANY
 from unittest.mock import MagicMock
+
 
 
 @pytest.fixture

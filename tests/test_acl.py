@@ -8,7 +8,7 @@ from nomad.api import exceptions
 
 
 @pytest.fixture
-def nomad_setup(token=None):
+def nomad_setup():
     n = nomad.Nomad(uri=common.URI, port=common.NOMAD_PORT,token=common.NOMAD_TOKEN, verify=False)
     return n
 
@@ -20,7 +20,6 @@ def test_create_bootstrap(nomad_setup):
     bootstrap = nomad_setup.acl.generate_bootstrap()
     assert "SecretID" in bootstrap
     common.NOMAD_TOKEN = bootstrap["SecretID"]
-    print (common.NOMAD_TOKEN)
 
 @pytest.mark.run(order=1)
 def test_list_tokens(nomad_setup):
@@ -79,11 +78,10 @@ def test_get_policies(nomad_setup):
 def test_create_policy(nomad_setup):
     policy_example = '{ "Name": "my-policy", "Description": "This is a great policy", "Rules": "" }'
     json_policy = json.loads(policy_example)
-    print (json_policy)
     nomad_setup.acl.create_policy(id="my-policy", policy=json_policy)
     assert False == any("my-policy" in x for x in nomad_setup.acl.get_policies())
 
-def test_get_token(nomad_setup):
+def test_get_policy(nomad_setup):
     policy = nomad_setup.acl.get_policy("my-policy")
     assert "This is a great policy" in policy["Description"]
 

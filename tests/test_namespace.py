@@ -2,7 +2,6 @@ import pytest
 import tests.common as common
 import nomad
 import json
-import os
 from nomad.api import exceptions
 from unittest.mock import patch
 from unittest.mock import ANY
