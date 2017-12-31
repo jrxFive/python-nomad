@@ -43,27 +43,27 @@ n.job.deregister_job(j)
 ## Class Dunders
 | Class | contains | len | getitem | iter |
 |---|---|---|---|---|
-agent| N|N|N|N
-allocation|Y|N|Y|N
-allocations|N|Y|N|Y
-client|N|N|N|N
-evaluation|Y|N|Y|N
-evaluations|Y|Y|Y|Y
-job|Y|N|Y|N
-jobs|Y|Y|Y|Y
-node|Y|N|Y|N
-nodes|Y|Y|Y|Y
-regions|Y|Y|Y|Y
-status.leader|Y|Y|N|N
-status.peers|Y|Y|Y|Y
-system|N|N|N|N
-validate|N|N|N|N
-deployments|Y|Y|Y|Y
-deployment|Y|N|Y|N
-namespace|Y|N|Y|N
-namespaces|Y|Y|Y|Y
-acl|Y|N|Y|N
-sentinel|Y|N|Y|N
+|agent|N|N|N|N
+|allocation|Y|N|Y|N
+|allocations|N|Y|N|Y
+|client|N|N|N|N
+|evaluation|Y|N|Y|N
+|evaluations|Y|Y|Y|Y
+|job|Y|N|Y|N
+|jobs|Y|Y|Y|Y
+|node|Y|N|Y|N
+|nodes|Y|Y|Y|Y
+|regions|Y|Y|Y|Y
+|status.leader|Y|Y|N|N
+|status.peers|Y|Y|Y|Y
+|system|N|N|N|N
+|validate|N|N|N|N
+|deployments|Y|Y|Y|Y
+|deployment|Y|N|Y|N
+|namespace|Y|N|Y|N
+|namespaces|Y|Y|Y|Y
+|acl|Y|N|Y|N
+|sentinel|Y|N|Y|N
 
 ## Development
 * create virtualenv and activate
@@ -86,6 +86,24 @@ py.test --cov=nomad --cov-report=term-missing --runxfail tests/
 
 ## TODO
 - [ ] examples
+    - [x] Acl [:link:](docs/api/acl.md)
+    - [ ] Agent
+    - [ ] Allocation
+    - [ ] Allocations
+    - [ ] Client
+    - [ ] Evaluation
+    - [ ] Evaluations
+    - [ ] Job
+    - [ ] Jobs
+    - [x] Namespace [:link:](docs/api/namespace.md)
+    - [x] Namespaces [:link:](docs/api/namespaces.md)
+    - [ ] Node
+    - [ ] nodes
+    - [ ] Regions
+    - [x] Sentinel [:link:](docs/api/sentinel.md)
+    - [ ] Status
+    - [ ] System
+
 - [ ] functional tests
 - [ ] Inherit Base class, remove duplication and override parent dunders
 - [ ] readthedocs
