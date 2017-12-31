@@ -55,21 +55,7 @@ class Namespace(object):
         except:
             raise
 
-    def get_namespace(self, id):
-        """ Query a single namespace.
-
-           https://www.nomadproject.io/api/namespaces.html
-
-            arguments:
-              - id
-            returns: dict
-            raises:
-              - nomad.api.exceptions.BaseNomadException
-              - nomad.api.exceptions.URLNotFoundNomadException
-        """
-        return self._get(id)
-
-    def _post(self, *args, **kwargs):
+        def _post(self, *args, **kwargs):
         try:
             url = self._requester._endpointBuilder(Namespace.ENDPOINT, *args)
             if kwargs:
@@ -89,6 +75,22 @@ class Namespace(object):
             return namespace
         except:
             raise
+
+
+    def get_namespace(self, id):
+        """ Query a single namespace.
+
+           https://www.nomadproject.io/api/namespaces.html
+
+            arguments:
+              - id
+            returns: dict
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
+        return self._get(id)
+
 
     def create_namespace(self, namespace):
         """ create namespace

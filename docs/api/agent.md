@@ -1,6 +1,6 @@
 ## Agent
 
-## List get_members
+## List members
 
 This endpoint queries the agent for the known peers in the gossip pool. This endpoint is only applicable to servers. Due to the nature of gossip, this is eventually consistent.
 
