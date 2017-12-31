@@ -87,7 +87,7 @@ py.test --cov=nomad --cov-report=term-missing --runxfail tests/
 ## TODO
 - [ ] examples
     - [x] Acl [:link:](docs/api/acl.md)
-    - [ ] Agent
+    - [x] Agent [:link:](docs/api/agent.md)
     - [ ] Allocation
     - [ ] Allocations
     - [ ] Client

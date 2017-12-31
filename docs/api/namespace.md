@@ -1,5 +1,3 @@
-# python-nomad
-
 ## Namespaces
 
 Valid for nomad version **>= 0.7.0**

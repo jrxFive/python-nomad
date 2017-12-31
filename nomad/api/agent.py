@@ -110,3 +110,16 @@ class Agent(object):
         """
         params = "node={node}".format(node=node)
         return self._post("force-leave", params=params)
+
+
+    def get_health(self):
+        """ Query the health of the target agent.
+
+            https://www.nomadproject.io/api/agent.html#health
+
+            returns: dict
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
+        return self._get("health")

@@ -61,3 +61,9 @@ def test_dunder_getattr(nomad_setup):
 
     with pytest.raises(AttributeError):
         d = nomad_setup.agent.does_not_exist
+
+
+def test_get_health(nomad_setup):
+    assert isinstance(nomad_setup.agent.get_health(), dict) == True
+    assert True == nomad_setup.agent.get_health()["server"]["ok"]
+    assert True == nomad_setup.agent.get_health()["client"]["ok"]

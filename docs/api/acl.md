@@ -1,5 +1,3 @@
-# python-nomad
-
 ## ACL & tokens
 
 Valid for nomad version **>= 0.7.0**
@@ -45,7 +43,7 @@ for token in tokens:
 
 ```
 
-### Create tokens
+### Create token
 
 Create new token
 
@@ -92,7 +90,7 @@ update_token =  {
 updated_token = my_nomad.acl.update_token('377ba749-8b0e-c7fd-c0c0-9da5bb943088', update_token)
 ```
 
-### Read tokens
+### Read token
 
 Get specific token
 
