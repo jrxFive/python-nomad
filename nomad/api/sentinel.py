@@ -36,7 +36,7 @@ class Sentinel(object):
     def _post(self, *args, **kwargs):
         try:
             url = self._requester._endpointBuilder(Sentinel.ENDPOINT, *args)
-            print (url)
+
             if kwargs:
                 response = self._requester.post(url, json=kwargs.get("json_dict", None), params=kwargs.get("params", None))
             else:
@@ -49,7 +49,7 @@ class Sentinel(object):
     def _post_no_json(self, *args, **kwargs):
         try:
             url = self._requester._endpointBuilder(Sentinel.ENDPOINT, *args)
-            print (url)
+            
             if kwargs:
                 response = self._requester.post(url, json=kwargs.get("json_dict", None), params=kwargs.get("params", None))
             else:

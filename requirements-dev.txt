@@ -1,6 +1,6 @@
 coverage==4.1
 pytest==2.9.1
 pytest-cov==2.2.1
-requests==2.18.0
+requests==2.18.4
 mkdocs==0.15.3
 mock==1.2.0
