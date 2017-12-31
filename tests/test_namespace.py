@@ -19,11 +19,19 @@ def nomad_setup():
 
 
 @patch('nomad.api.namespace.Namespace._post')
-def test_apply_namespace(mock_post, nomad_setup):
+def test_create_namespace(mock_post, nomad_setup):
     mock_post.return_value = requests.codes.ok
     namespace_api='{"Name":"api","Description":"api server namespace"}'
     namespace = json.loads(namespace_api)
-    assert 200 == nomad_setup.namespace.apply_namespace("api", namespace)
+    assert 200 == nomad_setup.namespace.create_namespace(namespace)
+
+@patch('nomad.api.namespace.Namespace._post')
+def test_update_namespace(mock_post, nomad_setup):
+    mock_post.return_value = requests.codes.ok
+    namespace_api='{"Name":"api","Description":"updated namespace"}'
+    namespace = json.loads(namespace_api)
+    assert 200 == nomad_setup.namespace.update_namespace("api", namespace)
+
 
 @patch('nomad.api.namespace.Namespace._get')
 def test_get_namespace(mock_get, nomad_setup):

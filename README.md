@@ -63,7 +63,7 @@ deployment|Y|N|Y|N
 namespace|Y|N|Y|N
 namespaces|Y|Y|Y|Y
 acl|Y|N|Y|N
-
+sentinel|Y|N|Y|N
 
 ## Development
 * create virtualenv and activate

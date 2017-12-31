@@ -81,8 +81,32 @@ class Namespace(object):
         except:
             raise
 
-    def apply_namespace(self, id, namespace):
-        """ Registers a new namespace
+    def _delete(self, *args):
+        try:
+            url = self._requester._endpointBuilder(Namespace.ENDPOINT, *args)
+            namespace = self._requester.delete(url)
+
+            return namespace
+        except:
+            raise
+
+    def create_namespace(self, namespace):
+        """ create namespace
+
+           https://www.nomadproject.io/api/namespaces.html
+
+            arguments:
+              - id
+              - namespace (dict)
+            returns: None
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
+        return self._post(json_dict=namespace)
+
+    def update_namespace(self, id, namespace):
+        """ Update namespace
 
            https://www.nomadproject.io/api/namespaces.html
 
@@ -96,15 +120,6 @@ class Namespace(object):
         """
         return self._post(id, json_dict=namespace)
 
-
-    def _delete(self, *args):
-        try:
-            url = self._requester._endpointBuilder(Namespace.ENDPOINT, *args)
-            namespace = self._requester.delete(url)
-
-            return namespace
-        except:
-            raise
 
     def delete_namespace(self, id):
         """ delete namespace.
