@@ -1,3 +1,6 @@
+import nomad.api.exceptions
+
+
 class Agent(object):
 
     """The self endpoint is used to query the state of the target agent."""

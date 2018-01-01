@@ -3,9 +3,7 @@ import tests.common as common
 import nomad
 import json
 from nomad.api import exceptions
-from unittest.mock import patch
-from unittest.mock import ANY
-from unittest.mock import MagicMock
+from mock import patch, MagicMock
 
 
 
