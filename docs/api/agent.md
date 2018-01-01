@@ -1,6 +1,6 @@
 ## Agent
 
-## List members
+### List members
 
 This endpoint queries the agent for the known peers in the gossip pool. This endpoint is only applicable to servers. Due to the nature of gossip, this is eventually consistent.
 
@@ -11,7 +11,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10',verify=False)
+my_nomad = nomad.Nomad(uri='http://192.168.33.10')
 
 members = my_nomad.agent.get_members()
 
@@ -19,7 +19,7 @@ for member in members["Members"]:
   print (member["Name"])
 ```
 
-## List all Servers
+### List all Servers
 
 This endpoint lists the known server nodes. The servers endpoint is used to query an agent in client mode for its list of known servers. Client nodes register themselves with these server addresses so that they may dequeue work. The servers endpoint can be used to keep this configuration up to date if there are changes in the cluster
 
@@ -30,7 +30,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10',verify=False)
+my_nomad = nomad.Nomad(uri='http://192.168.33.10')
 
 servers = my_nomad.agent.get_servers()
 
@@ -38,7 +38,7 @@ for server in servers:
   print (server)
 ```
 
-## Query Self
+### Query Self
 
 This endpoint queries the state of the target agent (self).
 
@@ -49,14 +49,14 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10',verify=False)
+my_nomad = nomad.Nomad(uri='http://192.168.33.10')
 
 agent = my_nomad.agent.get_agent()
 
 print (agent)
 ```
 
-## Update Servers
+### Update Servers
 
 This endpoint updates the list of known servers to the provided list. This replaces all previous server addresses with the new list.
 
@@ -67,12 +67,12 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10',verify=False)
+my_nomad = nomad.Nomad(uri='http://192.168.33.10')
 
 r = my_nomad.agent.update_servers(['192.168.33.11', '10.1.10.200:4829'])
 ```
 
-## Join agent
+### Join agent
 
 This endpoint introduces a new member to the gossip pool. This endpoint is only eligible for servers.
 
@@ -83,12 +83,12 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10',verify=False)
+my_nomad = nomad.Nomad(uri='http://192.168.33.10')
 
 r = my_nomad.agent.join_agent("server02")
 ```
 
-## Force leave
+### Force leave
 
 This endpoint forces a member of the gossip pool from the "failed" state to the "left" state. This allows the consensus protocol to remove the peer and stop attempting replication. This is only applicable for servers.
 
@@ -99,12 +99,12 @@ Exmaple:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10',verify=False)
+my_nomad = nomad.Nomad(uri='http://192.168.33.10')
 
 r = my_nomad.agent.force_leave("server02")
 ```
 
-## Health
+### Health
 
 This endpoint returns whether or not the agent is healthy. When using Consul it is the endpoint Nomad will register for its own health checks.
 
@@ -117,7 +117,8 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10',verify=False)
+my_nomad = nomad.Nomad(uri='http://192.168.33.10')
 
 r = my_nomad.agent.get_health()
+
 ```

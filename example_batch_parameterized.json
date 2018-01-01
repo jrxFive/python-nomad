@@ -3,7 +3,7 @@
         "Region": "example-region",
         "ID": "example-batch",
         "ParentID": "",
-        "Name": "example-name",
+        "Name": "example-batch",
         "Type": "batch",
         "Priority": 100,
         "AllAtOnce": false,

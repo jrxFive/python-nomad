@@ -82,28 +82,27 @@ vagrant up --provider virtualbox
 py.test --cov=nomad --cov-report=term-missing --runxfail tests/
 ```
 
-
-
-## TODO
-- [ ] examples
+- Examples
     - [x] Acl [:link:](docs/api/acl.md)
     - [x] Agent [:link:](docs/api/agent.md)
-    - [ ] Allocation
-    - [ ] Allocations
-    - [ ] Client
-    - [ ] Evaluation
-    - [ ] Evaluations
-    - [ ] Job
-    - [ ] Jobs
+    - [x] Allocation [:link:](docs/api/allocation.md)
+    - [x] Allocations [:link:](docs/api/allocations.md)
+    - [x] Client [:link:](docs/api/client.md)
+    - [x] Evaluation [:link:](docs/api/evaluation.md)
+    - [x] Evaluations [:link:](docs/api/evaluations.md)
+    - [x] Job [:link:](docs/api/job.md)
+    - [x] Jobs [:link:](docs/api/jobs.md)
     - [x] Namespace [:link:](docs/api/namespace.md)
     - [x] Namespaces [:link:](docs/api/namespaces.md)
-    - [ ] Node
-    - [ ] nodes
-    - [ ] Regions
+    - [x] Node [:link:](docs/api/node.md)
+    - [x] Nodes [:link:](docs/api/nodes.md)
+    - [x] Regions [:link:](docs/api/regions.md)
     - [x] Sentinel [:link:](docs/api/sentinel.md)
-    - [ ] Status
-    - [ ] System
+    - [x] Status [:link:](docs/api/status.md)
+    - [x] System [:link:](docs/api/system.md)
+    - [x] Validate [:link:](docs/api/validate.md)
 
+## TODO
 - [ ] functional tests
 - [ ] Inherit Base class, remove duplication and override parent dunders
 - [ ] readthedocs

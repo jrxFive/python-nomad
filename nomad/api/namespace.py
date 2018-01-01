@@ -55,7 +55,7 @@ class Namespace(object):
         except:
             raise
 
-        def _post(self, *args, **kwargs):
+    def _post(self, *args, **kwargs):
         try:
             url = self._requester._endpointBuilder(Namespace.ENDPOINT, *args)
             if kwargs:

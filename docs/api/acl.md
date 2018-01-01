@@ -139,7 +139,7 @@ my_nomad.acl.delete_token("377ba749-8b0e-c7fd-c0c0-9da5bb943088")
 ```
 
 
-# Policies
+## Policies
 
 Manage acl Policies
 
@@ -161,7 +161,7 @@ my_nomad = nomad.Nomad(uri='http://192.168.33.10', token='10f0cf19-2c8c-cb4b-721
 policies = my_nomad.acl.get_policies()
 ```
 
-## Create policy
+### Create policy
 
 This endpoint creates an ACL Policy. This request is always forwarded to the authoritative region.
 
@@ -182,7 +182,7 @@ policy =  {
 my_nomad.acl.create_policy("my-policy", policy)
 ```
 
-## Update policy
+### Update policy
 
 This endpoint update an ACL Policy. This request is always forwarded to the authoritative region.
 
@@ -204,7 +204,7 @@ policy =  {
 my_nomad.acl.update_policy("my-policy", policy)
 ```
 
-## Read policy
+### Read policy
 
 This endpoint reads an ACL policy with the given name. This queries the policy that have been replicated to the region, and may lag behind the authoritative region.
 
@@ -220,7 +220,7 @@ my_nomad = nomad.Nomad(uri='http://192.168.33.10', token='10f0cf19-2c8c-cb4b-721
 policy = my_nomad.acl.get_policy("my-policy")
 ```
 
-## Delete policy
+### Delete policy
 
 This endpoint deletes the named ACL policy. This request is always forwarded to the authoritative region.
 

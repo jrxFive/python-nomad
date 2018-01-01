@@ -25,4 +25,5 @@ pages:
    - Namespace: 'api/namespace.md'
    - Namespaces: 'api/namespaces.md'
    - Sentinel: 'api/sentinel.md'
+   - Validate: 'api/validate.md'
 - Contributing: 'contributing.md'
