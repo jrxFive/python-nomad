@@ -1,7 +1,7 @@
 import os
 
 # use vagrant IP if env variable is not specified, generally for local testing
-URI = os.environ.get("NOMAD_URL", "http://192.168.33.10")
+URI = os.environ.get("NOMAD_URI", "http://192.168.33.10")
 
 # internal ip of docker
 IP = os.environ.get("NOMAD_IP", "192.168.33.10")
