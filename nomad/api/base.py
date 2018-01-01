@@ -49,8 +49,8 @@ class Requester(object):
     def get(self, endpoint, params=None, headers=None):
         url = self._urlBuilder(endpoint)
         if headers == None:
-            headers = {}
             if self.token is not None:
+                headers = {}
                 headers["X-Nomad-Token"] = self.token
         else:
             if self.token is not None:
@@ -78,8 +78,8 @@ class Requester(object):
     def post(self, endpoint, params=None, data=None, json=None, headers=None):
         url = self._urlBuilder(endpoint)
         if headers == None:
-            headers = {}
             if self.token is not None:
+                headers = {}
                 headers["X-Nomad-Token"] = self.token
         else:
             if self.token is not None:
@@ -107,8 +107,8 @@ class Requester(object):
     def put(self, endpoint, params=None, data=None, headers=None):
         url = self._urlBuilder(endpoint)
         if headers == None:
-            headers = {}
-            if self.token != '':
+            if self.token is not None:
+                headers = {}
                 headers["X-Nomad-Token"] = self.token
         else:
                 headers["X-Nomad-Token"] = self.token
@@ -134,8 +134,8 @@ class Requester(object):
     def delete(self, endpoint, params=None, headers=None):
         url = self._urlBuilder(endpoint)
         if headers == None:
-            headers = {}
-            if self.token != '':
+            if self.token is not None:
+                headers = {}
                 headers["X-Nomad-Token"] = self.token
         else:
                 headers["X-Nomad-Token"] = self.token

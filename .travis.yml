@@ -34,9 +34,9 @@ before_install:
 - curl -L -o /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip
 - yes | unzip -d /tmp /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip
 - if [[ "$NOMAD_VERSION" == "0.7.0" || "$NOMAD_VERSION" == "0.7.1" ]]; then
-    /tmp/nomad agent -dev -bind ${NOMAD_IP} -node pynomad1 --acl-enabled > /dev/null 2>&1 &
+    /tmp/nomad agent -dev -bind ${NOMAD_IP} -node pynomad1 --acl-enabled > /dev/null 2>&1 &;
   else
-    /tmp/nomad agent -dev -bind ${NOMAD_IP} -node pynomad1 > /dev/null 2>&1 &
+    /tmp/nomad agent -dev -bind ${NOMAD_IP} -node pynomad1 > /dev/null 2>&1 &;
   fi
 - sleep 30
 install:
