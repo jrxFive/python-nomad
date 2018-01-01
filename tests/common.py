@@ -11,4 +11,4 @@ IP = os.environ.get("NOMAD_IP", "192.168.33.10")
 NOMAD_PORT = os.environ.get("NOMAD_PORT", 4646)
 
 # Security token
-NOMAD_TOKEN = os.environ.get("NOMAD_TOKEN", "")
+NOMAD_TOKEN = os.environ.get("NOMAD_TOKEN", None)
