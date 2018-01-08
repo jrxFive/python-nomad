@@ -1,12 +1,17 @@
 import requests
 import nomad.api.exceptions
 
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 class Requester(object):
 
-    def __init__(self, uri='127.0.0.1', port=4646, timeout=5, version='v1', verify=False, cert=()):
+    def __init__(self, uri='http://127.0.0.1', port=4646, namespace=None, token=None, timeout=5, version='v1', verify=False, cert=()):
         self.uri = uri
         self.port = port
+        self.namespace = namespace
+        self.token = token
         self.timeout = timeout
         self.version = version
         self.verify = verify
@@ -18,24 +23,47 @@ class Requester(object):
             u = "/".join(args)
             return "{v}/".format(v=self.version) + u
 
+    def _required_namespace(endpoint):
+        required_namespace = [
+                                "job",
+                                "jobs",
+                                "allocation",
+                                "allocations",
+                                "deployment",
+                                "deployments",
+                                "acl"
+                             ]
+        endpoint_split = endpoint.split("/")
+        return endpoint_split[0] in required_namespace
+
     def _urlBuilder(self, endpoint):
-        if self.verify or self.cert:
-            proto = 'https'
+        if self.namespace:
+            if self._required_namespace(endpoint):
+                url = "{uri}:{port}/{endpoint}?namespace={namespace}".format(
+                           uri=self.uri,
+                           port=self.port,
+                           endpoint=endpoint,
+                           namespace=self.namespace)
         else:
-            proto = 'http'
+            url = "{uri}:{port}/{endpoint}".format(uri=self.uri,
+                                                   port=self.port,
+                                                   endpoint=endpoint)
 
-        return "{proto}://{uri}:{port}/{endpoint}".format(
-            proto=proto,
-            uri=self.uri,
-            port=self.port,
-            endpoint=endpoint)
+        return url
 
-    def get(self, endpoint, params=None):
+
+    def get(self, endpoint, params=None, headers=None):
         url = self._urlBuilder(endpoint)
+        if self.token:
+            try:
+                headers["X-Nomad-Token"] = self.token
+            except TypeError:
+                headers = { "X-Nomad-Token": self.token }
         response = None
 
         try:
             response = self.session.get(url,
+                                        headers=headers,
                                         params=params,
                                         verify=self.verify,
                                         cert=self.cert,
@@ -45,12 +73,19 @@ class Requester(object):
                 return response
             if response.status_code == 400 or response.status_code == 404 or response.status_code == 500:
                 raise nomad.api.exceptions.URLNotFoundNomadException(response)
+            if response.status_code == 403:
+                raise nomad.api.exceptions.URLNotAuthorizedNomadException(response)
 
         except requests.RequestException:
             raise nomad.api.exceptions.BaseNomadException(response)
 
     def post(self, endpoint, params=None, data=None, json=None, headers=None):
         url = self._urlBuilder(endpoint)
+        if self.token:
+            try:
+                headers["X-Nomad-Token"] = self.token
+            except TypeError:
+                headers = { "X-Nomad-Token": self.token }
         response = None
 
         try:
@@ -73,6 +108,11 @@ class Requester(object):
 
     def put(self, endpoint, params=None, data=None, headers=None):
         url = self._urlBuilder(endpoint)
+        if self.token:
+            try:
+                headers["X-Nomad-Token"] = self.token
+            except TypeError:
+                headers = { "X-Nomad-Token": self.token }
         response = None
 
         try:
@@ -94,6 +134,11 @@ class Requester(object):
 
     def delete(self, endpoint, params=None, headers=None):
         url = self._urlBuilder(endpoint)
+        if self.token:
+            try:
+                headers["X-Nomad-Token"] = self.token
+            except TypeError:
+                headers = { "X-Nomad-Token": self.token }
         response = None
 
         try:

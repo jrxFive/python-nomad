@@ -27,10 +27,14 @@ env:
   - NOMAD_VERSION="0.4.1"
   - NOMAD_VERSION="0.5.6"
   - NOMAD_VERSION="0.6.0"
+  - NOMAD_VERSION="0.7.0"
+  - NOMAD_VERSION="0.7.1"
 before_install:
 - curl -L -o /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip
 - yes | unzip -d /tmp /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip
-- /tmp/nomad agent -dev -bind ${NOMAD_IP} -node pynomad1 > /dev/null 2>&1 &
+- MAJOR_VERSION=`echo ${NOMAD_VERSION} | cut -d "." -f 2`
+- if [[ ${MAJOR_VERSION} -gt 6 ]]; then echo "Nomad version $NOMAD_VERSION supports acls";export ACL_ENABLED="--acl-enabled"; else echo "Nomad version $NOMAD_VERSION";export ACL_ENABLED="";  fi
+- /tmp/nomad agent -dev -bind ${NOMAD_IP} -node pynomad1 ${ACL_ENABLED} > /dev/null 2>&1 &
 - sleep 30
 install:
 - pip install -r requirements-dev.txt

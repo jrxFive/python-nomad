@@ -17,4 +17,7 @@ from nomad.api.operator import Operator
 from nomad.api.validate import Validate
 from nomad.api.deployments import Deployments
 from nomad.api.deployment import Deployment
-
+from nomad.api.namespaces import Namespaces
+from nomad.api.namespace import Namespace
+from nomad.api.acl import Acl
+from nomad.api.sentinel import Sentinel
