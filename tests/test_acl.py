@@ -9,7 +9,7 @@ from nomad.api import exceptions
 
 @pytest.fixture
 def nomad_setup():
-    n = nomad.Nomad(uri=common.URI, port=common.NOMAD_PORT,token=common.NOMAD_TOKEN, verify=False)
+    n = nomad.Nomad(host=common.IP, port=common.NOMAD_PORT,token=common.NOMAD_TOKEN, verify=False)
     return n
 
 # integration tests requires nomad Vagrant VM or Binary running
@@ -75,9 +75,9 @@ def test_delete_token(nomad_setup):
     assert False == any("DeleteToken" in x for x in nomad_setup.acl.get_tokens())
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 7, 0), reason="Nomad dispatch not supported")
-def test_get_selftoken(nomad_setup):
-    get_token = nomad_setup.acl.get_selftoken()
-    assert nomad_setup.token in get_token["SecretID"]
+def test_get_self_token(nomad_setup):
+    current_token = nomad_setup.acl.get_self_token()
+    assert nomad_setup.get_token() in current_token["SecretID"]
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 7, 0), reason="Nomad dispatch not supported")
 def test_get_policies(nomad_setup):

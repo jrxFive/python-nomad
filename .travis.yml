@@ -21,7 +21,6 @@ python:
 env:
   global:
   - NOMAD_IP="127.0.0.1"
-  - NOMAD_URI="http://127.0.0.1"
   - NOMAD_PORT="4646"
   matrix:
   - NOMAD_VERSION="0.3.2"
@@ -33,9 +32,13 @@ env:
 before_install:
 - curl -L -o /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip
 - yes | unzip -d /tmp /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip
-- if [[ "$NOMAD_VERSION" == "0.7.0" || "$NOMAD_VERSION" == "0.7.1" ]]; then export ACL_ENABLED="--acl-enabled"; else export ACL_ENABLED="";fi
-- echo "${ACL_ENABLED}"
-- /tmp/nomad agent -dev -bind ${NOMAD_IP} -node pynomad1 ${ACL_ENABLED} > /dev/null 2>&1 &
+- MAJOR_VERSION=`echo #{NOMAD_VERSION} | cut -d "." -f 2`
+- if [ $MAJOR_VERSION -gt 6 ]; then
+    echo "Nomad version $NOMAD_VERSION supports acls";
+    nohup nomad agent -dev -bind #{IP} -node pynomad1 --acl-enabled > /dev/null 2>&1 &
+  else
+    nohup nomad agent -dev -bind #{IP} -node pynomad1 > /dev/null 2>&1 &
+  fi
 - sleep 30
 install:
 - pip install -r requirements-dev.txt

@@ -4,17 +4,44 @@ import nomad.api as api
 
 class Nomad(object):
 
-    def __init__(self, uri='http://127.0.0.1', port=4646, nspace='', token='', timeout=5, region=None, version='v1', verify=False, cert=()):
-        self.uri = uri
+    def __init__(self, host='127.0.0.1', secure=False, port=4646, namespace=None,
+        token=None, timeout=5, region=None, version='v1', verify=False, cert=()):
+        """ Nomad api client
+
+          https://github.com/jrxFive/python-nomad/
+
+           optional arguments:
+            - host (defaults 127.0.0.1), string ip or name of the nomad api server/agent that will be used.
+            - port (defaults 4646), integer port that will be used to connect.
+            - secure (defaults False), define if the protocol is secured or not (https or http)
+            - version (defaults v1), vesion of the api of nomad.
+            - verify (defaults False), verify the certificate when tls/ssl is enabled
+                                at nomad.
+            - cert (defaults empty), cert, or key and cert file to validate the certificate
+                                configured at nomad.
+            - region (defaults None), version of the region to use. It will be used then
+                                regions of the current agent of the connection.
+            - namespace (defaults to None), Specifies the enterpise namespace that will
+                                be use to deploy or to ask info to nomad.
+            - token (defaults to None), Specifies to append ACL token to the headers to
+                                make authentication on secured based nomad environemnts.
+           returns: Nomad api client object
+
+           raises:
+             - nomad.api.exceptions.BaseNomadException
+             - nomad.api.exceptions.URLNotFoundNomadException
+             - nomad.api.exceptions.URLNotAuthorizedNomadException
+        """
+        self.host = host
+        self.secure = secure
         self.port = port
-        self.nspace = nspace
-        self.token = token
         self.timeout = timeout
         self.version = version
         self.verify = verify
         self.cert = cert
 
-        self.requester = api.Requester(uri, port, nspace, token, timeout, version, verify, cert)
+        self.requester = api.Requester(self.get_uri(), port, namespace, token,
+                                       timeout, version, verify, cert)
 
         self._jobs = api.Jobs(self.requester)
         self._job = api.Job(self.requester)
@@ -38,6 +65,24 @@ class Nomad(object):
         self._acl = api.Acl(self.requester)
         self._sentinel = api.Sentinel(self.requester)
 
+    def set_namespace(self, namespace):
+        self.requester.namespace = namespace
+
+    def set_token(self, token):
+        self.requester.token = token
+
+    def get_namespace(self):
+        return self.requester.namespace
+
+    def get_token(self):
+        return self.requester.token
+
+    def get_uri(self):
+        if self.secure:
+            protocol = "https"
+        else:
+            protocol = "http"
+        return "{protocol}://{host}".format(protocol=protocol, host=self.host)
 
     @property
     def jobs(self):

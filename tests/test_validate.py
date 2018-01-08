@@ -7,7 +7,7 @@ import json
 
 @pytest.fixture
 def nomad_setup():
-    n = nomad.Nomad(uri=common.URI, port=common.NOMAD_PORT, verify=False, token=common.NOMAD_TOKEN)
+    n = nomad.Nomad(host=common.IP, port=common.NOMAD_PORT, verify=False, token=common.NOMAD_TOKEN)
     return n
 
 

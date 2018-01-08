@@ -111,7 +111,7 @@ class Acl(object):
         return self._get("token", id)
 
 
-    def get_selftoken(self):
+    def get_self_token(self):
         """ Retrieve self token used for auth.
 
             https://www.nomadproject.io/api/acl-tokens.html

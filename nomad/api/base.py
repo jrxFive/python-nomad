@@ -7,10 +7,10 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 class Requester(object):
 
-    def __init__(self, uri='http://127.0.0.1', port=4646, nspace=None, token=None, timeout=5, version='v1', verify=False, cert=()):
+    def __init__(self, uri='http://127.0.0.1', port=4646, namespace=None, token=None, timeout=5, version='v1', verify=False, cert=()):
         self.uri = uri
         self.port = port
-        self.nspace = nspace
+        self.namespace = namespace
         self.token = token
         self.timeout = timeout
         self.version = version
@@ -23,38 +23,42 @@ class Requester(object):
             u = "/".join(args)
             return "{v}/".format(v=self.version) + u
 
+    def _required_namespace(endpoint):
+        required_namespace = [
+                                "job",
+                                "jobs",
+                                "allocation",
+                                "allocations",
+                                "deployment",
+                                "deployments",
+                                "acl"
+                             ]
+        endpoint_split = endpoint.split("/")
+        return endpoint_split[0] in required_namespace
+
     def _urlBuilder(self, endpoint):
-        required_namespace=["job","jobs","allocation","allocations","deployment","deployments","acl"]
-        if not self.nspace:
-            url = "{uri}:{port}/{endpoint}".format(
-                uri=self.uri,
-                port=self.port,
-                endpoint=endpoint)
-        else:
-            if any(word in endpoint for word in required_namespace):
+        if self.namespace:
+            if self._required_namespace(endpoint):
                 url = "{uri}:{port}/{endpoint}?namespace={namespace}".format(
-                    uri=self.uri,
-                    port=self.port,
-                    endpoint=endpoint,
-                    namespace=self.nspace)
-            else:
-                url = "{uri}:{port}/{endpoint}".format(
-                    uri=self.uri,
-                    port=self.port,
-                    endpoint=endpoint)
+                           uri=self.uri,
+                           port=self.port,
+                           endpoint=endpoint,
+                           namespace=self.namespace)
+        else:
+            url = "{uri}:{port}/{endpoint}".format(uri=self.uri,
+                                                   port=self.port,
+                                                   endpoint=endpoint)
 
         return url
 
 
     def get(self, endpoint, params=None, headers=None):
         url = self._urlBuilder(endpoint)
-        if headers == None:
-            if self.token is not None:
-                headers = {}
+        if self.token:
+            try:
                 headers["X-Nomad-Token"] = self.token
-        else:
-            if self.token is not None:
-                headers["X-Nomad-Token"] = self.token
+            except TypeError:
+                headers = { "X-Nomad-Token": self.token }
         response = None
 
         try:
@@ -77,13 +81,11 @@ class Requester(object):
 
     def post(self, endpoint, params=None, data=None, json=None, headers=None):
         url = self._urlBuilder(endpoint)
-        if headers == None:
-            if self.token is not None:
-                headers = {}
+        if self.token:
+            try:
                 headers["X-Nomad-Token"] = self.token
-        else:
-            if self.token is not None:
-                headers["X-Nomad-Token"] = self.token
+            except TypeError:
+                headers = { "X-Nomad-Token": self.token }
         response = None
 
         try:
@@ -106,12 +108,11 @@ class Requester(object):
 
     def put(self, endpoint, params=None, data=None, headers=None):
         url = self._urlBuilder(endpoint)
-        if headers == None:
-            if self.token is not None:
-                headers = {}
+        if self.token:
+            try:
                 headers["X-Nomad-Token"] = self.token
-        else:
-                headers["X-Nomad-Token"] = self.token
+            except TypeError:
+                headers = { "X-Nomad-Token": self.token }
         response = None
 
         try:
@@ -133,13 +134,11 @@ class Requester(object):
 
     def delete(self, endpoint, params=None, headers=None):
         url = self._urlBuilder(endpoint)
-        if headers == None:
-            if self.token is not None:
-                headers = {}
+        if self.token:
+            try:
                 headers["X-Nomad-Token"] = self.token
-        else:
-                headers["X-Nomad-Token"] = self.token
-
+            except TypeError:
+                headers = { "X-Nomad-Token": self.token }
         response = None
 
         try:
