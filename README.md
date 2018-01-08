@@ -11,6 +11,9 @@ develop | [![Build Status](https://travis-ci.org/jrxFive/python-nomad.svg?branch
 pip install python-nomad
 ```
 
+## Documentation
+https://python-nomad.readthedocs.io/en/latest/
+
 ## Examples
 ```python
 
