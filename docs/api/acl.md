@@ -15,12 +15,33 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10',verify=False)
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 bootstrap = my_nomad.acl.generate_bootstrap()
 
 print (bootstrap["SecretID"])
 10f0cf19-2c8c-cb4b-721a-fda2a388740b
+```
+
+### Set/Get Session token
+
+This endpoint manage the token used to auth nomad once you have created for example
+
+Example:
+
+```
+import nomad
+
+my_nomad = nomad.Nomad(host='192.168.33.10')
+
+bootstrap = my_nomad.acl.generate_bootstrap()
+
+print (bootstrap["SecretID"])
+10f0cf19-2c8c-cb4b-721a-fda2a388740b
+
+my_nomad.set_token(bootstrap["SecretID"])
+print (my_nomad.get_token())
+
 ```
 
 ### List tokens
@@ -34,7 +55,7 @@ Exmaple:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b')
+my_nomad = nomad.Nomad(host='192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b')
 
 tokens = my_nomad.acl.get_tokens()
 
@@ -54,7 +75,7 @@ Exmample:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b')
+my_nomad = nomad.Nomad(host='192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b')
 
 new_token = {
               "Name": "Readonly token",
@@ -77,7 +98,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b')
+my_nomad = nomad.Nomad(host='192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b')
 
 update_token =  {
                   "AccessorID":'377ba749-8b0e-c7fd-c0c0-9da5bb943088',
@@ -101,7 +122,7 @@ Exmaple:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b')
+my_nomad = nomad.Nomad(host='192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b')
 
 token = my_nomad.acl.get_token("377ba749-8b0e-c7fd-c0c0-9da5bb943088")
 ```
@@ -117,7 +138,7 @@ Exmaple:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b')
+my_nomad = nomad.Nomad(host='192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b')
 
 self_token = my_nomad.acl.get_selftoken()
 ```
@@ -133,7 +154,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b')
+my_nomad = nomad.Nomad(host='192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b')
 
 my_nomad.acl.delete_token("377ba749-8b0e-c7fd-c0c0-9da5bb943088")
 ```
@@ -156,7 +177,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b')
+my_nomad = nomad.Nomad(host='192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b')
 
 policies = my_nomad.acl.get_policies()
 ```
@@ -171,7 +192,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b')
+my_nomad = nomad.Nomad(host='192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b')
 
 policy =  {
             "Name": "my-policy",
@@ -193,7 +214,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b')
+my_nomad = nomad.Nomad(host='192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b')
 
 policy =  {
             "Name": "my-policy",
@@ -215,7 +236,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b')
+my_nomad = nomad.Nomad(host='192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b')
 
 policy = my_nomad.acl.get_policy("my-policy")
 ```
@@ -229,7 +250,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b')
+my_nomad = nomad.Nomad(host='192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b')
 
 my_nomad.acl.delete_policy("my-policy")
 ```

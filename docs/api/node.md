@@ -11,7 +11,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10')
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 node = my_nomad.node.get_node('ed1bbae7-c38a-df2d-1de7-50dbc753fc98')
 ```
@@ -27,7 +27,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10')
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 allocations = my_nomad.node.get_allocations('ed1bbae7-c38a-df2d-1de7-50dbc753fc98')
 
@@ -47,7 +47,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10')
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 my_nomad.node.evaluate_node('ed1bbae7-c38a-df2d-1de7-50dbc753fc98')
 ```
@@ -63,7 +63,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10')
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 my_nomad.node.drain_node('ed1bbae7-c38a-df2d-1de7-50dbc753fc98')
 ```

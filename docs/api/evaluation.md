@@ -11,7 +11,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10')
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 evaluation = my_nomad.evaluation.get_evaluation('5456bd7a-9fc0-c0dd-6131-cbee77f57577')
 
@@ -29,7 +29,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10')
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 allocation = my_nomad.evaluation.get_allocations('5456bd7a-9fc0-c0dd-6131-cbee77f57577')
 

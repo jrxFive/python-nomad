@@ -11,7 +11,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10')
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 members = my_nomad.agent.get_members()
 
@@ -30,7 +30,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10')
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 servers = my_nomad.agent.get_servers()
 
@@ -49,7 +49,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10')
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 agent = my_nomad.agent.get_agent()
 
@@ -67,7 +67,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10')
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 r = my_nomad.agent.update_servers(['192.168.33.11', '10.1.10.200:4829'])
 ```
@@ -83,7 +83,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10')
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 r = my_nomad.agent.join_agent("server02")
 ```
@@ -99,7 +99,7 @@ Exmaple:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10')
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 r = my_nomad.agent.force_leave("server02")
 ```
@@ -117,7 +117,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10')
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 r = my_nomad.agent.get_health()
 

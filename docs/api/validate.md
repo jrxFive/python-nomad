@@ -99,7 +99,7 @@ job = {'Job': {'AllAtOnce': None,
   'VaultToken': None,
   'Version': None}}
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10')
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 response = my_nomad.validate.validate_job(job)
 ```

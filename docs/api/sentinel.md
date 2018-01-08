@@ -15,7 +15,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b', verify=False)
+my_nomad = nomad.Nomad(host='192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b', verify=False)
 
 policies = my_nomad.sentinel.get_policies()
 ```
@@ -30,7 +30,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b', verify=False)
+my_nomad = nomad.Nomad(host='192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b', verify=False)
 
 policy =  {
             "Name": "my-policy",
@@ -54,7 +54,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b', verify=False)
+my_nomad = nomad.Nomad(host='192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b', verify=False)
 
 policy =  {
             "Name": "my-policy",
@@ -78,7 +78,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b', verify=False)
+my_nomad = nomad.Nomad(host='192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b', verify=False)
 
 policy = my_nomad.sentinel.get_policy("my-policy")
 ```
@@ -94,7 +94,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b', verify=False)
+my_nomad = nomad.Nomad(host='192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b', verify=False)
 
 my_nomad.sentinel.delete_policy("my-policy")
 ```

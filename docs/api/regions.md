@@ -9,7 +9,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10')
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 regions = my_nomad.regions.get_regions()
 

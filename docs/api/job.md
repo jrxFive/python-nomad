@@ -99,7 +99,7 @@ job = {'Job': {'AllAtOnce': None,
   'VaultToken': None,
   'Version': None}}
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10')
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 response = my_nomad.job.register_job("example", job)
 ```
@@ -117,7 +117,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10')
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 job = my_nomad.job.get_job("example")
 ```
@@ -133,7 +133,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10')
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 versions = my_nomad.job.get_versions("example")
 
@@ -152,7 +152,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10')
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 allocations = my_nomad.job.get_allocations("example")
 
@@ -171,7 +171,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10')
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 evaluations = my_nomad.job.get_evaluations("example")
 
@@ -191,7 +191,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10')
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 deployments = my_nomad.job.get_deployments("example")
 
@@ -211,7 +211,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10')
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 deployment = my_nomad.job.get_deployment("example")
 
@@ -228,7 +228,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10')
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 summary = my_nomad.job.get_summary("example")
 ```
@@ -256,7 +256,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10')
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 parametrize_job = {
     "Job": {
@@ -329,7 +329,7 @@ parametrize_job = {
     }
 }
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10')
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 response = my_nomad.job.register_job("example-batch", parametrize_job)
 
@@ -347,7 +347,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10')
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 prior_job_version = my_nomad.job.job.get_deployment("example")["JobVersion"]
 
@@ -368,7 +368,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10')
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 current_job_version = my_nomad.job.get_deployment("example")["JobVersion"]
 
@@ -387,7 +387,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10')
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 my_nomad.job.evaluate_job("example")
 ```
@@ -491,7 +491,7 @@ job = {'Job': {'AllAtOnce': None,
   'VaultToken': None,
   'Version': None}}
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10')
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 plan = my_nomad.job.plan_job("example", job)
 ```
@@ -507,7 +507,7 @@ Example:
 ```
 import nomad
 
-my_nomad = nomad.Nomad(uri='http://192.168.33.10')
+my_nomad = nomad.Nomad(host='192.168.33.10')
 
 my_nomad.job.deregister_job("example")
 ```
