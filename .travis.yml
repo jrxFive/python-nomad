@@ -35,9 +35,9 @@ before_install:
 - MAJOR_VERSION=`echo ${NOMAD_VERSION} | cut -d "." -f 2`
 - 'if [[ ${MAJOR_VERSION} -gt 6 ]]; then
       echo "Nomad version $NOMAD_VERSION supports acls";
-      nomad agent -dev -bind #{IP} -node pynomad1 --acl-enabled > /dev/null 2>&1 &
+      nomad agent -dev -bind ${NOMAD_IP} -node pynomad1 --acl-enabled > /dev/null 2>&1 &
   else
-      nomad agent -dev -bind #{IP} -node pynomad1 > /dev/null 2>&1 &
+      nomad agent -dev -bind ${NOMAD_IP} -node pynomad1 > /dev/null 2>&1 &
   fi'
 - sleep 30
 install:
