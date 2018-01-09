@@ -35,9 +35,10 @@ class Requester(object):
                              ]
         # split 0 -> Api Version
         # split 1 -> Working Endpoint
+        ENDPOINT_NAME = 1
         endpoint_split = endpoint.split("/")
         try:
-            required = endpoint_split[1] in required_namespace
+            required = endpoint_split[ENDPOINT_NAME] in required_namespace
         except:
             required = False
         return required
