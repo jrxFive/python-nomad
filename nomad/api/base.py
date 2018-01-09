@@ -23,7 +23,7 @@ class Requester(object):
             u = "/".join(args)
             return "{v}/".format(v=self.version) + u
 
-    def _required_namespace(endpoint):
+    def _required_namespace(self, endpoint):
         required_namespace = [
                                 "job",
                                 "jobs",
@@ -33,22 +33,25 @@ class Requester(object):
                                 "deployments",
                                 "acl"
                              ]
+        # split 0 -> Api Version
+        # split 1 -> Working Endpoint
+        ENDPOINT_NAME = 1
         endpoint_split = endpoint.split("/")
-        return endpoint_split[0] in required_namespace
+        try:
+            required = endpoint_split[ENDPOINT_NAME] in required_namespace
+        except:
+            required = False
+        return required
 
     def _urlBuilder(self, endpoint):
+        url = "{uri}:{port}/{endpoint}".format(uri=self.uri,
+                                               port=self.port,
+                                               endpoint=endpoint)
         if self.namespace:
             if self._required_namespace(endpoint):
-                url = "{uri}:{port}/{endpoint}?namespace={namespace}".format(
-                           uri=self.uri,
-                           port=self.port,
-                           endpoint=endpoint,
+                url = "{url}?namespace={namespace}".format(
+                           url=url,
                            namespace=self.namespace)
-        else:
-            url = "{uri}:{port}/{endpoint}".format(uri=self.uri,
-                                                   port=self.port,
-                                                   endpoint=endpoint)
-
         return url
 
 
