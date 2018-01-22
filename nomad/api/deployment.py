@@ -149,7 +149,7 @@ class Deployment(object):
 
             arguments:
               - id
-              - all, Specifies whether all task groups should be promoted.
+              - groups, (list) Specifies a particular set of task groups that should be promoted
             returns: dict
             raises:
               - nomad.api.exceptions.BaseNomadException

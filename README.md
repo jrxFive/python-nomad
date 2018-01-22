@@ -93,6 +93,8 @@ py.test --cov=nomad --cov-report=term-missing --runxfail tests/
     - [x] Agent [:link:](docs/api/agent.md)
     - [x] Allocation [:link:](docs/api/allocation.md)
     - [x] Allocations [:link:](docs/api/allocations.md)
+    - [x] Deployment [:link:](docs/api/deployment.md)
+    - [x] Deployments [:link:](docs/api/deployments.md)
     - [x] Client [:link:](docs/api/client.md)
     - [x] Evaluation [:link:](docs/api/evaluation.md)
     - [x] Evaluations [:link:](docs/api/evaluations.md)
