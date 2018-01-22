@@ -60,13 +60,10 @@ class Nodes(object):
         return iter(nodes)
 
     def _get(self, *args):
-        try:
-            url = self._requester._endpointBuilder(Nodes.ENDPOINT, *args)
-            nodes = self._requester.get(url)
+        url = self._requester._endpointBuilder(Nodes.ENDPOINT, *args)
+        nodes = self._requester.get(url)
 
-            return nodes.json()
-        except:
-            raise
+        return nodes.json()
 
     def get_nodes(self):
         """ Lists all the client nodes registered with Nomad.

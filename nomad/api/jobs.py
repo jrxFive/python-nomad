@@ -62,13 +62,10 @@ class Jobs(object):
         return iter(jobs)
 
     def _get(self, *args):
-        try:
-            url = self._requester._endpointBuilder(Jobs.ENDPOINT, *args)
-            jobs = self._requester.get(url)
+        url = self._requester._endpointBuilder(Jobs.ENDPOINT, *args)
+        jobs = self._requester.get(url)
 
-            return jobs.json()
-        except:
-            raise
+        return jobs.json()
 
     def get_jobs(self):
         """ Lists all the jobs registered with Nomad.
@@ -83,17 +80,14 @@ class Jobs(object):
         return self._get()
 
     def _post(self, *args, **kwargs):
-        try:
-            url = self._requester._endpointBuilder(Jobs.ENDPOINT, *args)
+        url = self._requester._endpointBuilder(Jobs.ENDPOINT, *args)
 
-            if kwargs:
-                response = self._requester.post(url, json=kwargs["job"])
-            else:
-                response = self._requester.post(url)
+        if kwargs:
+            response = self._requester.post(url, json=kwargs["job"])
+        else:
+            response = self._requester.post(url)
 
-            return response.json()
-        except:
-            raise
+        return response.json()
 
     def register_job(self, job):
         """ Register a job with Nomad.

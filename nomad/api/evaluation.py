@@ -44,14 +44,10 @@ class Evaluation(object):
             raise KeyError
 
     def _get(self, *args):
-        try:
-            url = self._requester._endpointBuilder(Evaluation.ENDPOINT, *args)
-            evaluation = self._requester.get(url)
+        url = self._requester._endpointBuilder(Evaluation.ENDPOINT, *args)
+        evaluation = self._requester.get(url)
 
-            return evaluation.json()
-
-        except:
-            raise
+        return evaluation.json()
 
     def get_evaluation(self, id):
         """ Query a specific evaluation.

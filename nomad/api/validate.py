@@ -24,13 +24,10 @@ class Validate(object):
         raise AttributeError
 
     def _post(self, *args, **kwargs):
-        try:
-            url = self._requester._endpointBuilder(Validate.ENDPOINT, *args)
-            response = self._requester.post(url, json=kwargs.get("nomad_job_dict", {}))
+        url = self._requester._endpointBuilder(Validate.ENDPOINT, *args)
+        response = self._requester.post(url, json=kwargs.get("nomad_job_dict", {}))
 
-            return response.ok
-        except:
-            raise
+        return response.ok
 
     def validate_job(self, nomad_job_dict):
         """ This endpoint validates a Nomad job file. The local Nomad agent forwards the request to a server.

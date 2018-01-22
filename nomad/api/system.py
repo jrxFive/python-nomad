@@ -24,13 +24,10 @@ class System(object):
         raise AttributeError
 
     def _put(self, *args):
-        try:
-            url = self._requester._endpointBuilder(System.ENDPOINT, *args)
-            response = self._requester.put(url)
+        url = self._requester._endpointBuilder(System.ENDPOINT, *args)
+        response = self._requester.put(url)
 
-            return response.ok
-        except:
-            raise
+        return response.ok
 
     def initiate_garbage_collection(self):
         """ Initiate garbage collection of jobs, evals, allocations and nodes.

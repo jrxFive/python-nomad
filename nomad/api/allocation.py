@@ -2,7 +2,6 @@ import nomad.api.exceptions
 
 
 class Allocation(object):
-
     """
     The allocation endpoint is used to query the a specific allocation.
     By default, the agent's local region is used; another region can be
@@ -44,13 +43,10 @@ class Allocation(object):
             raise KeyError
 
     def _get(self, *args):
-        try:
-            url = self._requester._endpointBuilder(Allocation.ENDPOINT, *args)
-            response = self._requester.get(url)
+        url = self._requester._endpointBuilder(Allocation.ENDPOINT, *args)
+        response = self._requester.get(url)
 
-            return response.json()
-        except:
-            raise
+        return response.json()
 
     def get_allocation(self, id):
         """ Query a specific allocation.

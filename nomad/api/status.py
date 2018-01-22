@@ -25,13 +25,10 @@ class Status(object):
         raise AttributeError
 
     def _get(self, *args):
-        try:
-            url = self._requester._endpointBuilder(Status.ENDPOINT, *args)
-            nodes = self._requester.get(url)
+        url = self._requester._endpointBuilder(Status.ENDPOINT, *args)
+        nodes = self._requester.get(url)
 
-            return nodes.json()
-        except:
-            raise
+        return nodes.json()
 
 
 class Leader(Status):

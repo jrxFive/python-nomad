@@ -57,13 +57,10 @@ class Evaluations(object):
         return iter(evaluations)
 
     def _get(self, *args):
-        try:
-            url = self._requester._endpointBuilder(Evaluations.ENDPOINT, *args)
-            evaluations = self._requester.get(url)
+        url = self._requester._endpointBuilder(Evaluations.ENDPOINT, *args)
+        evaluations = self._requester.get(url)
 
-            return evaluations.json()
-        except:
-            raise
+        return evaluations.json()
 
     def get_evaluations(self):
         """ Lists all the evaluations.
