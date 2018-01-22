@@ -12,6 +12,8 @@ pages:
    - Allocation: 'api/allocation.md'
    - Allocations: 'api/alocations.md'
    - Client: 'api/client.md'
+   - Deployment: 'api/deployment.md'
+   - Deployments: 'api/deployments.md'
    - Evaluations: 'api/evaluations.md'
    - Evaluation: 'api/evaluation.md'
    - Job: 'api/job.md'
