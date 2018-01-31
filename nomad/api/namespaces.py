@@ -56,13 +56,10 @@ class Namespaces(object):
         return iter(namespaces)
 
     def _get(self, *args):
-        try:
-            url = self._requester._endpointBuilder(Namespaces.ENDPOINT, *args)
-            namespaces = self._requester.get(url)
+        url = self._requester._endpointBuilder(Namespaces.ENDPOINT, *args)
+        namespaces = self._requester.get(url)
 
-            return namespaces.json()
-        except:
-            raise
+        return namespaces.json()
 
     def get_namespaces(self):
         """ Lists all the namespaces registered with Nomad.

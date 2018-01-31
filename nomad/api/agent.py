@@ -20,13 +20,10 @@ class Agent(object):
         raise AttributeError(msg)
 
     def _get(self, *args):
-        try:
-            url = self._requester._endpointBuilder(Agent.ENDPOINT, *args)
-            agent = self._requester.get(url)
+        url = self._requester._endpointBuilder(Agent.ENDPOINT, *args)
+        agent = self._requester.get(url)
 
-            return agent.json()
-        except:
-            raise
+        return agent.json()
 
     def get_agent(self):
         """ Query the state of the target agent.

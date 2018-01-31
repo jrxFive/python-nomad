@@ -47,13 +47,10 @@ class Job(object):
             raise KeyError
 
     def _get(self, *args):
-        try:
-            url = self._requester._endpointBuilder(Job.ENDPOINT, *args)
-            job = self._requester.get(url)
+        url = self._requester._endpointBuilder(Job.ENDPOINT, *args)
+        job = self._requester.get(url)
 
-            return job.json()
-        except:
-            raise
+        return job.json()
 
     def get_job(self, id):
         """ Query a single job for its specification and status.
@@ -154,17 +151,14 @@ class Job(object):
         return self._get(id, "summary")
 
     def _post(self, *args, **kwargs):
-        try:
-            url = self._requester._endpointBuilder(Job.ENDPOINT, *args)
+        url = self._requester._endpointBuilder(Job.ENDPOINT, *args)
 
-            if kwargs:
-                response = self._requester.post(url, json=kwargs.get("json_dict", None), params=kwargs.get("params", None))
-            else:
-                response = self._requester.post(url)
+        if kwargs:
+            response = self._requester.post(url, json=kwargs.get("json_dict", None), params=kwargs.get("params", None))
+        else:
+            response = self._requester.post(url)
 
-            return response.json()
-        except:
-            raise
+        return response.json()
 
     def register_job(self, id, job):
         """ Registers a new job or updates an existing job
@@ -287,13 +281,10 @@ class Job(object):
         return self._post(id, "stable", json_dict=revert_json)
 
     def _delete(self, *args):
-        try:
-            url = self._requester._endpointBuilder(Job.ENDPOINT, *args)
-            job = self._requester.delete(url)
+        url = self._requester._endpointBuilder(Job.ENDPOINT, *args)
+        job = self._requester.delete(url)
 
-            return job.json()
-        except:
-            raise
+        return job.json()
 
     def deregister_job(self, id):
         """ Deregisters a job, and stops all allocations part of it.

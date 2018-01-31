@@ -24,41 +24,31 @@ class Sentinel(object):
         raise AttributeError
 
     def _get(self, *args, **kwargs):
-        try:
-            url = self._requester._endpointBuilder(Sentinel.ENDPOINT, *args)
-            response = self._requester.get(url,
-                                           params=kwargs.get("params",None))
+        url = self._requester._endpointBuilder(Sentinel.ENDPOINT, *args)
+        response = self._requester.get(url,
+                                       params=kwargs.get("params", None))
 
-            return response.json()
-        except:
-            raise
+        return response.json()
 
     def _post(self, *args, **kwargs):
-        try:
-            url = self._requester._endpointBuilder(Sentinel.ENDPOINT, *args)
+        url = self._requester._endpointBuilder(Sentinel.ENDPOINT, *args)
 
-            if kwargs:
-                response = self._requester.post(url, json=kwargs.get("json_dict", None), params=kwargs.get("params", None))
-            else:
-                response = self._requester.post(url)
+        if kwargs:
+            response = self._requester.post(url, json=kwargs.get("json_dict", None), params=kwargs.get("params", None))
+        else:
+            response = self._requester.post(url)
 
-            return response.json()
-        except:
-            raise
+        return response.json()
 
     def _post_no_json(self, *args, **kwargs):
-        try:
-            url = self._requester._endpointBuilder(Sentinel.ENDPOINT, *args)
+        url = self._requester._endpointBuilder(Sentinel.ENDPOINT, *args)
             
-            if kwargs:
-                response = self._requester.post(url, json=kwargs.get("json_dict", None), params=kwargs.get("params", None))
-            else:
-                response = self._requester.post(url)
+        if kwargs:
+            response = self._requester.post(url, json=kwargs.get("json_dict", None), params=kwargs.get("params", None))
+        else:
+            response = self._requester.post(url)
 
-            return response
-        except:
-            raise
-
+        return response
 
     def get_policies(self):
         """ Get a list of policies.
@@ -72,7 +62,6 @@ class Sentinel(object):
               - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self._get("policies")
-
 
     def create_policy(self, id, policy):
         """ Create policy.
@@ -103,7 +92,6 @@ class Sentinel(object):
         """
         return self._get("policy", id)
 
-
     def update_policy(self, id, policy):
         """ Create policy.
 
@@ -120,7 +108,6 @@ class Sentinel(object):
         """
         return self._post_no_json("policy", id, json_dict=policy)
 
-
     def delete_policy(self, id):
         """ Delete specific policy.
 
@@ -135,13 +122,9 @@ class Sentinel(object):
         """
         return self._delete("policy", id)
 
-
     def _delete(self, *args, **kwargs):
-        try:
-            url = self._requester._endpointBuilder(Sentinel.ENDPOINT, *args)
-            response = self._requester.delete(url,
-                                              params=kwargs.get("params", None))
+        url = self._requester._endpointBuilder(Sentinel.ENDPOINT, *args)
+        response = self._requester.delete(url,
+                                          params=kwargs.get("params", None))
 
-            return response.ok
-        except:
-            raise
+        return response.ok

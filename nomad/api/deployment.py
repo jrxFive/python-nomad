@@ -42,14 +42,10 @@ class Deployment(object):
             raise KeyError
 
     def _get(self, *args):
-        try:
-            url = self._requester._endpointBuilder(Deployment.ENDPOINT, *args)
-            response = self._requester.get(url)
+        url = self._requester._endpointBuilder(Deployment.ENDPOINT, *args)
+        response = self._requester.get(url)
 
-            return response.json()
-
-        except:
-            raise
+        return response.json()
 
     def get_deployment(self, id):
         """ This endpoint reads information about a specific deployment by ID.
@@ -80,14 +76,10 @@ class Deployment(object):
         return self._get("allocations", id)
 
     def _post(self, *args, **kwargs):
-        try:
-            url = self._requester._endpointBuilder(Deployment.ENDPOINT, *args)
-            response = self._requester.post(url, json=kwargs.get("json_dict", None))
+        url = self._requester._endpointBuilder(Deployment.ENDPOINT, *args)
+        response = self._requester.post(url, json=kwargs.get("json_dict", None))
 
-            return response.json()
-
-        except:
-            raise
+        return response.json()
 
     def fail_deployment(self, id):
         """ This endpoint is used to mark a deployment as failed. This should be done to force the scheduler to stop

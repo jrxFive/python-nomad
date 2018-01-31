@@ -23,24 +23,18 @@ class Operator(object):
         raise AttributeError
 
     def _get(self, *args, **kwargs):
-        try:
-            url = self._requester._endpointBuilder(Operator.ENDPOINT, *args)
-            response = self._requester.get(url,
-                                           params=kwargs.get("params",None))
+        url = self._requester._endpointBuilder(Operator.ENDPOINT, *args)
+        response = self._requester.get(url,
+                                       params=kwargs.get("params",None))
 
-            return response.json()
-        except:
-            raise
+        return response.json()
 
     def _delete(self, *args, **kwargs):
-        try:
-            url = self._requester._endpointBuilder(Operator.ENDPOINT, *args)
-            response = self._requester.delete(url,
-                                              params=kwargs.get("params", None))
+        url = self._requester._endpointBuilder(Operator.ENDPOINT, *args)
+        response = self._requester.delete(url,
+                                          params=kwargs.get("params", None))
 
-            return response.ok
-        except:
-            raise
+        return response.ok
 
     def get_configuration(self, stale=False):
         """ Query the status of a client node registered with Nomad.

@@ -47,13 +47,10 @@ class Node(object):
             raise KeyError
 
     def _get(self, *args):
-        try:
-            url = self._requester._endpointBuilder(Node.ENDPOINT, *args)
-            node = self._requester.get(url)
+        url = self._requester._endpointBuilder(Node.ENDPOINT, *args)
+        node = self._requester.get(url)
 
-            return node.json()
-        except:
-            raise
+        return node.json()
 
     def get_node(self, id):
         """ Query the status of a client node registered with Nomad.
@@ -80,17 +77,14 @@ class Node(object):
         return self._get(id, "allocations")
 
     def _post(self, *args, **kwargs):
-        try:
-            url = self._requester._endpointBuilder(Node.ENDPOINT, *args)
+        url = self._requester._endpointBuilder(Node.ENDPOINT, *args)
 
-            if kwargs:
-                response = self._requester.post(url, params=kwargs["enable"])
-            else:
-                response = self._requester.post(url)
+        if kwargs:
+            response = self._requester.post(url, params=kwargs["enable"])
+        else:
+            response = self._requester.post(url)
 
-            return response.json()
-        except:
-            raise
+        return response.json()
 
     def evaluate_node(self, id):
         """ Creates a new evaluation for the given node.

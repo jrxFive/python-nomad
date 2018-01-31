@@ -55,13 +55,10 @@ class Deployments(object):
             raise KeyError
 
     def _get(self, *args, **kwargs):
-        try:
-            url = self._requester._endpointBuilder(Deployments.ENDPOINT, *args)
-            response = self._requester.get(url, params=kwargs.get("params", None))
+        url = self._requester._endpointBuilder(Deployments.ENDPOINT, *args)
+        response = self._requester.get(url, params=kwargs.get("params", None))
 
-            return response.json()
-        except:
-            raise
+        return response.json()
 
     def get_deployments(self, prefix=""):
         """ This endpoint lists all deployments.

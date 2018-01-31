@@ -31,13 +31,10 @@ class Allocations(object):
         return iter(response)
 
     def _get(self, *args):
-        try:
-            url = self._requester._endpointBuilder(Allocations.ENDPOINT, *args)
-            response = self._requester.get(url)
+        url = self._requester._endpointBuilder(Allocations.ENDPOINT, *args)
+        response = self._requester.get(url)
 
-            return response.json()
-        except:
-            raise
+        return response.json()
 
     def get_allocations(self):
         """ Lists all the allocations.

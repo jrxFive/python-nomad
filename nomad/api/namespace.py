@@ -47,35 +47,25 @@ class Namespace(object):
             raise KeyError
 
     def _get(self, *args):
-        try:
-            url = self._requester._endpointBuilder(Namespace.ENDPOINT, *args)
-            namespace = self._requester.get(url)
+        url = self._requester._endpointBuilder(Namespace.ENDPOINT, *args)
+        namespace = self._requester.get(url)
 
-            return namespace.json()
-        except:
-            raise
+        return namespace.json()
 
     def _post(self, *args, **kwargs):
-        try:
-            url = self._requester._endpointBuilder(Namespace.ENDPOINT, *args)
-            if kwargs:
-                response = self._requester.post(url, json=kwargs.get("json_dict", None), params=kwargs.get("params", None))
-            else:
-                response = self._requester.post(url)
+        url = self._requester._endpointBuilder(Namespace.ENDPOINT, *args)
+        if kwargs:
+            response = self._requester.post(url, json=kwargs.get("json_dict", None), params=kwargs.get("params", None))
+        else:
+            response = self._requester.post(url)
 
-            return response
-        except:
-            raise
+        return response
 
     def _delete(self, *args):
-        try:
-            url = self._requester._endpointBuilder(Namespace.ENDPOINT, *args)
-            namespace = self._requester.delete(url)
+        url = self._requester._endpointBuilder(Namespace.ENDPOINT, *args)
+        namespace = self._requester.delete(url)
 
-            return namespace
-        except:
-            raise
-
+        return namespace
 
     def get_namespace(self, id):
         """ Query a single namespace.
@@ -121,7 +111,6 @@ class Namespace(object):
               - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self._post(id, json_dict=namespace)
-
 
     def delete_namespace(self, id):
         """ delete namespace.

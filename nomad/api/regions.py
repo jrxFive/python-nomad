@@ -53,13 +53,10 @@ class Regions(object):
         return iter(regions)
 
     def _get(self, *args):
-        try:
-            url = self._requester._endpointBuilder(Regions.ENDPOINT, *args)
-            nodes = self._requester.get(url)
+        url = self._requester._endpointBuilder(Regions.ENDPOINT, *args)
+        nodes = self._requester.get(url)
 
-            return nodes.json()
-        except:
-            raise
+        return nodes.json()
 
     def get_regions(self):
         """ Returns the known region names.
