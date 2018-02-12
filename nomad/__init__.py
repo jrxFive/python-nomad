@@ -64,6 +64,7 @@ class Nomad(object):
         self._namespace = api.Namespace(self.requester)
         self._acl = api.Acl(self.requester)
         self._sentinel = api.Sentinel(self.requester)
+        self._metrics = api.Metrics(self.requester)
 
     def set_namespace(self, namespace):
         self.requester.namespace = namespace
@@ -167,3 +168,7 @@ class Nomad(object):
     @property
     def sentinel(self):
         return self._sentinel
+
+    @property
+    def metrics(self):
+        return self._metrics
