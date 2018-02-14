@@ -21,3 +21,4 @@ from nomad.api.namespaces import Namespaces
 from nomad.api.namespace import Namespace
 from nomad.api.acl import Acl
 from nomad.api.sentinel import Sentinel
+from nomad.api.metrics import Metrics
