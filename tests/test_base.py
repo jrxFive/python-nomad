@@ -40,9 +40,9 @@ def test_base_get_connnection_not_authorized():
     with pytest.raises(nomad.api.exceptions.URLNotAuthorizedNomadException):
         j = n.job.get_job("example")
 
-@requests_mock.mock()
-def test_base_use_address_instead_on_host_port(mock):
-    mock.get('https://nomad.service.consul:4646/v1/jobs', text='[]')
-    nomad_address = "https://nomad.service.consul:4646"
-    n = nomad.Nomad(address=nomad_address, host=common.IP, port=common.NOMAD_PORT, verify=False, token=common.NOMAD_TOKEN)
-    n.jobs.get_jobs()
+def test_base_use_address_instead_on_host_port():
+    with requests_mock.Mocker() as m:
+        m.get('https://nomad.service.consul:4646/v1/jobs', text='[]')
+        nomad_address = "https://nomad.service.consul:4646"
+        n = nomad.Nomad(address=nomad_address, host=common.IP, port=common.NOMAD_PORT, verify=False, token=common.NOMAD_TOKEN)
+        n.jobs.get_jobs()
