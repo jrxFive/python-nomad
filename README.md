@@ -46,7 +46,20 @@ example_allocation = n.job.get_allocations(j)
 n.job.deregister_job(j)
 ```
 
+## Environment Variables
+
+This library also supports environment variables: `NOMAD_ADDR`, `NOMAD_NAMESPACE`, `NOMAD_TOKEN`, `NOMAD_REGION` for ease of configuration
+and unifying with nomad cli tools and other libraries.
+
+```bash
+NOMAD_ADDR=http://127.0.0.1:4646
+NOMAD_NAMESPACE=default
+NOMAD_TOKEN=xxxx-xxxx-xxxx-xxxx
+NOMAD_REGION=us-east-1a
+```
+
 ## Class Dunders
+
 | Class | contains | len | getitem | iter |
 |---|---|---|---|---|
 |agent|N|N|N|N
