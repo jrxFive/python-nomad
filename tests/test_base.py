@@ -3,7 +3,7 @@ import tests.common as common
 import nomad
 from nomad.api import exceptions
 import os
-
+import requests_mock
 
 @pytest.fixture
 def nomad_setup():
@@ -39,3 +39,10 @@ def test_base_get_connnection_not_authorized():
         host=common.IP, port=common.NOMAD_PORT, token='aed2fc63-c155-40d5-b58a-18deed4b73e5', verify=False)
     with pytest.raises(nomad.api.exceptions.URLNotAuthorizedNomadException):
         j = n.job.get_job("example")
+
+def test_base_use_address_instead_on_host_port():
+    with requests_mock.Mocker() as m:
+        m.get('https://nomad.service.consul:4646/v1/jobs', text='[]')
+        nomad_address = "https://nomad.service.consul:4646"
+        n = nomad.Nomad(address=nomad_address, host=common.IP, port=common.NOMAD_PORT, verify=False, token=common.NOMAD_TOKEN)
+        n.jobs.get_jobs()

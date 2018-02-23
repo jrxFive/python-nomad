@@ -1,11 +1,21 @@
 
 import nomad.api as api
-
+import os
 
 class Nomad(object):
 
-    def __init__(self, host='127.0.0.1', secure=False, port=4646, namespace=None,
-        token=None, timeout=5, region=None, version='v1', verify=False, cert=()):
+    def __init__(self, 
+        host='127.0.0.1', 
+        secure=False, 
+        port=4646,
+        address=os.getenv('NOMAD_ADDR', None),
+        namespace=os.getenv('NOMAD_NAMESPACE', None),
+        token=os.getenv('NOMAD_TOKEN', None), 
+        timeout=5, 
+        region=os.getenv('NOMAD_REGION', None), 
+        version='v1', 
+        verify=False, 
+        cert=()):
         """ Nomad api client
 
           https://github.com/jrxFive/python-nomad/
@@ -35,13 +45,14 @@ class Nomad(object):
         self.host = host
         self.secure = secure
         self.port = port
+        self.address = address
         self.timeout = timeout
         self.version = version
         self.verify = verify
         self.cert = cert
 
-        self.requester = api.Requester(self.get_uri(), port, namespace, token,
-                                       timeout, version, verify, cert)
+        self.requester = api.Requester(address=address, uri=self.get_uri(), port=port, namespace=namespace,
+                                        token=token, timeout=timeout, version=version, verify=verify, cert=cert)
 
         self._jobs = api.Jobs(self.requester)
         self._job = api.Job(self.requester)
