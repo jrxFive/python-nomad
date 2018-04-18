@@ -80,7 +80,7 @@ class Node(object):
         url = self._requester._endpointBuilder(Node.ENDPOINT, *args)
 
         if kwargs:
-            response = self._requester.post(url, params=kwargs["enable"])
+            response = self._requester.post(url, params=kwargs.get("enable", None), json=kwargs.get("payload", {}))
         else:
             response = self._requester.post(url)
 
@@ -107,9 +107,88 @@ class Node(object):
 
            https://www.nomadproject.io/docs/http/node.html
 
+            arguments:
+              - id (str uuid): node id
+              - enable (bool): enable node drain or not to enable node drain
             returns: dict
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
+
         return self._post(id, "drain", enable={"enable": enable})
+
+    def drain_node_with_spec(self, id, drain_spec, mark_eligible=None):
+        """ Drain the node.
+            When enabled, no further allocations will be
+            assigned and existing allocations will be migrated.
+
+           https://www.nomadproject.io/docs/http/node.html
+
+            arguments:
+              - id (str uuid): node id
+              - drain_spec (dict): https://www.nomadproject.io/api/nodes.html#drainspec
+              - mark_eligible (bool): https://www.nomadproject.io/api/nodes.html#markeligible
+            returns: dict
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
+        payload = {}
+
+        if drain_spec and mark_eligible is not None:
+            payload = {
+                "NodeID": id,
+                "DrainSpec": drain_spec,
+                "MarkEligible": mark_eligible
+            }
+        elif drain_spec and mark_eligible is None:
+            payload = {
+                "NodeID": id,
+                "DrainSpec": drain_spec
+            }
+        elif not drain_spec and mark_eligible is not None:
+            payload = {
+                "NodeID": id,
+                "MarkEligible": mark_eligible
+            }
+
+        return self._post(id, "drain", payload=payload)
+
+    def eligible_node(self, id, eligible=None, ineligible=None):
+        """ Toggle the eligibility of the node.
+
+           https://www.nomadproject.io/docs/http/node.html
+
+            arguments:
+              - id (str uuid): node id
+              - eligible (bool): Set to True to mark node eligible
+              - ineligible (bool): Set to True to mark node ineligible
+            returns: dict
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
+        payload = {}
+
+        if eligible is not None and ineligible is not None:
+            raise nomad.api.exceptions.InvalidParameters
+        elif eligible:
+            payload = {"Eligibility": "eligible", "NodeID": id}
+        elif ineligible:
+            payload = {"Eligibility": "ineligible", "NodeID": id}
+
+        return self._post(id, "eligibility", payload=payload)
+
+    def purge_node(self, id):
+        """
+        arguments:
+          - id (str uuid): node id
+        returns: dict
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
+        """
+
+        return self._post(id, "purge")
+
