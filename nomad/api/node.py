@@ -196,7 +196,7 @@ class Node(object):
         return self._post(id, "eligibility", payload=payload)
 
     def purge_node(self, id):
-        """
+        """ This endpoint purges a node from the system. Nodes can still join the cluster if they are alive.
         arguments:
           - id (str uuid): node id
         returns: dict
