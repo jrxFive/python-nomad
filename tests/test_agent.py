@@ -1,6 +1,8 @@
 import pytest
 import tests.common as common
 import nomad
+import os
+from nomad.api import exceptions as nomad_exceptions
 import json
 
 
@@ -38,10 +40,17 @@ def test_join_agent(nomad_setup):
 
 
 def test_update_servers(nomad_setup):
-    r = nomad_setup.agent.update_servers(['192.168.33.11', '10.1.10.200:4829'])
+    known_servers = nomad_setup.agent.get_servers()
+    r = nomad_setup.agent.update_servers(known_servers)
     assert r == 200
-    assert "192.168.33.11:4647" in nomad_setup.agent.get_servers()
-    assert "10.1.10.200:4829" in nomad_setup.agent.get_servers()
+    assert known_servers[0] in nomad_setup.agent.get_servers()
+
+    # 0.8 enforces list of known servers to the provided list releases below do allow this functionality
+    try:
+        nomad_setup.agent.update_servers(known_servers + ["10.1.10.200:4829"])
+        assert "10.1.10.200:4829" in nomad_setup.agent.get_servers()
+    except nomad_exceptions.BaseNomadException:
+        pass
 
 
 def test_force_leave(nomad_setup):
