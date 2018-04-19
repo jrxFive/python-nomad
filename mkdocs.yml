@@ -18,6 +18,7 @@ pages:
    - Evaluation: 'api/evaluation.md'
    - Job: 'api/job.md'
    - Jobs: 'api/jobs.md'
+   - Metrics: 'api/metrics.md'
    - Node: 'api/node.md'
    - Nodes: 'api/nodes.md'
    - Regions: 'api/regions.md'
