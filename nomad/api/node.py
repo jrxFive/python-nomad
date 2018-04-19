@@ -173,10 +173,17 @@ class Node(object):
 
         if eligible is not None and ineligible is not None:
             raise nomad.api.exceptions.InvalidParameters
-        elif eligible:
+        if eligible is None and ineligible is None:
+            raise nomad.api.exceptions.InvalidParameters
+
+        if eligible is not None and eligible:
             payload = {"Eligibility": "eligible", "NodeID": id}
-        elif ineligible:
+        elif eligible is not None and not eligible:
             payload = {"Eligibility": "ineligible", "NodeID": id}
+        elif ineligible is not None:
+            payload = {"Eligibility": "ineligible", "NodeID": id}
+        elif ineligible is not None and not ineligible:
+            payload = {"Eligibility": "eligible", "NodeID": id}
 
         return self._post(id, "eligibility", payload=payload)
 
