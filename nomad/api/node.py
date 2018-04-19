@@ -119,11 +119,13 @@ class Node(object):
         return self._post(id, "drain", enable={"enable": enable})
 
     def drain_node_with_spec(self, id, drain_spec, mark_eligible=None):
-        """ Drain the node.
-            When enabled, no further allocations will be
-            assigned and existing allocations will be migrated.
+        """ This endpoint toggles the drain mode of the node. When draining is enabled,
+            no further allocations will be assigned to this node, and existing allocations
+            will be migrated to new nodes.
 
-           https://www.nomadproject.io/docs/http/node.html
+            If an empty dictionary is given as drain_spec this will disable/toggle the drain.
+
+            https://www.nomadproject.io/docs/http/node.html
 
             arguments:
               - id (str uuid): node id
@@ -150,7 +152,13 @@ class Node(object):
         elif not drain_spec and mark_eligible is not None:
             payload = {
                 "NodeID": id,
+                "DrainSpec": None,
                 "MarkEligible": mark_eligible
+            }
+        elif not drain_spec and mark_eligible is None:
+            payload = {
+                "NodeID": id,
+                "DrainSpec": None,
             }
 
         return self._post(id, "drain", payload=payload)

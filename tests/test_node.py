@@ -35,23 +35,24 @@ def test_drain_node(nomad_setup):
     nodeID = nomad_setup.nodes["pynomad1"]["ID"]
     assert "EvalIDs" in nomad_setup.node.drain_node(nodeID)
     assert "EvalIDs" in nomad_setup.node.drain_node(nodeID, True)
-    assert nomad_setup.node[nodeID]["Drain"] == True
+    assert nomad_setup.node[nodeID]["Drain"] is True
     nomad_setup.node.drain_node(nodeID)
-    assert nomad_setup.node[nodeID]["Drain"] == False
+    assert nomad_setup.node[nodeID]["Drain"] is False
 
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 8, 1), reason="Not supported in version")
 def test_drain_node_with_spec(nomad_setup):
     nodeID = nomad_setup.nodes["pynomad1"]["ID"]
     assert "EvalIDs" in nomad_setup.node.drain_node_with_spec(nodeID, drain_spec={"Duration": "-100000000"})
-    assert nomad_setup.node[nodeID]["Drain"] == True
-    assert "EvalIDs" in nomad_setup.node.drain_node_with_spec(nodeID, drain_spec={"Duration": "-100000000"}, mark_eligible=True)
-    assert nomad_setup.node[nodeID]["Drain"] == False
+    assert nomad_setup.node[nodeID]["Drain"] is True
+    assert "EvalIDs" in nomad_setup.node.drain_node_with_spec(nodeID, drain_spec={}, mark_eligible=True)
+    assert nomad_setup.node[nodeID]["Drain"] is False
 
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 8, 1), reason="Not supported in version")
 def test_eligible_node(nomad_setup):
     nodeID = nomad_setup.nodes["pynomad1"]["ID"]
+
     nomad_setup.node.eligible_node(nodeID, ineligible=True)
     assert nomad_setup.node[nodeID]["SchedulingEligibility"] == "ineligible"
 
@@ -63,6 +64,7 @@ def test_eligible_node(nomad_setup):
 
     with pytest.raises(nomad_exceptions.InvalidParameters):
         assert nomad_setup.node.eligible_node(nodeID)
+
 
 def test_dunder_getitem_exist(nomad_setup):
     nodeID = nomad_setup.nodes["pynomad1"]["ID"]

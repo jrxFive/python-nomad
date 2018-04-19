@@ -39,7 +39,7 @@ def test_join_agent(nomad_setup):
     assert r["num_joined"] == 0
 
 
-@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 3, 2), reason="Not supported in version")
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 4, 1), reason="Not supported in version")
 def test_update_servers(nomad_setup):
     known_servers = nomad_setup.agent.get_servers()
     r = nomad_setup.agent.update_servers(known_servers)
