@@ -1,19 +1,9 @@
 import os
 import pytest
-import tests.common as common
-import nomad
 from nomad.api import exceptions as nomad_exceptions
-import json
 
-
-@pytest.fixture
-def nomad_setup():
-    n = nomad.Nomad(host=common.IP, port=common.NOMAD_PORT, verify=False, token=common.NOMAD_TOKEN)
-    return n
 
 # integration tests requires nomad Vagrant VM or Binary running
-
-
 def test_get_node(nomad_setup):
     nodeID = nomad_setup.nodes["pynomad1"]["ID"]
     assert isinstance(nomad_setup.node.get_node(nodeID), dict) == True

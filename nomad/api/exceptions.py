@@ -17,4 +17,4 @@ class URLNotAuthorizedNomadException(Exception):
 
 
 class InvalidParameters(Exception):
-    """This method cannot have both parameters enable"""
+    """Invalid parameters given"""
