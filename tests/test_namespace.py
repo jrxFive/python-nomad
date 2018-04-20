@@ -1,21 +1,10 @@
-import pytest
-import tests.common as common
-import nomad
 import json
-from nomad.api import exceptions
 from mock import patch, MagicMock
 import requests
 
 
 
-@pytest.fixture
-def nomad_setup():
-    n = nomad.Nomad(host=common.IP, port=common.NOMAD_PORT, verify=False, token=common.NOMAD_TOKEN)
-    return n
-
 # integration tests was mocked. If you have an enterprise nomad please uncomenet ##### ENTERPRISE TEST #####
-
-
 @patch('nomad.api.namespace.Namespace._post')
 def test_create_namespace(mock_post, nomad_setup):
     mock_post.return_value = requests.codes.ok

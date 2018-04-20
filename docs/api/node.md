@@ -67,3 +67,65 @@ my_nomad = nomad.Nomad(host='192.168.33.10')
 
 my_nomad.node.drain_node('ed1bbae7-c38a-df2d-1de7-50dbc753fc98')
 ```
+
+### Drain node with DrainSpec
+
+This endpoint toggles the drain mode of the node. When draining is enabled, no further allocations will be assigned to this node, and existing allocations will be migrated to new nodes.
+
+https://www.nomadproject.io/api/nodes.html#drain-node
+
+Example:
+
+```
+import nomad
+
+my_nomad = nomad.Nomad(host='192.168.33.10')
+
+#enable drain mode
+my_nomad.node.drain_node('ed1bbae7-c38a-df2d-1de7-50dbc753fc98', drain_spec={"Duration": "100000000"})
+
+#enable drain mode but leave system jobs on the specificed node
+my_nomad.node.drain_node('ed1bbae7-c38a-df2d-1de7-50dbc753fc98', drain_spec={"Duration": "100000000", "IgnoreSystemJobs": True})
+
+#disable drain but leave node in an ineligible state
+my_nomad.node.drain_node('ed1bbae7-c38a-df2d-1de7-50dbc753fc98', drain_spec={})
+
+#disable drain and put node in an eligible state
+my_nomad.node.drain_node('ed1bbae7-c38a-df2d-1de7-50dbc753fc98', drain_spec={}, mark_eligible=True)
+```
+
+### Eligible Node
+
+This endpoint toggles the eligibility of the node. When a node's "SchedulingEligibility" is ineligible  the scheduler will not consider it for new placements.
+
+https://www.nomadproject.io/api/nodes.html#drain-node
+
+Example:
+
+```
+import nomad
+
+my_nomad = nomad.Nomad(host='192.168.33.10')
+
+# sets node to ineligible state
+my_nomad.node.eligible_node('ed1bbae7-c38a-df2d-1de7-50dbc753fc98', ineligible=True)
+
+# sets node to eligible state
+my_nomad.node.eligible_node('ed1bbae7-c38a-df2d-1de7-50dbc753fc98', eligible=True)
+```
+
+### Purge Node
+
+This endpoint purges a node from the system. Nodes can still join the cluster if they are alive.
+
+https://www.nomadproject.io/api/nodes.html#purge-node
+
+Example:
+
+```
+import nomad
+
+my_nomad = nomad.Nomad(host='192.168.33.10')
+
+my_nomad.node.purge_node('ed1bbae7-c38a-df2d-1de7-50dbc753fc98')
+```

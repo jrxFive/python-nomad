@@ -1,16 +1,8 @@
 import pytest
-import tests.common as common
 import os
 import nomad
 
-
-@pytest.fixture
-def nomad_setup():
-    n = nomad.Nomad(host=common.IP, port=common.NOMAD_PORT, verify=False, token=common.NOMAD_TOKEN)
-    return n
-
 # integration tests requires nomad Vagrant VM or Binary running
-
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version")
 def test_get_deployment(nomad_setup):
     deploymentID = nomad_setup.deployments.get_deployments()[0]["ID"]

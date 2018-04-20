@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='python-nomad',
-    version='0.7.0',
+    version='0.8.0',
     install_requires=['requests'],
     packages=['nomad', 'nomad.api'],
     url='http://github.com/jrxfive/python-nomad',

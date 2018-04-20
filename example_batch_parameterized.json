@@ -61,10 +61,6 @@
                     "Mode": "delay"
                 }
             }
-        ],
-        "Update": {
-            "Stagger": 0,
-            "MaxParallel": 0
-        }
+        ]
     }
 }

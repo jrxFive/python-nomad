@@ -1,17 +1,9 @@
 import pytest
-import tests.common as common
-import nomad
-import json
+import os
+from nomad.api import exceptions as nomad_exceptions
 
-
-@pytest.fixture
-def nomad_setup():
-    n = nomad.Nomad(host=common.IP, port=common.NOMAD_PORT, verify=False, token=common.NOMAD_TOKEN)
-    return n
 
 # integration tests requires nomad Vagrant VM or Binary running
-
-
 def test_get_agent(nomad_setup):
     assert isinstance(nomad_setup.agent.get_agent(), dict) == True
 
@@ -37,11 +29,19 @@ def test_join_agent(nomad_setup):
     assert r["num_joined"] == 0
 
 
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 4, 1), reason="Not supported in version")
 def test_update_servers(nomad_setup):
-    r = nomad_setup.agent.update_servers(['192.168.33.11', '10.1.10.200:4829'])
+    known_servers = nomad_setup.agent.get_servers()
+    r = nomad_setup.agent.update_servers(known_servers)
     assert r == 200
-    assert "192.168.33.11:4647" in nomad_setup.agent.get_servers()
-    assert "10.1.10.200:4829" in nomad_setup.agent.get_servers()
+    assert known_servers[0] in nomad_setup.agent.get_servers()
+
+    # 0.8 enforces list of known servers to the provided list releases below do allow this functionality
+    try:
+        nomad_setup.agent.update_servers(known_servers + ["10.1.10.200:4829"])
+        assert "10.1.10.200:4829" in nomad_setup.agent.get_servers()
+    except nomad_exceptions.BaseNomadException:
+        pass
 
 
 def test_force_leave(nomad_setup):

@@ -1,16 +1,8 @@
 import pytest
 import tests.common as common
-import nomad
 import json
 import os
-from nomad.api import exceptions
 
-
-
-@pytest.fixture
-def nomad_setup():
-    n = nomad.Nomad(host=common.IP, port=common.NOMAD_PORT,token=common.NOMAD_TOKEN, verify=False)
-    return n
 
 # integration tests requires nomad Vagrant VM or Binary running
 # IMPORTANT: without token activated

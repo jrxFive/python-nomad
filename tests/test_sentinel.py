@@ -1,20 +1,9 @@
-import pytest
-import tests.common as common
-import nomad
 import json
-from nomad.api import exceptions
 from mock import patch, MagicMock
 import requests
 
 
-
-@pytest.fixture
-def nomad_setup():
-    n = nomad.Nomad(host=common.IP, port=common.NOMAD_PORT, verify=False, token=common.NOMAD_TOKEN)
-    return n
-
 # integration tests was mocked.
-
 @patch('nomad.api.sentinel.Sentinel._get')
 def test_list_policies(mock_get, nomad_setup):
     mock_get.return_value = [
