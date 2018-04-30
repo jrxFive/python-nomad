@@ -1,3 +1,4 @@
+import os
 import pytest
 import json
 
@@ -13,6 +14,16 @@ def test_register_job(nomad_setup):
         job = json.loads(fh.read())
         nomad_setup.jobs.register_job(job)
         assert "example" in nomad_setup.jobs
+
+
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 8, 3), reason="Not supported in version")
+def test_parse_job(nomad_setup):
+
+    with open("example.nomad") as fh:
+        hcl = fh.read()
+        json_dict = nomad_setup.jobs.parse(hcl)
+        assert json_dict["Name"] == "example"
+        assert json_dict["Type"] == "service"
 
 
 def test_dunder_getitem_exist(nomad_setup):

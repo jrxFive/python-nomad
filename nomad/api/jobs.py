@@ -100,3 +100,17 @@ class Jobs(object):
               - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self._post(job=job)
+
+
+    def parse(self, hcl, canonicalize=False):
+        """ Parse a HCL Job file. Returns a dict with the JSON formatted job.
+            This API endpoint is only supported from Nomad version 0.8.3.
+
+            https://www.nomadproject.io/api/jobs.html#parse-job
+
+            returns: dict
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
+        return self._post("parse", job={"JobHCL": hcl, "Canonicalize": canonicalize})
