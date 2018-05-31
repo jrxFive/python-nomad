@@ -52,7 +52,7 @@ class Nomad(object):
         self.cert = cert
 
         self.requester = api.Requester(address=address, uri=self.get_uri(), port=port, namespace=namespace,
-                                        token=token, timeout=timeout, version=version, verify=verify, cert=cert)
+                                        token=token, timeout=timeout, version=version, verify=verify, cert=cert, region = region)
 
         self._jobs = api.Jobs(self.requester)
         self._job = api.Job(self.requester)
