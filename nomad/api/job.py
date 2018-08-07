@@ -1,4 +1,6 @@
 import nomad.api.exceptions
+import json
+import base64
 
 
 class Job(object):
@@ -236,6 +238,8 @@ class Job(object):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
+        if payload:
+            payload = base64.b64encode(json.dumps(payload).encode()).decode()
         dispatch_json = {"Meta": meta, "Payload": payload}
         return self._post(id, "dispatch", json_dict=dispatch_json)
 
