@@ -240,7 +240,9 @@ class Job(object):
         """
         if payload:
             if isinstance(payload, dict) or isinstance(payload, list):
-                payload = json.dumps(payload).encode()
+                payload = json.dumps(payload)
+            if isinstance(payload, str):
+                payload = payload.encode()
             payload = base64.b64encode(payload).decode()
         dispatch_json = {"Meta": meta, "Payload": payload}
         return self._post(id, "dispatch", json_dict=dispatch_json)
