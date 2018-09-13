@@ -203,7 +203,10 @@ class Job(object):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._post(id, "plan", json_dict=job, params={"diff": diff})
+        json_dict = {}
+        json_dict.update(job)
+        json_dict["Diff"] = diff
+        return self._post(id, "plan", json_dict=json_dict)
 
     def periodic_job(self, id):
         """ Forces a new instance of the periodic job. A new instance will be
