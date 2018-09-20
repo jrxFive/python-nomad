@@ -205,7 +205,7 @@ class Job(object):
         """
         json_dict = {}
         json_dict.update(job)
-        json_dict["Diff"] = diff
+        json_dict.setdefault('Diff', diff)
         return self._post(id, "plan", json_dict=json_dict)
 
     def periodic_job(self, id):
