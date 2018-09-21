@@ -189,7 +189,7 @@ class Job(object):
         """
         return self._post(id, "evaluate")
 
-    def plan_job(self, id, job, diff=False):
+    def plan_job(self, id, job, diff=False, policy_override=False):
         """ Invoke a dry-run of the scheduler for the job.
 
            https://www.nomadproject.io/docs/http/job.html
@@ -197,7 +197,8 @@ class Job(object):
             arguments:
               - id
               - job, dict
-              - diff, optional boolean
+              - diff, boolean
+              - policy_override, boolean
             returns: dict
             raises:
               - nomad.api.exceptions.BaseNomadException
@@ -205,7 +206,8 @@ class Job(object):
         """
         json_dict = {}
         json_dict.update(job)
-        json_dict["Diff"] = diff
+        json_dict.setdefault('Diff', diff)
+        json_dict.setdefault('PolicyOverride', policy_override)
         return self._post(id, "plan", json_dict=json_dict)
 
     def periodic_job(self, id):
