@@ -65,7 +65,7 @@ client
 }
 ports
 {
-  http = #{NOMAD_PORT_GUEST}
+  http = ${NOMAD_PORT_GUEST}
   rpc  = 4647
 }
 addresses
