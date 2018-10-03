@@ -65,7 +65,7 @@ client
 }
 ports
 {
-  http = ${NOMAD_PORT_GUEST}
+  http = ${NOMAD_PORT}
   rpc  = 4647
 }
 addresses
@@ -75,7 +75,7 @@ addresses
 }
 advertise
 {
-  http = "${NOMAD_IP}:${NOMAD_PORT_GUEST}"
+  http = "${NOMAD_IP}:${NOMAD_PORT}"
   rpc = "${NOMAD_IP}:4647"
 }
 log_level = "INFO"
@@ -92,7 +92,7 @@ server
 EOF
 
 if [[ ${MAJOR_VERSION} -gt 6 ]]; then
-  echo "Nomad version $NOMAD_VERSION supports acls"
+echo "Nomad version $NOMAD_VERSION supports acls"
 echo "Nomad: Config ACL"
 cat << EOF > /etc/nomad.d/acl.hcl
 acl

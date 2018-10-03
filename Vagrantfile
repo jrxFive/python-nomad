@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 NOMAD_IP="192.168.33.10"
-NOMAD_VERSION="0.3.2"
+NOMAD_VERSION="0.8.6"
 NOMAD_PORT_GUEST=4646
 NOMAD_PORT_HOST=4646
 VAULT_VERSION="0.9.0"
@@ -135,7 +135,7 @@ server
 EOF
 
 if [[ ${MAJOR_VERSION} -gt 6 ]]; then
-  "Nomad: version #{NOMAD_VERSION} supports acls"
+  echo "Nomad: version #{NOMAD_VERSION} supports acls"
   echo "Nomad: Config ACL"
 cat << EOF > /etc/nomad.d/acl.hcl
 acl
