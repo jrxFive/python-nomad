@@ -5,3 +5,8 @@
 .vagrant
 .build
 .venv
+example.json
+example.hcl
+vault.hcl
+vault.json
+example.nomad

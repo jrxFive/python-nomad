@@ -22,8 +22,8 @@ env:
   global:
   - NOMAD_IP="127.0.0.1"
   - NOMAD_PORT="4646"
-  - VAULT_VERSION=0.9.0
-  - VAULT_ADDR=http://127.0.0.1:8200
+  - VAULT_VERSION="0.9.0"
+  - VAULT_ADDR="http://127.0.0.1:8200"
   matrix:
   - NOMAD_VERSION="0.3.2"
   - NOMAD_VERSION="0.4.1"
