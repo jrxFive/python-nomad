@@ -92,8 +92,8 @@ server
 EOF
 
 if [[ ${MAJOR_VERSION} -gt 6 ]]; then
-  "Nomad version $NOMAD_VERSION supports acls"
-  echo "Nomad: Config ACL"
+  echo "Nomad version $NOMAD_VERSION supports acls"
+echo "Nomad: Config ACL"
 cat << EOF > /etc/nomad.d/acl.hcl
 acl
 {
