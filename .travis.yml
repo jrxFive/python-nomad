@@ -32,9 +32,6 @@ env:
   - NOMAD_VERSION="0.7.1"
   - NOMAD_VERSION="0.8.1"
   - NOMAD_VERSION="0.8.3"
-  - NOMAD_VERSION="0.8.4"
-  - NOMAD_VERSION="0.8.5"
-  - NOMAD_VERSION="0.8.6"
 install:
 - pip install -r requirements-dev.txt
 - pip install codecov
