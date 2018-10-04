@@ -114,8 +114,6 @@ if [[ ${MAJOR_VERSION} -ge 8 ]]; then
   sed -i s/"# vault {"/"vault { policies = [\"policy-demo\"]}"/g vault.hcl
   sed -i s/"job \"example\" {"/"job \"vault\" {"/g vault.hcl
   /usr/bin/nomad run -output vault.hcl > vault.json
-  cat vault.hcl
-  cat vault.json
 fi
 chmod 777 example* vault.*
 

@@ -41,6 +41,6 @@ install:
 before_script:
   - sudo ./travis_before_script.sh
 script:
-- py.test -s -vv --cov=nomad --cov-report=term-missing --runxfail tests/
+- py.test --cov=nomad --cov-report=term-missing --runxfail tests/
 after_success:
 - codecov
