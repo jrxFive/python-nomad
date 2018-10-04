@@ -58,6 +58,18 @@ NOMAD_TOKEN=xxxx-xxxx-xxxx-xxxx
 NOMAD_REGION=us-east-1a
 ```
 
+## Vault integration
+
+if you have configured a [Vault Integration ](https://www.nomadproject.io/docs/configuration/vault.html) to store your secrets.
+
+And you have configured: [`allow_unantenticated = false`](https://www.nomadproject.io/docs/configuration/vault.html#allow_unauthenticated)
+see  you must to export and send a valid `VAULT_TOKEN`.
+
+```bash
+VAULT_TOKEN=xxxx-xxxx-xxxx-xxxx
+```
+
+
 ## Class Dunders
 
 | Class | contains | len | getitem | iter |
@@ -90,14 +102,15 @@ NOMAD_REGION=us-east-1a
 * can either use the Vagrantfile for local integration testing or create environment variables `NOMAD_IP` and `NOMAD_PORT` that are assigned to a nomad binary that is running
 
 ```
-virutalenv venv
-source venv/bin/activate
+virutalenv .venv
+source .venv/bin/activate
 pip install -r requirements-dev.txt
 ```
 
 ## Testing with vagrant and virtualbox
 ```
 vagrant up --provider virtualbox
+create_sample_jobs.sh
 py.test --cov=nomad --cov-report=term-missing --runxfail tests/
 ```
 

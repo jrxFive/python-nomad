@@ -4,17 +4,18 @@ import os
 
 class Nomad(object):
 
-    def __init__(self, 
-        host='127.0.0.1', 
-        secure=False, 
+    def __init__(self,
+        host='127.0.0.1',
+        secure=False,
         port=4646,
         address=os.getenv('NOMAD_ADDR', None),
         namespace=os.getenv('NOMAD_NAMESPACE', None),
-        token=os.getenv('NOMAD_TOKEN', None), 
-        timeout=5, 
-        region=os.getenv('NOMAD_REGION', None), 
-        version='v1', 
-        verify=False, 
+        token=os.getenv('NOMAD_TOKEN', None),
+        vaulttoken=os.getenv('VAULT_TOKEN', None),
+        timeout=5,
+        region=os.getenv('NOMAD_REGION', None),
+        version='v1',
+        verify=False,
         cert=()):
         """ Nomad api client
 
@@ -35,6 +36,9 @@ class Nomad(object):
                                 be use to deploy or to ask info to nomad.
             - token (defaults to None), Specifies to append ACL token to the headers to
                                 make authentication on secured based nomad environemnts.
+            - vaulttoken (defaults to None), Specifies to append ACL token to the headers to
+                                make authentication on environemnts with allow_unantenticated = false, where
+                                you must to send a valid vault token for policies.
            returns: Nomad api client object
 
            raises:
@@ -52,7 +56,7 @@ class Nomad(object):
         self.cert = cert
 
         self.requester = api.Requester(address=address, uri=self.get_uri(), port=port, namespace=namespace,
-                                        token=token, timeout=timeout, version=version, verify=verify, cert=cert, region = region)
+                                        token=token, vaulttoken=vaulttoken, timeout=timeout, version=version, verify=verify, cert=cert, region = region)
 
         self._jobs = api.Jobs(self.requester)
         self._job = api.Job(self.requester)
@@ -83,11 +87,17 @@ class Nomad(object):
     def set_token(self, token):
         self.requester.token = token
 
+    def set_vaulttoken(self, vaulttoken):
+        self.requester.vaulttoken = vaulttoken
+
     def get_namespace(self):
         return self.requester.namespace
 
     def get_token(self):
         return self.requester.token
+
+    def get_vaulttoken(self):
+        return self.requester.vaulttoken
 
     def get_uri(self):
         if self.secure:

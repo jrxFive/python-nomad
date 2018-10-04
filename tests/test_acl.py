@@ -13,6 +13,9 @@ def test_create_bootstrap(nomad_setup):
     bootstrap = nomad_setup.acl.generate_bootstrap()
     assert "SecretID" in bootstrap
     common.NOMAD_TOKEN = bootstrap["SecretID"]
+    # For debug at vagrant you should use -s at test to view the token
+    # py.test -s --cov=nomad --cov-report=term-missing --runxfail tests/
+    print("\n SecurityNomadRootToken: {}\n".format(common.NOMAD_TOKEN))
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 7, 0), reason="Nomad dispatch not supported")
 @pytest.mark.run(order=1)
