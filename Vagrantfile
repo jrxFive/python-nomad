@@ -43,6 +43,12 @@ yum -y install docker-engine unzip wget net-tools
 usermod -aG docker vagrant
 systemctl enable docker; systemctl start docker
 
+echo "pip for test inside the vagrant"
+curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
+python get-pip.py
+pip install -r /vagrant/requirements-dev.txt
+
+
 echo "Download binary files"
 wget -q -P /tmp/ https://releases.hashicorp.com/nomad/#{NOMAD_VERSION}/nomad_#{NOMAD_VERSION}_linux_amd64.zip
 yes | unzip -d /tmp /tmp/nomad_#{NOMAD_VERSION}_linux_amd64.zip
@@ -149,6 +155,9 @@ else
   echo "Nomad: version #{NOMAD_VERSION}"
 fi
 
+echo "Nomad: Create test job samples"
+/usr/bin/nomad init
+/usr/bin/nomad run -output example.nomad > example.json
 echo "Starting Nomad"
 nohup nomad agent -server -dev -config=/etc/nomad.d > /dev/null 2>&1 &
 sleep 30
