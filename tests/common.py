@@ -16,7 +16,7 @@ VAULT_TOKEN = os.environ.get("VAULT_TOKEN", "root")
 VAULT_ADDR = os.environ.get("VAULT_ADDR", "http://" + IP + ":8200")
 
 vaultEnvironment = {"VAULT_TOKEN":"root","VAULT_ADDR":VAULT_ADDR}
-p = subprocess.Popen("/tmp/vault token-create -field=token -policy=policy-demo", stdout=subprocess.PIPE, shell=True, env=vaultEnvironment)
+p = subprocess.Popen("/tmp/vault token-create -policy=policy-demo|grep 'token '|awk '{print $2}'|tr -d '\n'", stdout=subprocess.PIPE, shell=True, env=vaultEnvironment)
 (vaulttoken, err) = p.communicate()
 p_status = p.wait()
 print("\n SecurityVaultAcl: {}\n".format(vaulttoken.decode('utf-8')))
