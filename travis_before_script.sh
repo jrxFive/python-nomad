@@ -117,6 +117,7 @@ if [[ ${MAJOR_VERSION} -ge 8 ]]; then
   cat vault.hcl
   cat vault.json
 fi
+chmod 777 example* vault.*
 
 
 echo "Starting Nomad"
