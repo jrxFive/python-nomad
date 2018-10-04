@@ -7,7 +7,7 @@ from nomad.api import exceptions
 
 # # integration tests requires nomad Vagrant VM or Binary running
 # Specific token for this policy
-@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 8, 0) or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) not in (0,8,5), reason="Not supported in version. At version 0.8.5 see regresion of 8.5.6 at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md")
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 8, 0) or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) == (0,8,5), reason="Not supported in version. At version 0.8.5 see regresion of 8.5.6 at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md")
 @pytest.mark.run(order=-1)
 def test_register_job_valid(nomad_setup_vault_valid_token):
     with open("vault.json") as fh:
@@ -17,14 +17,14 @@ def test_register_job_valid(nomad_setup_vault_valid_token):
 
 
 # Specific token for this policy
-@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 8, 0) or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) not in (0,8,5), reason="Not supported in version. At version 0.8.5 see regresion of 8.5.6 at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md")
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 8, 0) or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) == (0,8,5), reason="Not supported in version. At version 0.8.5 see regresion of 8.5.6 at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md")
 @pytest.mark.run(order=-2)
 def test_get_job_valid(nomad_setup_vault_valid_token):
     assert isinstance(nomad_setup_vault_valid_token.job.get_job("vault"), dict) == True
 
 
 # Specific token for this policy
-@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 8, 0) or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) not in (0,8,5), reason="Not supported in version. At version 0.8.5 see regresion of 8.5.6 at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md")
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 8, 0) or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) == (0,8,5), reason="Not supported in version. At version 0.8.5 see regresion of 8.5.6 at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md")
 @pytest.mark.run(order=-3)
 def test_delete_job_valid(nomad_setup):
     assert "EvalID" in nomad_setup.job.deregister_job("vault")
@@ -32,7 +32,7 @@ def test_delete_job_valid(nomad_setup):
 
 # Specific BAD token for this policy
 # test non valid token for deploy
-@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 8, 0) or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) not in (0,8,5), reason="Not supported in version. At version 0.8.5 see regresion of 8.5.6 at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md")
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 8, 0) or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) == (0,8,5), reason="Not supported in version. At version 0.8.5 see regresion of 8.5.6 at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md")
 @pytest.mark.run(order=-4)
 def test_register_job_invalid(nomad_setup_vault_invalid_token):
     with open("vault.json") as fh:
