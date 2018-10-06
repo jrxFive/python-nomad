@@ -22,6 +22,8 @@ env:
   global:
   - NOMAD_IP="127.0.0.1"
   - NOMAD_PORT="4646"
+  - VAULT_VERSION="0.9.0"
+  - VAULT_ADDR="http://127.0.0.1:8200"
   matrix:
   - NOMAD_VERSION="0.3.2"
   - NOMAD_VERSION="0.4.1"
@@ -30,19 +32,14 @@ env:
   - NOMAD_VERSION="0.7.1"
   - NOMAD_VERSION="0.8.1"
   - NOMAD_VERSION="0.8.3"
-before_install:
-- curl -L -o /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip
-- yes | unzip -d /tmp /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip
-- MAJOR_VERSION=`echo ${NOMAD_VERSION} | cut -d "." -f 2`
-- if [[ ${MAJOR_VERSION} -gt 6 ]]; then echo "Nomad version $NOMAD_VERSION supports acls";export ACL_ENABLED="--acl-enabled"; else echo "Nomad version $NOMAD_VERSION";export ACL_ENABLED="";  fi
-- /tmp/nomad agent -dev -bind ${NOMAD_IP} -node pynomad1 ${ACL_ENABLED} > /dev/null 2>&1 &
-- sleep 30
+  - NOMAD_VERSION="0.8.4"
+  - NOMAD_VERSION="0.8.5"
+  - NOMAD_VERSION="0.8.6"
 install:
 - pip install -r requirements-dev.txt
 - pip install codecov
 before_script:
-  - /tmp/nomad init
-  - /tmp/nomad run -output example.nomad > example.json
+  - sudo ./travis_before_script.sh
 script:
 - py.test --cov=nomad --cov-report=term-missing --runxfail tests/
 after_success:
