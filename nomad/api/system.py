@@ -30,7 +30,7 @@ class System(Requester):
 
             https://www.nomadproject.io/docs/http/system.html
 
-            returns: None
+            returns: Boolean
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
@@ -42,7 +42,7 @@ class System(Requester):
 
             https://www.nomadproject.io/docs/http/system.html
 
-            returns: None
+            returns: Boolean
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException

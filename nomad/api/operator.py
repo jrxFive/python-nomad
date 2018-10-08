@@ -52,7 +52,7 @@ class Operator(Requester):
             optional arguments:
               - stale, (defaults to False), Specifies if the cluster should respond without an active leader.
                                             This is specified as a querystring parameter.
-            returns: Ok status
+            returns: Boolean
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException

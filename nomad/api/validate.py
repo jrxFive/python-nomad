@@ -39,4 +39,4 @@ class Validate(Requester):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request("job", json=nomad_job_dict, method="post").ok
+        return self.request("job", json=nomad_job_dict, method="post")

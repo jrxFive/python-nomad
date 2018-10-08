@@ -87,6 +87,7 @@ class Sentinel(Requester):
 
             arguments:
                 - id
+            returns: Boolean
 
             raises:
               - nomad.api.exceptions.BaseNomadException

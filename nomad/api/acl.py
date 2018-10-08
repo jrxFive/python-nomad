@@ -97,7 +97,7 @@ class Acl(Requester):
 
             https://www.nomadproject.io/api/acl-tokens.html
 
-            returns: dict
+            returns: Boolean
 
             raises:
               - nomad.api.exceptions.BaseNomadException
@@ -185,6 +185,7 @@ class Acl(Requester):
 
             arguments:
                 - id
+            returns: Boolean
 
             raises:
               - nomad.api.exceptions.BaseNomadException

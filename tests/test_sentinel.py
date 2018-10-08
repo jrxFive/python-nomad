@@ -1,57 +1,100 @@
+import tests.common as common
+
 import json
-from mock import patch, MagicMock
-import requests
+import responses
 
 
 # integration tests was mocked.
-@patch('nomad.api.sentinel.Sentinel._get')
-def test_list_policies(mock_get, nomad_setup):
-    mock_get.return_value = [
-                              {
-                                "Name": "foo",
-                                "Description": "test policy",
-                                "Scope": "submit-job",
-                                "EnforcementLevel": "advisory",
-                                "Hash": "CIs8aNX5OfFvo4D7ihWcQSexEJpHp+Za+dHSncVx5+8=",
-                                "CreateIndex": 8,
-                                "ModifyIndex": 8
-                              }
-                            ]
+@responses.activate
+def test_list_policies(nomad_setup):
+    responses.add(
+        responses.GET,
+        "http://{ip}:{port}/v1/sentinel/policies".format(ip=common.IP, port=common.NOMAD_PORT),
+        status=200,
+        json=[
+            {
+                "Name": "foo",
+                "Description": "test policy",
+                "Scope": "submit-job",
+                "EnforcementLevel": "advisory",
+                "Hash": "CIs8aNX5OfFvo4D7ihWcQSexEJpHp+Za+dHSncVx5+8=",
+                "CreateIndex": 8,
+                "ModifyIndex": 8
+            }
+        ]
+    )
+
     policies = nomad_setup.sentinel.get_policies()
     assert isinstance(policies, list)
     assert "foo" in nomad_setup.sentinel.get_policies()[0]["Name"]
 
-@patch('nomad.api.sentinel.Sentinel._post_no_json')
-def test_create_policy(mock_post_no_json, nomad_setup):
-    mock_post_no_json.return_value = requests.codes.ok
+
+@responses.activate
+def test_create_policy(nomad_setup):
+
+    responses.add(
+        responses.POST,
+        "http://{ip}:{port}/v1/sentinel/policy/my-policy".format(ip=common.IP, port=common.NOMAD_PORT),
+        status=200
+    )
+
     policy_example = '{"Name": "my-policy", "Description": "This is a great policy", "Scope": "submit-job", "EnforcementLevel": "advisory", "Policy": "main = rule { true }"}'
     json_policy = json.loads(policy_example)
-    assert 200 == nomad_setup.sentinel.create_policy(id="my-policy", policy=json_policy)
+    nomad_setup.sentinel.create_policy(id="my-policy", policy=json_policy)
 
-@patch('nomad.api.sentinel.Sentinel._post_no_json')
-def test_update_policy(mock_post_no_json, nomad_setup):
-    mock_post_no_json.return_value = requests.codes.ok
+
+@responses.activate
+def test_update_policy(nomad_setup):
+
+    responses.add(
+        responses.POST,
+        "http://{ip}:{port}/v1/sentinel/policy/my-policy".format(ip=common.IP, port=common.NOMAD_PORT),
+        status=200
+    )
+
     policy_example = '{"Name": "my-policy", "Description": "Update", "Scope": "submit-job", "EnforcementLevel": "advisory", "Policy": "main = rule { true }"}'
     json_policy = json.loads(policy_example)
-    assert 200 == nomad_setup.sentinel.update_policy(id="my-policy", policy=json_policy)
+    nomad_setup.sentinel.update_policy(id="my-policy", policy=json_policy)
 
-@patch('nomad.api.sentinel.Sentinel._get')
-def test_get_policy(mock_get, nomad_setup):
-    mock_get.return_value = {
-                              "Name": "foo",
-                              "Description": "test policy",
-                              "Scope": "submit-job",
-                              "EnforcementLevel": "advisory",
-                              "Policy": "main = rule { true }\n",
-                              "Hash": "CIs8aNX5OfFvo4D7ihWcQSexEJpHp+Za+dHSncVx5+8=",
-                              "CreateIndex": 8,
-                              "ModifyIndex": 8
-                            }
+
+@responses.activate
+def test_get_policy(nomad_setup):
+    responses.add(
+        responses.GET,
+        "http://{ip}:{port}/v1/sentinel/policy/foo".format(ip=common.IP, port=common.NOMAD_PORT),
+        status=200,
+        json={
+            "Name": "foo",
+            "Description": "test policy",
+            "Scope": "submit-job",
+            "EnforcementLevel": "advisory",
+            "Policy": "main = rule { true }\n",
+            "Hash": "CIs8aNX5OfFvo4D7ihWcQSexEJpHp+Za+dHSncVx5+8=",
+            "CreateIndex": 8,
+            "ModifyIndex": 8
+        }
+    )
+
     policy = nomad_setup.sentinel.get_policy("foo")
     assert "advisory" in policy["EnforcementLevel"]
 
-@patch('nomad.api.sentinel.Sentinel._delete')
-def test_delete_policy(mock_delete, nomad_setup):
-    mock_delete.return_value = requests.codes.ok
+
+@responses.activate
+def test_delete_policy(nomad_setup):
+    responses.add(
+        responses.DELETE,
+        "http://{ip}:{port}/v1/sentinel/policy/my-policy".format(ip=common.IP, port=common.NOMAD_PORT),
+        status=200,
+        json={
+            "Name": "foo",
+            "Description": "test policy",
+            "Scope": "submit-job",
+            "EnforcementLevel": "advisory",
+            "Policy": "main = rule { true }\n",
+            "Hash": "CIs8aNX5OfFvo4D7ihWcQSexEJpHp+Za+dHSncVx5+8=",
+            "CreateIndex": 8,
+            "ModifyIndex": 8
+        }
+    )
+
     nomad_setup.sentinel.delete_policy(id="my-policy")
-    assert 200 == nomad_setup.sentinel.delete_policy(id="my-policy")
