@@ -12,6 +12,7 @@ def test_create_namespace(mock_post, nomad_setup):
     namespace = json.loads(namespace_api)
     assert 200 == nomad_setup.namespace.create_namespace(namespace)
 
+
 @patch('nomad.api.namespace.Namespace._post')
 def test_update_namespace(mock_post, nomad_setup):
     mock_post.return_value = requests.codes.ok

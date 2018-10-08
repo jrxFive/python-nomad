@@ -1,7 +1,8 @@
 import nomad.api.exceptions
 
+from nomad.api.base import Requester
 
-class Evaluations(object):
+class Evaluations(Requester):
 
     """
     The evaluations endpoint is used to query the status of evaluations.
@@ -12,8 +13,8 @@ class Evaluations(object):
     """
     ENDPOINT = "evaluations"
 
-    def __init__(self, requester):
-        self._requester = requester
+    def __init__(self, **kwargs):
+        super(Evaluations, self).__init__(**kwargs)
 
     def __str__(self):
         return "{0}".format(self.__dict__)
@@ -26,7 +27,7 @@ class Evaluations(object):
 
     def __contains__(self, item):
         try:
-            evaluations = self._get()
+            evaluations = self.get_evaluations()
 
             for e in evaluations:
                 if e["ID"] == item:
@@ -37,12 +38,12 @@ class Evaluations(object):
             return False
 
     def __len__(self):
-        evaluations = self._get()
+        evaluations = self.get_evaluations()
         return len(evaluations)
 
     def __getitem__(self, item):
         try:
-            evaluations = self._get()
+            evaluations = self.get_evaluations()
 
             for e in evaluations:
                 if e["ID"] == item:
@@ -53,14 +54,8 @@ class Evaluations(object):
             raise KeyError
 
     def __iter__(self):
-        evaluations = self._get()
+        evaluations = self.get_evaluations()
         return iter(evaluations)
-
-    def _get(self, *args):
-        url = self._requester._endpointBuilder(Evaluations.ENDPOINT, *args)
-        evaluations = self._requester.get(url)
-
-        return evaluations.json()
 
     def get_evaluations(self):
         """ Lists all the evaluations.
@@ -72,4 +67,4 @@ class Evaluations(object):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._get()
+        return self.request(method="get").json()

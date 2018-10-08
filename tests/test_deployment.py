@@ -1,6 +1,17 @@
+import json
 import pytest
 import os
 import nomad
+import uuid
+
+
+def test_register_job(nomad_setup):
+
+    with open("example.json") as fh:
+        job = json.loads(fh.read())
+        nomad_setup.job.register_job("example", job)
+        assert "example" in nomad_setup.job
+
 
 # integration tests requires nomad Vagrant VM or Binary running
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version")
@@ -9,12 +20,14 @@ def test_get_deployment(nomad_setup):
     assert isinstance(nomad_setup.deployment.get_deployment(deploymentID), dict)
     assert deploymentID == nomad_setup.deployment.get_deployment(deploymentID)["ID"]
 
+
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version")
 def test_get_deployment_allocations(nomad_setup):
     deploymentID = nomad_setup.deployments.get_deployments()[0]["ID"]
     assert isinstance(nomad_setup.deployment.get_deployment_allocations(deploymentID), list)
     assert isinstance(nomad_setup.deployment.get_deployment_allocations(deploymentID)[0], dict)
     assert "example" == nomad_setup.deployment.get_deployment_allocations(deploymentID)[0]["JobID"]
+
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version")
 def test_fail_deployment(nomad_setup):
@@ -24,29 +37,33 @@ def test_fail_deployment(nomad_setup):
     except nomad.api.exceptions.URLNotFoundNomadException as err:
         assert err.nomad_resp.text == "can't fail terminal deployment"
 
+
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version")
 def test_pause_deployment(nomad_setup):
     deploymentID = nomad_setup.deployments.get_deployments()[0]["ID"]
     try:
         nomad_setup.deployment.pause_deployment(deploymentID, False)
-    except nomad.api.exceptions.URLNotFoundNomadException as err:
+    except nomad.api.exceptions.BaseNomadException as err:
         assert err.nomad_resp.text == "can't resume terminal deployment"
+
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version")
 def test_promote_all_deployment(nomad_setup):
     deploymentID = nomad_setup.deployments.get_deployments()[0]["ID"]
     try:
         nomad_setup.deployment.promote_deployment_all(deploymentID)
-    except nomad.api.exceptions.URLNotFoundNomadException as err:
+    except nomad.api.exceptions.BaseNomadException as err:
         assert err.nomad_resp.text == "can't promote terminal deployment"
+
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version")
 def test_promote_all_deployment(nomad_setup):
     deploymentID = nomad_setup.deployments.get_deployments()[0]["ID"]
     try:
         nomad_setup.deployment.promote_deployment_groups(deploymentID)
-    except nomad.api.exceptions.URLNotFoundNomadException as err:
+    except nomad.api.exceptions.BaseNomadException as err:
         assert err.nomad_resp.text == "can't promote terminal deployment"
+
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version")
 def test_deployment_allocation_health(nomad_setup):
@@ -54,9 +71,8 @@ def test_deployment_allocation_health(nomad_setup):
     allocationID = nomad_setup.deployment.get_deployment(deploymentID)["ID"]
     try:
         nomad_setup.deployment.deployment_allocation_health(deploymentID, unhealthy_allocations=[allocationID])
-    except nomad.api.exceptions.URLNotFoundNomadException as err:
+    except nomad.api.exceptions.BaseNomadException as err:
         assert err.nomad_resp.text == "can't set health of allocations for a terminal deployment"
-
 
 
 def test_dunder_getitem_exist(nomad_setup):
@@ -68,7 +84,7 @@ def test_dunder_getitem_exist(nomad_setup):
 def test_dunder_getitem_not_exist(nomad_setup):
 
     with pytest.raises(KeyError):
-        _ = nomad_setup.deployment["nope"]
+        _ = nomad_setup.deployment[str(uuid.uuid4())]
 
 
 def test_dunder_contain_exists(nomad_setup):
@@ -77,7 +93,7 @@ def test_dunder_contain_exists(nomad_setup):
 
 
 def test_dunder_contain_not_exist(nomad_setup):
-    assert "nope" not in nomad_setup.deployment
+    assert str(uuid.uuid4()) not in nomad_setup.deployment
 
 
 def test_dunder_str(nomad_setup):

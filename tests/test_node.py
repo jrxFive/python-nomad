@@ -1,5 +1,7 @@
 import os
 import pytest
+import uuid
+
 from nomad.api import exceptions as nomad_exceptions
 
 
@@ -65,7 +67,7 @@ def test_dunder_getitem_exist(nomad_setup):
 def test_dunder_getitem_not_exist(nomad_setup):
 
     with pytest.raises(KeyError):
-        _ = nomad_setup.node["pynomad2"]
+        _ = nomad_setup.node[str(uuid.uuid4())]
 
 
 def test_dunder_contain_exists(nomad_setup):
@@ -74,7 +76,7 @@ def test_dunder_contain_exists(nomad_setup):
 
 
 def test_dunder_contain_not_exist(nomad_setup):
-    assert "pynomad2" not in nomad_setup.node
+    assert str(uuid.uuid4()) not in nomad_setup.node
 
 
 def test_dunder_str(nomad_setup):

@@ -1,7 +1,9 @@
 import nomad.api.exceptions
 
+from nomad.api.base import Requester
 
-class Nodes(object):
+
+class Nodes(Requester):
 
     """
     The nodes endpoint is used to query the status of client nodes.
@@ -11,8 +13,8 @@ class Nodes(object):
     """
     ENDPOINT = "nodes"
 
-    def __init__(self, requester):
-        self._requester = requester
+    def __init__(self, **kwargs):
+        super(Nodes, self).__init__(**kwargs)
 
     def __str__(self):
         return "{0}".format(self.__dict__)
@@ -25,7 +27,7 @@ class Nodes(object):
 
     def __contains__(self, item):
         try:
-            nodes = self._get()
+            nodes = self.get_nodes()
 
             for n in nodes:
                 if n["ID"] == item:
@@ -38,12 +40,12 @@ class Nodes(object):
             return False
 
     def __len__(self):
-        nodes = self._get()
+        nodes = self.get_nodes()
         return len(nodes)
 
     def __getitem__(self, item):
         try:
-            nodes = self._get()
+            nodes = self.get_nodes()
 
             for n in nodes:
                 if n["ID"] == item:
@@ -56,14 +58,8 @@ class Nodes(object):
             raise KeyError
 
     def __iter__(self):
-        nodes = self._get()
+        nodes = self.get_nodes()
         return iter(nodes)
-
-    def _get(self, *args):
-        url = self._requester._endpointBuilder(Nodes.ENDPOINT, *args)
-        nodes = self._requester.get(url)
-
-        return nodes.json()
 
     def get_nodes(self):
         """ Lists all the client nodes registered with Nomad.
@@ -75,4 +71,4 @@ class Nodes(object):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._get()
+        return self.request(method="get").json()

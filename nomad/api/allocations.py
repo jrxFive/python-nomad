@@ -1,5 +1,7 @@
+from nomad.api.base import Requester
 
-class Allocations(object):
+
+class Allocations(Requester):
 
     """
     The allocations endpoint is used to query the status of allocations.
@@ -10,8 +12,8 @@ class Allocations(object):
     """
     ENDPOINT = "allocations"
 
-    def __init__(self, requester):
-        self._requester = requester
+    def __init__(self, **kwargs):
+        super(Allocations, self).__init__(**kwargs)
 
     def __str__(self):
         return "{0}".format(self.__dict__)
@@ -23,18 +25,12 @@ class Allocations(object):
         raise AttributeError
 
     def __len__(self):
-        response = self._get()
+        response = self.get_allocations()
         return len(response)
 
     def __iter__(self):
-        response = self._get()
+        response = self.get_allocations()
         return iter(response)
-
-    def _get(self, *args):
-        url = self._requester._endpointBuilder(Allocations.ENDPOINT, *args)
-        response = self._requester.get(url)
-
-        return response.json()
 
     def get_allocations(self):
         """ Lists all the allocations.
@@ -46,4 +42,4 @@ class Allocations(object):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._get()
+        return self.request(method="get").json()

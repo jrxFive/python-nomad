@@ -1,4 +1,13 @@
+import json
 import pytest
+
+
+def test_register_job(nomad_setup):
+
+    with open("example.json") as fh:
+        job = json.loads(fh.read())
+        nomad_setup.job.register_job("example", job)
+        assert "example" in nomad_setup.job
 
 
 # integration tests requires nomad Vagrant VM or Binary running

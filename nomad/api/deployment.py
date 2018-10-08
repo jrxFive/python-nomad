@@ -1,7 +1,9 @@
 import nomad.api.exceptions
 
+from nomad.api.base import Requester
 
-class Deployment(object):
+
+class Deployment(Requester):
 
     """
     The /deployment endpoints are used to query for and interact with deployments.
@@ -10,8 +12,8 @@ class Deployment(object):
     """
     ENDPOINT = "deployment"
 
-    def __init__(self, requester):
-        self._requester = requester
+    def __init__(self, **kwargs):
+        super(Deployment, self).__init__(**kwargs)
 
     def __str__(self):
         return "{0}".format(self.__dict__)
@@ -26,7 +28,7 @@ class Deployment(object):
     def __contains__(self, item):
 
         try:
-            d = self._get(item)
+            d = self.get_deployment(item)
             return True
         except nomad.api.exceptions.URLNotFoundNomadException:
             return False
@@ -34,18 +36,12 @@ class Deployment(object):
     def __getitem__(self, item):
 
         try:
-            d = self._get(item)
+            d = self.get_deployment(item)
 
             if d["ID"] == item:
                 return d
         except nomad.api.exceptions.URLNotFoundNomadException:
             raise KeyError
-
-    def _get(self, *args):
-        url = self._requester._endpointBuilder(Deployment.ENDPOINT, *args)
-        response = self._requester.get(url)
-
-        return response.json()
 
     def get_deployment(self, id):
         """ This endpoint reads information about a specific deployment by ID.
@@ -59,7 +55,7 @@ class Deployment(object):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._get(id)
+        return self.request(id, method="get").json()
 
     def get_deployment_allocations(self, id):
         """ This endpoint lists the allocations created or modified for the given deployment.
@@ -73,13 +69,7 @@ class Deployment(object):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._get("allocations", id)
-
-    def _post(self, *args, **kwargs):
-        url = self._requester._endpointBuilder(Deployment.ENDPOINT, *args)
-        response = self._requester.post(url, json=kwargs.get("json_dict", None))
-
-        return response.json()
+        return self.request("allocations", id, method="get").json()
 
     def fail_deployment(self, id):
         """ This endpoint is used to mark a deployment as failed. This should be done to force the scheduler to stop
@@ -95,7 +85,7 @@ class Deployment(object):
               - nomad.api.exceptions.URLNotFoundNomadException
         """
         fail_json = {"DeploymentID": id}
-        return self._post("fail", id, json_dict=fail_json)
+        return self.request("fail", id, json=fail_json, method="post").json()
 
     def pause_deployment(self, id, pause):
         """ This endpoint is used to pause or unpause a deployment.
@@ -113,7 +103,7 @@ class Deployment(object):
         """
         pause_json = {"Pause": pause,
                       "DeploymentID": id}
-        return self._post("pause", id, json_dict=pause_json)
+        return self.request("pause", id, json=pause_json, method="post").json()
 
     def promote_deployment_all(self, id, all=True):
         """ This endpoint is used to promote task groups that have canaries for a deployment. This should be done when
@@ -131,7 +121,7 @@ class Deployment(object):
         """
         promote_all_json = {"All": all,
                             "DeploymentID": id}
-        return self._post("promote", id, json_dict=promote_all_json)
+        return self.request("promote", id, json=promote_all_json, method="post").json()
 
     def promote_deployment_groups(self, id, groups=list()):
         """ This endpoint is used to promote task groups that have canaries for a deployment. This should be done when
@@ -149,7 +139,7 @@ class Deployment(object):
         """
         promote_groups_json = {"Groups": groups,
                                "DeploymentID": id}
-        return self._post("promote", id, json_dict=promote_groups_json)
+        return self.request("promote", id, json=promote_groups_json, method="post").json()
 
     def deployment_allocation_health(self, id, healthy_allocations=list(), unhealthy_allocations=list()):
         """ This endpoint is used to set the health of an allocation that is in the deployment manually. In some use
@@ -172,4 +162,4 @@ class Deployment(object):
         allocations = {"HealthyAllocationIDs": healthy_allocations,
                        "UnHealthyAllocationIDs": unhealthy_allocations,
                        "DeploymentID": id}
-        return self._post("allocation-health", id, json_dict=allocations)
+        return self.request("allocation-health", id, json=allocations, method="post").json()

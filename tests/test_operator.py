@@ -16,7 +16,7 @@ def test_get_configuration_stale(nomad_setup):
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 5, 5), reason="Not supported in version")
 def test_delete_peer(nomad_setup):
-    with pytest.raises(exceptions.URLNotFoundNomadException):
+    with pytest.raises(exceptions.BaseNomadException):
         nomad_setup.operator.delete_peer("192.168.33.10:4646")
 
 

@@ -1,5 +1,6 @@
 import pytest
 import json
+import uuid
 
 
 # integration tests requires nomad Vagrant VM or Binary running
@@ -25,7 +26,7 @@ def test_dunder_getitem_exist(nomad_setup):
 def test_dunder_getitem_not_exist(nomad_setup):
 
     with pytest.raises(KeyError):  # restucture try/except/raises
-        j = nomad_setup.allocation["redis"]
+        j = nomad_setup.allocation[str(uuid.uuid4())]
 
 
 def test_dunder_contain_exists(nomad_setup):
@@ -35,7 +36,7 @@ def test_dunder_contain_exists(nomad_setup):
 
 def test_dunder_contain_not_exist(nomad_setup):
 
-    assert "redis" not in nomad_setup.allocation
+    assert str(uuid.uuid4()) not in nomad_setup.allocation
 
 
 def test_dunder_str(nomad_setup):
