@@ -35,11 +35,13 @@ def test_base_get_connnection_not_authorized():
         j = n.job.get_job("example")
 
 
+@responses.activate
 def test_base_use_address_instead_on_host_port():
     responses.add(
         responses.GET,
         'https://nomad.service.consul:4646/v1/jobs',
-        status=200
+        status=200,
+        json=[]
     )
 
     nomad_address = "https://nomad.service.consul:4646"
