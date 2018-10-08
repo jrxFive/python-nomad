@@ -98,7 +98,7 @@ class Nomad(object):
         return "{protocol}://{host}".format(protocol=protocol, host=self.host)
 
     def get_namespace(self):
-        return self.namespace
+        return self.__namespace
 
     def get_token(self):
         return self.token
