@@ -5,6 +5,25 @@ import os
 import responses
 
 
+def test_base_region_qs():
+    n = nomad.Nomad(host=common.IP, port=common.NOMAD_PORT, verify=False, token=common.NOMAD_TOKEN, region="random")
+    qs = n.jobs._query_string_builder("v1/jobs")
+
+    assert "region" in qs
+    assert qs["region"] == "random"
+
+
+def test_base_region_and_namespace_qs():
+    n = nomad.Nomad(host=common.IP, port=common.NOMAD_PORT, verify=False, token=common.NOMAD_TOKEN, region="random", namespace="test")
+    qs = n.jobs._query_string_builder("v1/jobs")
+
+    assert "region" in qs
+    assert qs["region"] == "random"
+
+    assert "namespace" in qs
+    assert qs["namespace"] == "test"
+
+
 # integration tests requires nomad Vagrant VM or Binary running
 def test_base_get_connection_error():
     n = nomad.Nomad(

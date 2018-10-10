@@ -46,6 +46,7 @@ class Requester(object):
             required = endpoint_split[ENDPOINT_NAME] in required_namespace
         except:
             required = False
+
         return required
 
     def _url_builder(self, endpoint):
@@ -88,7 +89,9 @@ class Requester(object):
         qs = self._query_string_builder(endpoint)
 
         if params:
-            params.update(qs)
+            qs.update(params)
+        else:
+            params = qs
 
         if self.token:
             try:
