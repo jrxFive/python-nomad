@@ -23,7 +23,7 @@ class Requester(object):
         self.session = requests.Session()
         self.region = region
 
-    def _endpointBuilder(self, *args):
+    def _endpoint_builder(self, *args):
         if args:
             u = "/".join(args)
             return "{v}/".format(v=self.version) + u
@@ -48,32 +48,29 @@ class Requester(object):
             required = False
         return required
 
-    def _urlBuilder(self, endpoint):
+    def _url_builder(self, endpoint):
         url = self.address
 
         if self.address is None:
-           url = "{uri}:{port}".format(uri=self.uri,
-                                        port=self.port)
-        url = "{url}/{endpoint}".format(url=url,
-                                        endpoint=endpoint)
-        if self.namespace:
-            if self._required_namespace(endpoint):
-                url = "{url}?namespace={namespace}".format(
-                           url=url,
-                           namespace=self.namespace)
+            url = "{uri}:{port}".format(uri=self.uri, port=self.port)
 
-        if self.region is not None:
-            if self.namespace:
-                delimiter = '&'
-            else:
-                delimiter = '?'
-            url = "{url}{delimiter}region={region}".format(
-                url=url, delimiter=delimiter,
-                region=self.region)
+        url = "{url}/{endpoint}".format(url=url, endpoint=endpoint)
+
         return url
 
+    def _query_string_builder(self, endpoint):
+        qs = {}
+
+        if self.namespace and self._required_namespace(endpoint):
+            qs["namespace"] = self.namespace
+
+        if self.region:
+            qs["region"] = self.region
+
+        return qs
+
     def request(self, *args, **kwargs):
-        endpoint = self._endpointBuilder(self.ENDPOINT, *args)
+        endpoint = self._endpoint_builder(self.ENDPOINT, *args)
         response = self._request(
             endpoint=endpoint,
             method=kwargs.get("method"),
@@ -87,7 +84,11 @@ class Requester(object):
         return response
 
     def _request(self, method, endpoint, params=None, data=None, json=None, headers=None, allow_redirects=None):
-        url = self._urlBuilder(endpoint)
+        url = self._url_builder(endpoint)
+        qs = self._query_string_builder(endpoint)
+
+        if params:
+            params.update(qs)
 
         if self.token:
             try:

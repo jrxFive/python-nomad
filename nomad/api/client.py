@@ -48,7 +48,7 @@ class ls(Requester):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(ls.ENDPOINT, id, params=path, method="get").json()
+        return self.request(id, params={"path": path}, method="get").json()
 
 
 class cat(Requester):
@@ -80,7 +80,7 @@ class cat(Requester):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(cat.ENDPOINT, id, params=path, method="get").text
+        return self.request(id, params={"path": path}, method="get").text
 
 
 class stat(Requester):
@@ -111,7 +111,7 @@ class stat(Requester):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(stat.ENDPOINT, id, params=path, method="get").json()
+        return self.request(id, params={"path": path}, method="get").json()
 
 
 class stats(Requester):
@@ -129,7 +129,7 @@ class stats(Requester):
     def __init__(self, **kwargs):
         super(stats, self).__init__(**kwargs)
 
-    def read_stats(self):
+    def read_stats(self, node_id=None):
         """ Query the actual resources consumed on a node.
 
             https://www.nomadproject.io/api/client.html#read-stats
@@ -140,7 +140,7 @@ class stats(Requester):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(stats.ENDPOINT, method="get").json()
+        return self.request(params={"node_id": node_id}, method="get").json()
 
 
 class allocation(Requester):
@@ -165,10 +165,9 @@ class allocation(Requester):
             https://www.nomadproject.io/api/client.html#read-allocation
 
             arguments:
-              - id
             returns: dict
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(allocation.ENDPOINT, id, "stats", method="get").json()
+        return self.request(id, "stats", method="get").json()

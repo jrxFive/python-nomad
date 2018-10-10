@@ -67,7 +67,7 @@ class Agent(Requester):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        params = "address=" + "&address=".join(addresses)
+        params = {"address": addresses}
         return self.request("join", params=params, method="post").json()
 
     def update_servers(self, addresses):
@@ -81,7 +81,7 @@ class Agent(Requester):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        params = "address=" + "&address=".join(addresses)
+        params = {"address": addresses}
         return self.request("servers", params=params, method="post").status_code
 
     def force_leave(self, node):
@@ -94,5 +94,5 @@ class Agent(Requester):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        params = "node={node}".format(node=node)
+        params = {"node": node}
         return self.request("force-leave", params=params, method="post").status_code

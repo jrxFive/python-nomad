@@ -12,41 +12,41 @@ def test_register_job(nomad_setup):
 
 def test_ls_list_files(nomad_setup):
     """Use Functioncal Test Instead"""
-    # test_register_job(nomad_setup)
-    #
-    # a = nomad_setup.allocations.get_allocations()[0]["ID"]
-    # f = nomad_setup.client.ls.list_files(a)
+    test_register_job(nomad_setup)
+
+    a = nomad_setup.allocations.get_allocations()[0]["ID"]
+    f = nomad_setup.client.ls.list_files(a)
 
 
 def test_stat_stat_file(nomad_setup):
     """Use Functioncal Test Instead"""
-    # test_register_job(nomad_setup)
-    #
-    # a = nomad_setup.allocations.get_allocations()[0]["ID"]
-    # f = nomad_setup.client.stat.stat_file(a)
+    test_register_job(nomad_setup)
+
+    a = nomad_setup.allocations.get_allocations()[0]["ID"]
+    f = nomad_setup.client.stat.stat_file(a)
 
 
 def test_cat_read_file(nomad_setup):
     """Use Functioncal Test Instead"""
-    # test_register_job(nomad_setup)
-    #
-    # a = nomad_setup.allocations.get_allocations()[0]["ID"]
-    # f = nomad_setup.client.cat.read_file(a,"/redis/redis-executor.out")
+    test_register_job(nomad_setup)
+
+    a = nomad_setup.allocations.get_allocations()[0]["ID"]
+    f = nomad_setup.client.cat.read_file(a, "/redis/executor.out")
 
 
 def test_read_stats(nomad_setup):
     """Use Functioncal Test Instead"""
-    # test_register_job(nomad_setup)
-    #
-    # f = nomad_setup.client.stats.read_stats()
+    test_register_job(nomad_setup)
+
+    f = nomad_setup.client.stats.read_stats()
 
 
 def test_read_allocation_stats(nomad_setup):
     """Use Functioncal Test Instead"""
-    # test_register_job(nomad_setup)
-    #
-    # a = nomad_setup.allocations.get_allocations()[0]["ID"]
-    # f = nomad_setup.client.allocation.read_allocation(a)
+    test_register_job(nomad_setup)
+
+    a = nomad_setup.allocations.get_allocations()[0]["ID"]
+    f = nomad_setup.client.allocation.read_allocation_stats(a)
 
 
 def test_dunder_str(nomad_setup):

@@ -58,6 +58,5 @@ class Operator(Requester):
               - nomad.api.exceptions.URLNotFoundNomadException
         """
 
-        params = {"address": peer_address,
-                  "stale": stale}
+        params = {"address": peer_address, "stale": stale}
         return self.request("raft", "peer", params=params, method="delete").ok
