@@ -35,7 +35,7 @@ class ls(Requester):
     def __init__(self, **kwargs):
         super(ls, self).__init__(**kwargs)
 
-    def list_files(self, id, path="/"):
+    def list_files(self, id=None, path="/"):
         """ List files in an allocation directory.
 
            https://www.nomadproject.io/docs/http/client-fs-ls.html
@@ -48,7 +48,10 @@ class ls(Requester):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, params={"path": path}, method="get").json()
+        if id:
+            return self.request(id, params={"path": path}, method="get").json()
+        else:
+            return self.request(params={"path": path}, method="get").json()
 
 
 class cat(Requester):
@@ -67,7 +70,7 @@ class cat(Requester):
     def __init__(self, **kwargs):
         super(cat, self).__init__(**kwargs)
 
-    def read_file(self, id, path="/"):
+    def read_file(self, id=None, path="/"):
         """ Read contents of a file in an allocation directory.
 
            https://www.nomadproject.io/docs/http/client-fs-cat.html
@@ -80,7 +83,10 @@ class cat(Requester):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, params={"path": path}, method="get").text
+        if id:
+            return self.request(id, params={"path": path}, method="get").text
+        else:
+            return self.request(params={"path": path}, method="get").text
 
 
 class stat(Requester):
@@ -98,7 +104,7 @@ class stat(Requester):
     def __init__(self, **kwargs):
         super(stat, self).__init__(**kwargs)
 
-    def stat_file(self, id, path="/"):
+    def stat_file(self, id=None, path="/"):
         """ Stat a file in an allocation directory.
 
            https://www.nomadproject.io/docs/http/client-fs-stat.html
@@ -111,7 +117,10 @@ class stat(Requester):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, params={"path": path}, method="get").json()
+        if id:
+            return self.request(id, params={"path": path}, method="get").json()
+        else:
+            return self.request(params={"path": path}, method="get").json()
 
 
 class stats(Requester):
