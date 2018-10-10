@@ -1,6 +1,8 @@
 import pytest
 import json
 import time
+import os
+
 
 # integration tests requires nomad Vagrant VM or Binary running
 def test_register_job(nomad_setup):
@@ -13,6 +15,7 @@ def test_register_job(nomad_setup):
     time.sleep(10)
 
 
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 5, 6), reason="Not supported in version")
 def test_ls_list_files(nomad_setup):
     """Use Functioncal Test Instead"""
 
@@ -20,6 +23,7 @@ def test_ls_list_files(nomad_setup):
     f = nomad_setup.client.ls.list_files(a)
 
 
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 5, 6), reason="Not supported in version")
 def test_stat_stat_file(nomad_setup):
     """Use Functioncal Test Instead"""
 
@@ -27,6 +31,7 @@ def test_stat_stat_file(nomad_setup):
     f = nomad_setup.client.stat.stat_file(a)
 
 
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 5, 6), reason="Not supported in version")
 def test_cat_read_file(nomad_setup):
     """Use Functioncal Test Instead"""
 
@@ -34,12 +39,14 @@ def test_cat_read_file(nomad_setup):
     f = nomad_setup.client.cat.read_file(a, "/redis/executor.out")
 
 
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 5, 6), reason="Not supported in version")
 def test_read_stats(nomad_setup):
     """Use Functioncal Test Instead"""
 
     f = nomad_setup.client.stats.read_stats()
 
 
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 5, 6), reason="Not supported in version")
 def test_read_allocation_stats(nomad_setup):
     """Use Functioncal Test Instead"""
 
