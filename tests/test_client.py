@@ -12,12 +12,11 @@ def test_register_job(nomad_setup):
         nomad_setup.job.register_job("example", job)
         assert "example" in nomad_setup.job
 
-    time.sleep(10)
+    time.sleep(15)
 
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 5, 6), reason="Not supported in version")
 def test_ls_list_files(nomad_setup):
-    """Use Functioncal Test Instead"""
 
     a = nomad_setup.allocations.get_allocations()[0]["ID"]
     f = nomad_setup.client.ls.list_files(a)
@@ -25,15 +24,12 @@ def test_ls_list_files(nomad_setup):
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 5, 6), reason="Not supported in version")
 def test_stat_stat_file(nomad_setup):
-    """Use Functioncal Test Instead"""
-
     a = nomad_setup.allocations.get_allocations()[0]["ID"]
     f = nomad_setup.client.stat.stat_file(a)
 
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 5, 6), reason="Not supported in version")
 def test_cat_read_file(nomad_setup):
-    """Use Functioncal Test Instead"""
 
     a = nomad_setup.allocations.get_allocations()[0]["ID"]
     f = nomad_setup.client.cat.read_file(a, "/redis/executor.out")
@@ -41,14 +37,12 @@ def test_cat_read_file(nomad_setup):
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 5, 6), reason="Not supported in version")
 def test_read_stats(nomad_setup):
-    """Use Functioncal Test Instead"""
 
     f = nomad_setup.client.stats.read_stats()
 
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 5, 6), reason="Not supported in version")
 def test_read_allocation_stats(nomad_setup):
-    """Use Functioncal Test Instead"""
 
     a = nomad_setup.allocations.get_allocations()[0]["ID"]
     f = nomad_setup.client.allocation.read_allocation_stats(a)
