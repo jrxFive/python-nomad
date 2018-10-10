@@ -1,5 +1,6 @@
 import pytest
 import json
+import time
 
 # integration tests requires nomad Vagrant VM or Binary running
 def test_register_job(nomad_setup):
@@ -9,10 +10,11 @@ def test_register_job(nomad_setup):
         nomad_setup.job.register_job("example", job)
         assert "example" in nomad_setup.job
 
+    time.sleep(3)
+
 
 def test_ls_list_files(nomad_setup):
     """Use Functioncal Test Instead"""
-    test_register_job(nomad_setup)
 
     a = nomad_setup.allocations.get_allocations()[0]["ID"]
     f = nomad_setup.client.ls.list_files(a)
@@ -20,7 +22,6 @@ def test_ls_list_files(nomad_setup):
 
 def test_stat_stat_file(nomad_setup):
     """Use Functioncal Test Instead"""
-    test_register_job(nomad_setup)
 
     a = nomad_setup.allocations.get_allocations()[0]["ID"]
     f = nomad_setup.client.stat.stat_file(a)
@@ -28,7 +29,6 @@ def test_stat_stat_file(nomad_setup):
 
 def test_cat_read_file(nomad_setup):
     """Use Functioncal Test Instead"""
-    test_register_job(nomad_setup)
 
     a = nomad_setup.allocations.get_allocations()[0]["ID"]
     f = nomad_setup.client.cat.read_file(a, "/redis/executor.out")
@@ -36,14 +36,12 @@ def test_cat_read_file(nomad_setup):
 
 def test_read_stats(nomad_setup):
     """Use Functioncal Test Instead"""
-    test_register_job(nomad_setup)
 
     f = nomad_setup.client.stats.read_stats()
 
 
 def test_read_allocation_stats(nomad_setup):
     """Use Functioncal Test Instead"""
-    test_register_job(nomad_setup)
 
     a = nomad_setup.allocations.get_allocations()[0]["ID"]
     f = nomad_setup.client.allocation.read_allocation_stats(a)
