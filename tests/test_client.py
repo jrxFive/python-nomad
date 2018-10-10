@@ -10,7 +10,7 @@ def test_register_job(nomad_setup):
         nomad_setup.job.register_job("example", job)
         assert "example" in nomad_setup.job
 
-    time.sleep(3)
+    time.sleep(10)
 
 
 def test_ls_list_files(nomad_setup):
