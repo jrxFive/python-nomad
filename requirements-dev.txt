@@ -5,3 +5,4 @@ requests==2.10.0
 mkdocs==0.15.3
 mock==1.2.0
 responses==0.9.0
+flaky==3.4.0
