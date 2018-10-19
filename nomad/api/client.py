@@ -9,6 +9,7 @@ class Client(object):
         self.stat = stat(**kwargs)
         self.stats = stats(**kwargs)
         self.allocation = allocation(**kwargs)
+        self.readat = readat(**kwargs)
 
     def __str__(self):
         return "{0}".format(self.__dict__)
@@ -87,6 +88,42 @@ class cat(Requester):
             return self.request(id, params={"path": path}, method="get").text
         else:
             return self.request(params={"path": path}, method="get").text
+
+
+class readat(Requester):
+
+    """
+    This endpoint reads the contents of a file in an allocation directory at a particular offset and limit.
+
+    https://www.nomadproject.io/api/client.html#read-file-at-offset
+    """
+
+    ENDPOINT = "client/fs/readat"
+
+    def __init__(self, **kwargs):
+        super(readat, self).__init__(**kwargs)
+
+    def read_file_offset(self, id, offset, limit, path="/"):
+        """ Read contents of a file in an allocation directory.
+
+           https://www.nomadproject.io/docs/http/client-fs-cat.html
+
+            arguments:
+              - id: (str) allocation_id required
+              - offset: (int) required
+              - limit: (int) required
+              - path: (str) optional
+            returns: (str) text
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
+        params = {
+            "path": path,
+            "offset": offset,
+            "limit": limit
+        }
+        return self.request(id, params=params, method="get").text
 
 
 class stat(Requester):
