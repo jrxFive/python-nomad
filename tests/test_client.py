@@ -3,6 +3,8 @@ import json
 import time
 import os
 
+import nomad
+
 
 # integration tests requires nomad Vagrant VM or Binary running
 def test_register_job(nomad_setup):
@@ -12,7 +14,7 @@ def test_register_job(nomad_setup):
         nomad_setup.job.register_job("example", job)
         assert "example" in nomad_setup.job
 
-    time.sleep(15)
+    time.sleep(20)
 
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 5, 6), reason="Not supported in version")
@@ -40,6 +42,14 @@ def test_read_file_offset(nomad_setup):
 
     a = nomad_setup.allocations.get_allocations()[0]["ID"]
     _ = nomad_setup.client.readat.read_file_offset(a, 1, 10, "/redis/executor.out")
+
+
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 8, 1), reason="Not supported in version")
+def test_streamfile_fail(nomad_setup):
+
+    with pytest.raises(nomad.api.exceptions.BadRequestNomadException):
+        a = nomad_setup.allocations.get_allocations()[0]["ID"]
+        _ = nomad_setup.client.streamfile.stream(a, 1, "start", "/redis/executor")  #invalid file name
 
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 5, 6), reason="Not supported in version")
