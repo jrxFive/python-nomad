@@ -44,7 +44,7 @@ def test_read_file_offset(nomad_setup):
     _ = nomad_setup.client.readat.read_file_offset(a, 1, 10, "/redis/executor.out")
 
 
-@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 7, 1), reason="Not supported in version")
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 8, 1), reason="Not supported in version")
 def test_streamfile_fail(nomad_setup):
 
     with pytest.raises(nomad.api.exceptions.BadRequestNomadException):
