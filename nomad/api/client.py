@@ -10,6 +10,7 @@ class Client(object):
         self.stats = stats(**kwargs)
         self.allocation = allocation(**kwargs)
         self.readat = readat(**kwargs)
+        self.streamfile = streamfile(**kwargs)
 
     def __str__(self):
         return "{0}".format(self.__dict__)
@@ -116,12 +117,48 @@ class readat(Requester):
             returns: (str) text
             raises:
               - nomad.api.exceptions.BaseNomadException
-              - nomad.api.exceptions.URLNotFoundNomadException
+              - nomad.api.exceptions.BadRequestNomadException
         """
         params = {
             "path": path,
             "offset": offset,
             "limit": limit
+        }
+        return self.request(id, params=params, method="get").text
+
+
+class streamfile(Requester):
+
+    """
+    This endpoint streams the contents of a file in an allocation directory.
+
+    https://www.nomadproject.io/api/client.html#stream-file
+    """
+
+    ENDPOINT = "client/fs/stream"
+
+    def __init__(self, **kwargs):
+        super(streamfile, self).__init__(**kwargs)
+
+    def stream(self, id, offset, origin, path="/"):
+        """ Read contents of a file in an allocation directory.
+
+           https://www.nomadproject.io/docs/http/client-fs-cat.html
+
+            arguments:
+              - id: (str) allocation_id required
+              - offset: (int) required
+              - origin: (str) either start|end
+              - path: (str) optional
+            returns: (str) text
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.BadRequestNomadException
+        """
+        params = {
+            "path": path,
+            "offset": offset,
+            "origin": origin
         }
         return self.request(id, params=params, method="get").text
 
