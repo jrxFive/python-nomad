@@ -324,4 +324,4 @@ class gc_allocation(Requester):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, "gc", method="get")
+        self.request(id, "gc", method="get")

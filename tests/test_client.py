@@ -78,11 +78,11 @@ def test_read_allocation_stats(nomad_setup):
 
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 8, 1), reason="Not supported in version")
-def test_gc_allocation(nomad_setup):
+def test_gc_allocation_fail(nomad_setup):
 
     a = nomad_setup.allocations.get_allocations()[0]["ID"]
-    nomad_setup.job.deregister_job("example")
-    f = nomad_setup.client.gc_allocation.garbage_collect(a)
+    with pytest.raises(nomad.api.exceptions.URLNotFoundNomadException):
+        f = nomad_setup.client.gc_allocation.garbage_collect(a)  # attempt on non-stopped allocation
 
 
 def test_dunder_str(nomad_setup):
