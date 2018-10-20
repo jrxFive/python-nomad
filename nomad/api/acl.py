@@ -1,7 +1,9 @@
 import nomad.api.exceptions
 
+from nomad.api.base import Requester
 
-class Acl(object):
+
+class Acl(Requester):
     """
     The endpoint manage security ACL and tokens
 
@@ -10,8 +12,8 @@ class Acl(object):
 
     ENDPOINT = "acl"
 
-    def __init__(self, requester):
-        self._requester = requester
+    def __init__(self, **kwargs):
+        super(Acl, self).__init__(**kwargs)
 
     def __str__(self):
         return "{0}".format(self.__dict__)
@@ -21,38 +23,6 @@ class Acl(object):
 
     def __getattr__(self, item):
         raise AttributeError
-
-    def _get(self, *args, **kwargs):
-        url = self._requester._endpointBuilder(Acl.ENDPOINT, *args)
-        response = self._requester.get(url,
-                                       params=kwargs.get("params", None))
-
-        return response.json()
-
-    def _post(self, *args, **kwargs):
-        url = self._requester._endpointBuilder(Acl.ENDPOINT, *args)
-        if kwargs:
-            response = self._requester.post(url, json=kwargs.get("json_dict", None), params=kwargs.get("params", None))
-        else:
-            response = self._requester.post(url)
-
-        return response.json()
-
-    def _post_no_json(self, *args, **kwargs):
-        url = self._requester._endpointBuilder(Acl.ENDPOINT, *args)
-        if kwargs:
-            response = self._requester.post(url, json=kwargs.get("json_dict", None), params=kwargs.get("params", None))
-        else:
-            response = self._requester.post(url)
-
-        return response
-
-    def _delete(self, *args, **kwargs):
-        url = self._requester._endpointBuilder(Acl.ENDPOINT, *args)
-        response = self._requester.delete(url,
-                                          params=kwargs.get("params", None))
-
-        return response.ok
 
     def generate_bootstrap(self):
         """ Activate bootstrap token.
@@ -65,8 +35,7 @@ class Acl(object):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-
-        return self._post("bootstrap")
+        return self.request("bootstrap", method="post").json()
 
     def get_tokens(self):
         """ Get a list of tokens.
@@ -79,7 +48,8 @@ class Acl(object):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._get("tokens")
+
+        return self.request("tokens", method="get").json()
 
     def get_token(self, id):
         """ Retrieve specific token.
@@ -92,7 +62,7 @@ class Acl(object):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._get("token", id)
+        return self.request("token", id, method="get").json()
 
     def get_self_token(self):
         """ Retrieve self token used for auth.
@@ -105,7 +75,7 @@ class Acl(object):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._get("token", "self")
+        return self.request("token", "self", method="get").json()
 
     def create_token(self, token):
         """ Create token.
@@ -120,20 +90,20 @@ class Acl(object):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._post("token", json_dict=token)
+        return self.request("token", json=token, method="post").json()
 
     def delete_token(self, id):
         """ Delete specific token.
 
             https://www.nomadproject.io/api/acl-tokens.html
 
-            returns: dict
+            returns: Boolean
 
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._delete("token", id)
+        return self.request("token", id, method="delete").ok
 
     def update_token(self, id, token):
         """ Update token.
@@ -149,7 +119,7 @@ class Acl(object):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._post("token", id, json_dict=token)
+        return self.request("token", id, json=token, method="post").json()
 
     def get_policies(self):
         """ Get a list of policies.
@@ -162,7 +132,7 @@ class Acl(object):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._get("policies")
+        return self.request("policies", method="get").json()
 
     def create_policy(self, id, policy):
         """ Create policy.
@@ -171,13 +141,13 @@ class Acl(object):
 
             arguments:
                 - policy
-            returns: dict
+            returns: request.Response
 
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._post_no_json("policy", id, json_dict=policy)
+        return self.request("policy", id, json=policy, method="post")
 
     def get_policy(self, id):
         """ Get a spacific.
@@ -190,7 +160,7 @@ class Acl(object):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._get("policy", id)
+        return self.request("policy", id, method="get").json()
 
     def update_policy(self, id, policy):
         """ Create policy.
@@ -200,13 +170,13 @@ class Acl(object):
             arguments:
                 - name
                 - policy
-            returns: dict
+            returns: request.Response
 
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._post_no_json("policy", id, json_dict=policy)
+        return self.request("policy", id, json=policy, method="post")
 
     def delete_policy(self, id):
         """ Delete specific policy.
@@ -215,9 +185,10 @@ class Acl(object):
 
             arguments:
                 - id
+            returns: Boolean
 
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._delete("policy", id)
+        return self.request("policy", id, method="delete").ok

@@ -1,7 +1,7 @@
-import nomad.api.exceptions
+from nomad.api.base import Requester
 
 
-class Metrics(object):
+class Metrics(Requester):
 
     """
     The /metrics endpoint returns metrics for the current Nomad process.
@@ -14,8 +14,8 @@ class Metrics(object):
     """
     ENDPOINT = "metrics"
 
-    def __init__(self, requester):
-        self._requester = requester
+    def __init__(self, **kwargs):
+        super(Metrics, self).__init__(**kwargs)
 
     def __str__(self):
         return "{0}".format(self.__dict__)
@@ -25,12 +25,6 @@ class Metrics(object):
 
     def __getattr__(self, item):
         raise AttributeError
-
-    def _get(self, *args):
-        url = self._requester._endpointBuilder(Metrics.ENDPOINT, *args)
-        metrics = self._requester.get(url)
-
-        return metrics.json()
 
     def get_metrics(self):
         """ Get the metrics
@@ -42,4 +36,4 @@ class Metrics(object):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._get()
+        return self.request(method="get").json()

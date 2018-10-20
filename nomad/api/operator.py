@@ -1,5 +1,7 @@
+from nomad.api.base import Requester
 
-class Operator(object):
+
+class Operator(Requester):
 
     """
     The Operator endpoint provides cluster-level tools for
@@ -10,8 +12,8 @@ class Operator(object):
 
     ENDPOINT = "operator"
 
-    def __init__(self, requester):
-        self._requester = requester
+    def __init__(self, **kwargs):
+        super(Operator, self).__init__(**kwargs)
 
     def __str__(self):
         return "{0}".format(self.__dict__)
@@ -21,20 +23,6 @@ class Operator(object):
 
     def __getattr__(self, item):
         raise AttributeError
-
-    def _get(self, *args, **kwargs):
-        url = self._requester._endpointBuilder(Operator.ENDPOINT, *args)
-        response = self._requester.get(url,
-                                       params=kwargs.get("params",None))
-
-        return response.json()
-
-    def _delete(self, *args, **kwargs):
-        url = self._requester._endpointBuilder(Operator.ENDPOINT, *args)
-        response = self._requester.delete(url,
-                                          params=kwargs.get("params", None))
-
-        return response.ok
 
     def get_configuration(self, stale=False):
         """ Query the status of a client node registered with Nomad.
@@ -51,7 +39,7 @@ class Operator(object):
         """
 
         params = {"stale": stale}
-        return self._get("raft", "configuration", params=params)
+        return self.request("raft", "configuration", params=params, method="get").json()
 
     def delete_peer(self, peer_address, stale=False):
         """ Remove the Nomad server with given address from the Raft configuration.
@@ -64,12 +52,11 @@ class Operator(object):
             optional arguments:
               - stale, (defaults to False), Specifies if the cluster should respond without an active leader.
                                             This is specified as a querystring parameter.
-            returns: Ok status
+            returns: Boolean
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
 
-        params = {"address": peer_address,
-                  "stale": stale}
-        return self._delete("raft", "peer", params=params)
+        params = {"address": peer_address, "stale": stale}
+        return self.request("raft", "peer", params=params, method="delete").ok

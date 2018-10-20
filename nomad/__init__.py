@@ -46,48 +46,49 @@ class Nomad(object):
         self.secure = secure
         self.port = port
         self.address = address
+        self.region = region
         self.timeout = timeout
         self.version = version
+        self.token = token
         self.verify = verify
         self.cert = cert
+        self.__namespace = namespace
 
-        self.requester = api.Requester(address=address, uri=self.get_uri(), port=port, namespace=namespace,
-                                        token=token, timeout=timeout, version=version, verify=verify, cert=cert, region = region)
+        self.requester_settings = {
+            "address": self.address,
+            "uri": self.get_uri(),
+            "port": self.port,
+            "namespace": self.__namespace,
+            "token": self.token,
+            "timeout": self.timeout,
+            "version": self.version,
+            "verify": self.verify,
+            "cert": self.cert,
+            "region": self.region
+        }
 
-        self._jobs = api.Jobs(self.requester)
-        self._job = api.Job(self.requester)
-        self._nodes = api.Nodes(self.requester)
-        self._node = api.Node(self.requester)
-        self._allocations = api.Allocations(self.requester)
-        self._allocation = api.Allocation(self.requester)
-        self._evaluations = api.Evaluations(self.requester)
-        self._evaluation = api.Evaluation(self.requester)
-        self._agent = api.Agent(self.requester)
-        self._client = api.Client(self.requester)
-        self._deployments = api.Deployments(self.requester)
-        self._deployment = api.Deployment(self.requester)
-        self._regions = api.Regions(self.requester)
-        self._status = api.Status(self.requester)
-        self._system = api.System(self.requester)
-        self._operator = api.Operator(self.requester)
-        self._validate = api.Validate(self.requester)
-        self._namespaces = api.Namespaces(self.requester)
-        self._namespace = api.Namespace(self.requester)
-        self._acl = api.Acl(self.requester)
-        self._sentinel = api.Sentinel(self.requester)
-        self._metrics = api.Metrics(self.requester)
-
-    def set_namespace(self, namespace):
-        self.requester.namespace = namespace
-
-    def set_token(self, token):
-        self.requester.token = token
-
-    def get_namespace(self):
-        return self.requester.namespace
-
-    def get_token(self):
-        return self.requester.token
+        self._jobs = api.Jobs(**self.requester_settings)
+        self._job = api.Job(**self.requester_settings)
+        self._nodes = api.Nodes(**self.requester_settings)
+        self._node = api.Node(**self.requester_settings)
+        self._allocations = api.Allocations(**self.requester_settings)
+        self._allocation = api.Allocation(**self.requester_settings)
+        self._evaluations = api.Evaluations(**self.requester_settings)
+        self._evaluation = api.Evaluation(**self.requester_settings)
+        self._agent = api.Agent(**self.requester_settings)
+        self._client = api.Client(**self.requester_settings)
+        self._deployments = api.Deployments(**self.requester_settings)
+        self._deployment = api.Deployment(**self.requester_settings)
+        self._regions = api.Regions(**self.requester_settings)
+        self._status = api.Status(**self.requester_settings)
+        self._system = api.System(**self.requester_settings)
+        self._operator = api.Operator(**self.requester_settings)
+        self._validate = api.Validate(**self.requester_settings)
+        self._namespaces = api.Namespaces(**self.requester_settings)
+        self._namespace = api.Namespace(**self.requester_settings)
+        self._acl = api.Acl(**self.requester_settings)
+        self._sentinel = api.Sentinel(**self.requester_settings)
+        self._metrics = api.Metrics(**self.requester_settings)
 
     def get_uri(self):
         if self.secure:
@@ -95,6 +96,12 @@ class Nomad(object):
         else:
             protocol = "http"
         return "{protocol}://{host}".format(protocol=protocol, host=self.host)
+
+    def get_namespace(self):
+        return self.__namespace
+
+    def get_token(self):
+        return self.token
 
     @property
     def jobs(self):

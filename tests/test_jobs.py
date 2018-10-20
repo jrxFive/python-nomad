@@ -4,10 +4,6 @@ import json
 
 
 # integration tests requires nomad Vagrant VM or Binary running
-def test_get_jobs(nomad_setup):
-    assert isinstance(nomad_setup.jobs.get_jobs(), list) == True
-
-
 def test_register_job(nomad_setup):
 
     with open("example.json") as fh:
@@ -16,9 +12,12 @@ def test_register_job(nomad_setup):
         assert "example" in nomad_setup.jobs
 
 
+def test_get_jobs(nomad_setup):
+    assert isinstance(nomad_setup.jobs.get_jobs(), list) == True
+
+
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 8, 3), reason="Not supported in version")
 def test_parse_job(nomad_setup):
-
     with open("example.nomad") as fh:
         hcl = fh.read()
         json_dict = nomad_setup.jobs.parse(hcl)

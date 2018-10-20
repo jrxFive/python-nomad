@@ -14,7 +14,7 @@ def test_validate_job(nomad_setup):
 # integration tests requires nomad Vagrant VM or Binary running
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version")
 def test_invalid_job(nomad_setup):
-    with pytest.raises(nomad.api.exceptions.URLNotFoundNomadException):
+    with pytest.raises(nomad.api.exceptions.BadRequestNomadException):
         nomad_setup.validate.validate_job({})
 
 

@@ -1,13 +1,15 @@
 import nomad.api.exceptions
 
+from nomad.api.base import Requester
 
-class Agent(object):
+
+class Agent(Requester):
 
     """The self endpoint is used to query the state of the target agent."""
     ENDPOINT = "agent"
 
-    def __init__(self, requester):
-        self._requester = requester
+    def __init__(self, **kwargs):
+        super(Agent, self).__init__(**kwargs)
 
     def __str__(self):
         return "{0}".format(self.__dict__)
@@ -19,12 +21,6 @@ class Agent(object):
         msg = "{0} does not exist".format(item)
         raise AttributeError(msg)
 
-    def _get(self, *args):
-        url = self._requester._endpointBuilder(Agent.ENDPOINT, *args)
-        agent = self._requester.get(url)
-
-        return agent.json()
-
     def get_agent(self):
         """ Query the state of the target agent.
 
@@ -35,7 +31,7 @@ class Agent(object):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._get("self")
+        return self.request("self", method="get").json()
 
     def get_members(self):
         """Lists the known members of the gossip pool.
@@ -47,7 +43,7 @@ class Agent(object):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._get("members")
+        return self.request("members", method="get").json()
 
     def get_servers(self):
         """ Lists the known members of the gossip pool.
@@ -59,17 +55,7 @@ class Agent(object):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._get("servers")
-
-    def _post(self, *args, **kwargs):
-        try:
-            url = self._requester._endpointBuilder(Agent.ENDPOINT, *args)
-
-            response = self._requester.post(url, params=kwargs["params"])
-
-            return response.json()
-        except ValueError:
-            return response.status_code
+        return self.request("servers", method="get").json()
 
     def join_agent(self, addresses):
         """Initiate a join between the agent and target peers.
@@ -81,8 +67,8 @@ class Agent(object):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        params = "address=" + "&address=".join(addresses)
-        return self._post("join", params=params)
+        params = {"address": addresses}
+        return self.request("join", params=params, method="post").json()
 
     def update_servers(self, addresses):
         """Updates the list of known servers to the provided list.
@@ -95,8 +81,8 @@ class Agent(object):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        params = "address=" + "&address=".join(addresses)
-        return self._post("servers", params=params)
+        params = {"address": addresses}
+        return self.request("servers", params=params, method="post").status_code
 
     def force_leave(self, node):
         """Force a failed gossip member into the left state.
@@ -108,5 +94,5 @@ class Agent(object):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        params = "node={node}".format(node=node)
-        return self._post("force-leave", params=params)
+        params = {"node": node}
+        return self.request("force-leave", params=params, method="post").status_code

@@ -1,7 +1,9 @@
 import nomad.api.exceptions
 
+from nomad.api.base import Requester
 
-class Jobs(object):
+
+class Jobs(Requester):
 
     """
     The jobs endpoint is used to query the status of existing
@@ -12,8 +14,8 @@ class Jobs(object):
     """
     ENDPOINT = "jobs"
 
-    def __init__(self, requester):
-        self._requester = requester
+    def __init__(self, **kwargs):
+        super(Jobs, self).__init__(**kwargs)
 
     def __str__(self):
         return "{0}".format(self.__dict__)
@@ -27,7 +29,7 @@ class Jobs(object):
 
     def __contains__(self, item):
         try:
-            jobs = self._get()
+            jobs = self.get_jobs()
 
             for j in jobs:
                 if j["ID"] == item:
@@ -40,12 +42,12 @@ class Jobs(object):
             return False
 
     def __len__(self):
-        jobs = self._get()
+        jobs = self.get_jobs()
         return len(jobs)
 
     def __getitem__(self, item):
         try:
-            jobs = self._get()
+            jobs = self.get_jobs()
 
             for j in jobs:
                 if j["ID"] == item:
@@ -58,14 +60,8 @@ class Jobs(object):
             raise KeyError
 
     def __iter__(self):
-        jobs = self._get()
+        jobs = self.get_jobs()
         return iter(jobs)
-
-    def _get(self, *args):
-        url = self._requester._endpointBuilder(Jobs.ENDPOINT, *args)
-        jobs = self._requester.get(url)
-
-        return jobs.json()
 
     def get_jobs(self):
         """ Lists all the jobs registered with Nomad.
@@ -77,17 +73,7 @@ class Jobs(object):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._get()
-
-    def _post(self, *args, **kwargs):
-        url = self._requester._endpointBuilder(Jobs.ENDPOINT, *args)
-
-        if kwargs:
-            response = self._requester.post(url, json=kwargs["job"])
-        else:
-            response = self._requester.post(url)
-
-        return response.json()
+        return self.request(method="get").json()
 
     def register_job(self, job):
         """ Register a job with Nomad.
@@ -99,8 +85,7 @@ class Jobs(object):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._post(job=job)
-
+        return self.request(json=job, method="post").json()
 
     def parse(self, hcl, canonicalize=False):
         """ Parse a HCL Job file. Returns a dict with the JSON formatted job.
@@ -113,4 +98,4 @@ class Jobs(object):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._post("parse", job={"JobHCL": hcl, "Canonicalize": canonicalize})
+        return self.request("parse", json={"JobHCL": hcl, "Canonicalize": canonicalize}, method="post", allow_redirects=True).json()

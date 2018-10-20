@@ -1,5 +1,7 @@
 import nomad.api.exceptions
 
+from nomad.api.base import Requester
+
 
 class Status(object):
 
@@ -8,12 +10,10 @@ class Status(object):
 
     https://www.nomadproject.io/docs/http/status.html
     """
-    ENDPOINT = "status"
 
-    def __init__(self, requester):
-        self._requester = requester
-        self.leader = Leader(requester)
-        self.peers = Peers(requester)
+    def __init__(self, **kwargs):
+        self.leader = Leader(**kwargs)
+        self.peers = Peers(**kwargs)
 
     def __str__(self):
         return "{0}".format(self.__dict__)
@@ -24,23 +24,14 @@ class Status(object):
     def __getattr__(self, item):
         raise AttributeError
 
-    def _get(self, *args):
-        url = self._requester._endpointBuilder(Status.ENDPOINT, *args)
-        nodes = self._requester.get(url)
 
-        return nodes.json()
+class Leader(Requester):
 
-
-class Leader(Status):
-
-    ENDPOINT = "leader"
-
-    def __init__(self, requester):
-        self._requester = requester
+    ENDPOINT = "status/leader"
 
     def __contains__(self, item):
         try:
-            leader = self._get(Leader.ENDPOINT)
+            leader = self.get_leader()
 
             if leader == item:
                 return True
@@ -50,7 +41,7 @@ class Leader(Status):
             return False
 
     def __len__(self):
-        leader = self._get(Leader.ENDPOINT)
+        leader = self.get_leader()
         return len(leader)
 
     def get_leader(self):
@@ -63,19 +54,16 @@ class Leader(Status):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._get(Leader.ENDPOINT)
+        return self.request(method="get").json()
 
 
-class Peers(Status):
+class Peers(Requester):
 
-    ENDPOINT = "peers"
-
-    def __init__(self, requester):
-        self._requester = requester
+    ENDPOINT = "status/peers"
 
     def __contains__(self, item):
         try:
-            peers = self._get(Peers.ENDPOINT)
+            peers = self.get_peers()
 
             for p in peers:
                 if p == item:
@@ -86,12 +74,12 @@ class Peers(Status):
             return False
 
     def __len__(self):
-        peers = self._get(Peers.ENDPOINT)
+        peers = self.get_peers()
         return len(peers)
 
     def __getitem__(self, item):
         try:
-            peers = self._get(Peers.ENDPOINT)
+            peers = self.get_peers()
 
             for p in peers:
                 if p == item:
@@ -102,7 +90,7 @@ class Peers(Status):
             raise KeyError
 
     def __iter__(self):
-        peers = self._get(Peers.ENDPOINT)
+        peers = self.get_peers()
         return iter(peers)
 
     def get_peers(self):
@@ -115,4 +103,4 @@ class Peers(Status):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._get(Peers.ENDPOINT)
+        return self.request(method="get").json()

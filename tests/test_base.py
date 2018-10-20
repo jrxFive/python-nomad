@@ -2,7 +2,26 @@ import pytest
 import tests.common as common
 import nomad
 import os
-import requests_mock
+import responses
+
+
+def test_base_region_qs():
+    n = nomad.Nomad(host=common.IP, port=common.NOMAD_PORT, verify=False, token=common.NOMAD_TOKEN, region="random")
+    qs = n.jobs._query_string_builder("v1/jobs")
+
+    assert "region" in qs
+    assert qs["region"] == "random"
+
+
+def test_base_region_and_namespace_qs():
+    n = nomad.Nomad(host=common.IP, port=common.NOMAD_PORT, verify=False, token=common.NOMAD_TOKEN, region="random", namespace="test")
+    qs = n.jobs._query_string_builder("v1/jobs")
+
+    assert "region" in qs
+    assert qs["region"] == "random"
+
+    assert "namespace" in qs
+    assert qs["namespace"] == "test"
 
 
 # integration tests requires nomad Vagrant VM or Binary running
@@ -35,9 +54,15 @@ def test_base_get_connnection_not_authorized():
         j = n.job.get_job("example")
 
 
+@responses.activate
 def test_base_use_address_instead_on_host_port():
-    with requests_mock.Mocker() as m:
-        m.get('https://nomad.service.consul:4646/v1/jobs', text='[]')
-        nomad_address = "https://nomad.service.consul:4646"
-        n = nomad.Nomad(address=nomad_address, host=common.IP, port=common.NOMAD_PORT, verify=False, token=common.NOMAD_TOKEN)
-        n.jobs.get_jobs()
+    responses.add(
+        responses.GET,
+        'https://nomad.service.consul:4646/v1/jobs',
+        status=200,
+        json=[]
+    )
+
+    nomad_address = "https://nomad.service.consul:4646"
+    n = nomad.Nomad(address=nomad_address, host=common.IP, port=common.NOMAD_PORT, verify=False, token=common.NOMAD_TOKEN)
+    n.jobs.get_jobs()

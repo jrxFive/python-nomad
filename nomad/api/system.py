@@ -1,5 +1,7 @@
+from nomad.api.base import Requester
 
-class System(object):
+
+class System(Requester):
 
     """
     The system endpoint is used to for system maintenance
@@ -11,8 +13,8 @@ class System(object):
 
     ENDPOINT = "system"
 
-    def __init__(self, requester):
-        self._requester = requester
+    def __init__(self, **kwargs):
+        super(System, self).__init__(**kwargs)
 
     def __str__(self):
         return "{0}".format(self.__dict__)
@@ -23,32 +25,26 @@ class System(object):
     def __getattr__(self, item):
         raise AttributeError
 
-    def _put(self, *args):
-        url = self._requester._endpointBuilder(System.ENDPOINT, *args)
-        response = self._requester.put(url)
-
-        return response.ok
-
     def initiate_garbage_collection(self):
         """ Initiate garbage collection of jobs, evals, allocations and nodes.
 
             https://www.nomadproject.io/docs/http/system.html
 
-            returns: None
+            returns: Boolean
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._put("gc")
+        return self.request("gc", method="put").ok
 
     def reconcile_summaries(self):
         """ This endpoint reconciles the summaries of all registered jobs.
 
             https://www.nomadproject.io/docs/http/system.html
 
-            returns: None
+            returns: Boolean
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._put("reconcile", "summaries")
+        return self.request("reconcile", "summaries", method="put").ok

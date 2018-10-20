@@ -1,35 +1,61 @@
+import tests.common as common
+
 import json
-from mock import patch, MagicMock
-import requests
+
+import responses
 
 
+@responses.activate
+def test_create_namespace(nomad_setup):
 
-# integration tests was mocked. If you have an enterprise nomad please uncomenet ##### ENTERPRISE TEST #####
-@patch('nomad.api.namespace.Namespace._post')
-def test_create_namespace(mock_post, nomad_setup):
-    mock_post.return_value = requests.codes.ok
-    namespace_api='{"Name":"api","Description":"api server namespace"}'
+        responses.add(
+            responses.POST,
+            "http://{ip}:{port}/v1/namespace".format(ip=common.IP, port=common.NOMAD_PORT),
+            status=200
+        )
+
+        namespace_api = '{"Name":"api","Description":"api server namespace"}'
+        namespace = json.loads(namespace_api)
+        nomad_setup.namespace.create_namespace(namespace)
+
+
+@responses.activate
+def test_update_namespace(nomad_setup):
+
+    responses.add(
+        responses.POST,
+        "http://{ip}:{port}/v1/namespace/api".format(ip=common.IP, port=common.NOMAD_PORT),
+        status=200
+    )
+
+    namespace_api = '{"Name":"api","Description":"updated namespace"}'
     namespace = json.loads(namespace_api)
-    assert 200 == nomad_setup.namespace.create_namespace(namespace)
-
-@patch('nomad.api.namespace.Namespace._post')
-def test_update_namespace(mock_post, nomad_setup):
-    mock_post.return_value = requests.codes.ok
-    namespace_api='{"Name":"api","Description":"updated namespace"}'
-    namespace = json.loads(namespace_api)
-    assert 200 == nomad_setup.namespace.update_namespace("api", namespace)
+    nomad_setup.namespace.update_namespace("api", namespace)
 
 
-@patch('nomad.api.namespace.Namespace._get')
-def test_get_namespace(mock_get, nomad_setup):
-    mock_get.return_value = {"Name":"api","Description":"api server namespace"}
+@responses.activate
+def test_get_namespace(nomad_setup):
+
+    responses.add(
+        responses.GET,
+        "http://{ip}:{port}/v1/namespace/api".format(ip=common.IP, port=common.NOMAD_PORT),
+        status=200,
+        json={"Name": "api", "Description": "api server namespace"}
+    )
+
     assert "api" in nomad_setup.namespace.get_namespace("api")["Name"]
 
-@patch('nomad.api.namespace.Namespace._delete')
-def test_delete_namespace(mock_delete, nomad_setup):
-    mock_delete.return_value = {"Name":"api","Description":"api server namespace"}
+
+@responses.activate
+def test_delete_namespace(nomad_setup):
+    responses.add(
+        responses.DELETE,
+        "http://{ip}:{port}/v1/namespace/api".format(ip=common.IP, port=common.NOMAD_PORT),
+        status=200,
+    )
+
     nomad_setup.namespace.delete_namespace("api")
-    assert "api" == nomad_setup.namespace.delete_namespace("api")["Name"]
+
 
 
 ######### ENTERPRISE TEST ###########

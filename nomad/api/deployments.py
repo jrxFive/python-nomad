@@ -1,7 +1,9 @@
 import nomad.api.exceptions
 
+from nomad.api.base import Requester
 
-class Deployments(object):
+
+class Deployments(Requester):
 
     """
     The /deployment endpoints are used to query for and interact with deployments.
@@ -10,8 +12,8 @@ class Deployments(object):
     """
     ENDPOINT = "deployments"
 
-    def __init__(self, requester):
-        self._requester = requester
+    def __init__(self, **kwargs):
+        super(Deployments, self).__init__(**kwargs)
 
     def __str__(self):
         return "{0}".format(self.__dict__)
@@ -23,16 +25,16 @@ class Deployments(object):
         raise AttributeError
 
     def __len__(self):
-        response = self._get()
+        response = self.get_deployments()
         return len(response)
 
     def __iter__(self):
-        response = self._get()
+        response = self.get_deployments()
         return iter(response)
 
     def __contains__(self, item):
         try:
-            deployments = self._get()
+            deployments = self.get_deployments()
 
             for d in deployments:
                 if d["ID"] == item:
@@ -44,7 +46,7 @@ class Deployments(object):
 
     def __getitem__(self, item):
         try:
-            deployments = self._get()
+            deployments = self.get_deployments()
 
             for d in deployments:
                 if d["ID"] == item:
@@ -53,12 +55,6 @@ class Deployments(object):
                 raise KeyError
         except nomad.api.exceptions.URLNotFoundNomadException:
             raise KeyError
-
-    def _get(self, *args, **kwargs):
-        url = self._requester._endpointBuilder(Deployments.ENDPOINT, *args)
-        response = self._requester.get(url, params=kwargs.get("params", None))
-
-        return response.json()
 
     def get_deployments(self, prefix=""):
         """ This endpoint lists all deployments.
@@ -75,4 +71,4 @@ class Deployments(object):
               - nomad.api.exceptions.URLNotFoundNomadException
         """
         params = {"prefix": prefix}
-        return self._get(params=params)
+        return self.request(params=params, method="get").json()

@@ -1,15 +1,19 @@
+from nomad.api.base import Requester
+
 
 class Client(object):
 
-    ENDPOINT = "client"
-
-    def __init__(self, requester):
-        self._requester = requester
-        self.ls = ls(requester)
-        self.cat = cat(requester)
-        self.stat = stat(requester)
-        self.stats = stats(requester)
-        self.allocation = allocation(requester)
+    def __init__(self, **kwargs):
+        self.ls = ls(**kwargs)
+        self.cat = cat(**kwargs)
+        self.stat = stat(**kwargs)
+        self.stats = stats(**kwargs)
+        self.allocation = allocation(**kwargs)
+        self.read_at = read_at(**kwargs)
+        self.stream_file = stream_file(**kwargs)
+        self.stream_logs = stream_logs(**kwargs)
+        self.gc_allocation = gc_allocation(**kwargs)
+        self.gc_all_allocations = gc_all_allocations(**kwargs)
 
     def __str__(self):
         return "{0}".format(self.__dict__)
@@ -20,21 +24,8 @@ class Client(object):
     def __getattr__(self, item):
         raise AttributeError
 
-    def _get(self, *args, **kwargs):
-        try:
-            url = self._requester._endpointBuilder(
-                Client.ENDPOINT, *args)
 
-            response = self._requester.get(url, params=kwargs)
-
-            return response.json()
-        except ValueError:
-            return response.text
-        except:
-            raise
-
-
-class ls(Client):
+class ls(Requester):
 
     """
     The /fs/ls endpoint is used to list files in an allocation directory.
@@ -44,12 +35,12 @@ class ls(Client):
     https://www.nomadproject.io/docs/http/client-fs-ls.html
     """
 
-    ENDPOINT = "fs/ls"
+    ENDPOINT = "client/fs/ls"
 
-    def __init__(self, requester):
-        self._requester = requester
+    def __init__(self, **kwargs):
+        super(ls, self).__init__(**kwargs)
 
-    def list_files(self, id, path="/"):
+    def list_files(self, id=None, path="/"):
         """ List files in an allocation directory.
 
            https://www.nomadproject.io/docs/http/client-fs-ls.html
@@ -62,10 +53,13 @@ class ls(Client):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._get(ls.ENDPOINT, id, path=path)
+        if id:
+            return self.request(id, params={"path": path}, method="get").json()
+        else:
+            return self.request(params={"path": path}, method="get").json()
 
 
-class cat(Client):
+class cat(Requester):
 
     """
     The /fs/cat endpoint is used to read the contents of a file in an
@@ -76,12 +70,12 @@ class cat(Client):
     https://www.nomadproject.io/docs/http/client-fs-cat.html
     """
 
-    ENDPOINT = "fs/cat"
+    ENDPOINT = "client/fs/cat"
 
-    def __init__(self, requester):
-        self._requester = requester
+    def __init__(self, **kwargs):
+        super(cat, self).__init__(**kwargs)
 
-    def read_file(self, id, path="/"):
+    def read_file(self, id=None, path="/"):
         """ Read contents of a file in an allocation directory.
 
            https://www.nomadproject.io/docs/http/client-fs-cat.html
@@ -89,15 +83,132 @@ class cat(Client):
             arguments:
               - id
               - path
-            returns: text
+            returns: (str) text
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._get(cat.ENDPOINT, id, path=path)
+        if id:
+            return self.request(id, params={"path": path}, method="get").text
+        else:
+            return self.request(params={"path": path}, method="get").text
 
 
-class stat(Client):
+class read_at(Requester):
+
+    """
+    This endpoint reads the contents of a file in an allocation directory at a particular offset and limit.
+
+    https://www.nomadproject.io/api/client.html#read-file-at-offset
+    """
+
+    ENDPOINT = "client/fs/readat"
+
+    def __init__(self, **kwargs):
+        super(read_at, self).__init__(**kwargs)
+
+    def read_file_offset(self, id, offset, limit, path="/"):
+        """ Read contents of a file in an allocation directory.
+
+           https://www.nomadproject.io/docs/http/client-fs-cat.html
+
+            arguments:
+              - id: (str) allocation_id required
+              - offset: (int) required
+              - limit: (int) required
+              - path: (str) optional
+            returns: (str) text
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.BadRequestNomadException
+        """
+        params = {
+            "path": path,
+            "offset": offset,
+            "limit": limit
+        }
+        return self.request(id, params=params, method="get").text
+
+
+class stream_file(Requester):
+
+    """
+    This endpoint streams the contents of a file in an allocation directory.
+
+    https://www.nomadproject.io/api/client.html#stream-file
+    """
+
+    ENDPOINT = "client/fs/stream"
+
+    def __init__(self, **kwargs):
+        super(stream_file, self).__init__(**kwargs)
+
+    def stream(self, id, offset, origin, path="/"):
+        """ This endpoint streams the contents of a file in an allocation directory.
+
+            https://www.nomadproject.io/api/client.html#stream-file
+
+            arguments:
+              - id: (str) allocation_id required
+              - offset: (int) required
+              - origin: (str) either start|end
+              - path: (str) optional
+            returns: (str) text
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.BadRequestNomadException
+        """
+        params = {
+            "path": path,
+            "offset": offset,
+            "origin": origin
+        }
+        return self.request(id, params=params, method="get").text
+
+
+class stream_logs(Requester):
+
+    """
+    This endpoint streams a task's stderr/stdout logs.
+
+    https://www.nomadproject.io/api/client.html#stream-logs
+    """
+
+    ENDPOINT = "client/fs/logs"
+
+    def __init__(self, **kwargs):
+        super(stream_logs, self).__init__(**kwargs)
+
+    def stream(self, id, task, type, follow=False, offset=0, origin="start", plain=False):
+        """ This endpoint streams a task's stderr/stdout logs.
+
+            https://www.nomadproject.io/api/client.html#stream-logs
+
+            arguments:
+              - id: (str) allocation_id required
+              - task: (str) name of the task inside the allocation to stream logs from
+              - type: (str) Specifies the stream to stream. Either "stderr|stdout"
+              - follow: (bool) default false
+              - offset: (int) default 0
+              - origin: (str) either start|end, default "start"
+              - plain: (bool) Return just the plain text without framing. default False
+            returns: (str) text
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.BadRequestNomadException
+        """
+        params = {
+            "task": task,
+            "type": type,
+            "follow": follow,
+            "offset": offset,
+            "origin": origin,
+            "plain": plain
+        }
+        return self.request(id, params=params, method="get").text
+
+
+class stat(Requester):
 
     """
     The /fs/stat endpoint is used to show stat information 
@@ -107,12 +218,12 @@ class stat(Client):
     https://www.nomadproject.io/docs/http/client-fs-stat.html
     """
 
-    ENDPOINT = "fs/stat"
+    ENDPOINT = "client/fs/stat"
 
-    def __init__(self, requester):
-        self._requester = requester
+    def __init__(self, **kwargs):
+        super(stat, self).__init__(**kwargs)
 
-    def stat_file(self, id, path="/"):
+    def stat_file(self, id=None, path="/"):
         """ Stat a file in an allocation directory.
 
            https://www.nomadproject.io/docs/http/client-fs-stat.html
@@ -125,10 +236,13 @@ class stat(Client):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._get(stat.ENDPOINT, id, path=path)
+        if id:
+            return self.request(id, params={"path": path}, method="get").json()
+        else:
+            return self.request(params={"path": path}, method="get").json()
 
 
-class stats(Client):
+class stats(Requester):
 
     """
     The /stats endpoint queries the actual resources consumed on a node.
@@ -138,12 +252,12 @@ class stats(Client):
     https://www.nomadproject.io/api/client.html#read-stats
     """
 
-    ENDPOINT = "stats"
+    ENDPOINT = "client/stats"
 
-    def __init__(self, requester):
-        self._requester = requester
+    def __init__(self, **kwargs):
+        super(stats, self).__init__(**kwargs)
 
-    def read_stats(self):
+    def read_stats(self, node_id=None):
         """ Query the actual resources consumed on a node.
 
             https://www.nomadproject.io/api/client.html#read-stats
@@ -154,10 +268,10 @@ class stats(Client):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._get(stats.ENDPOINT)
+        return self.request(params={"node_id": node_id}, method="get").json()
 
 
-class allocation(Client):
+class allocation(Requester):
 
     """
     The allocation/:alloc_id/stats endpoint is used to query the actual
@@ -168,10 +282,10 @@ class allocation(Client):
     https://www.nomadproject.io/api/client.html#read-allocation
     """
 
-    ENDPOINT = "allocation"
+    ENDPOINT = "client/allocation"
 
-    def __init__(self, requester):
-        self._requester = requester
+    def __init__(self, **kwargs):
+        super(allocation, self).__init__(**kwargs)
 
     def read_allocation_stats(self, id):
         """ Query the actual resources consumed by an allocation.
@@ -179,10 +293,62 @@ class allocation(Client):
             https://www.nomadproject.io/api/client.html#read-allocation
 
             arguments:
-              - id
             returns: dict
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self._get(allocation.ENDPOINT, id, "stats")
+        return self.request(id, "stats", method="get").json()
+
+
+class gc_allocation(Requester):
+
+    """
+    This endpoint forces a garbage collection of a particular, stopped allocation on a node.
+
+    https://www.nomadproject.io/api/client.html#gc-allocation
+    """
+
+    ENDPOINT = "client/allocation"
+
+    def __init__(self, **kwargs):
+        super(gc_allocation, self).__init__(**kwargs)
+
+    def garbage_collect(self, id):
+        """ This endpoint forces a garbage collection of a particular, stopped allocation on a node.
+
+            https://www.nomadproject.io/api/client.html#gc-allocation
+
+            arguments:
+              - id: (str) full allocation_id
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
+        self.request(id, "gc", method="get")
+
+
+class gc_all_allocations(Requester):
+
+    """
+    This endpoint forces a garbage collection of all stopped allocations on a node.
+
+    https://www.nomadproject.io/api/client.html#gc-all-allocation
+    """
+
+    ENDPOINT = "client/gc"
+
+    def __init__(self, **kwargs):
+        super(gc_all_allocations, self).__init__(**kwargs)
+
+    def garbage_collect(self, node_id=None):
+        """ This endpoint forces a garbage collection of all stopped allocations on a node.
+
+            https://www.nomadproject.io/api/client.html#gc-all-allocation
+
+            arguments:
+              - node_id: (str) full allocation_id
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+        """
+        self.request(params={"node_id": node_id}, method="get")
