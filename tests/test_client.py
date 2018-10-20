@@ -5,6 +5,8 @@ import os
 
 import nomad
 
+from flaky import flaky
+
 
 # integration tests requires nomad Vagrant VM or Binary running
 def test_register_job(nomad_setup):
@@ -30,6 +32,7 @@ def test_stat_stat_file(nomad_setup):
     f = nomad_setup.client.stat.stat_file(a)
 
 
+@flaky(max_runs=5, min_passes=1)
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 5, 6), reason="Not supported in version")
 def test_cat_read_file(nomad_setup):
 
@@ -37,6 +40,7 @@ def test_cat_read_file(nomad_setup):
     f = nomad_setup.client.cat.read_file(a, "/redis/executor.out")
 
 
+@flaky(max_runs=5, min_passes=1)
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 7, 1), reason="Not supported in version")
 def test_read_file_offset(nomad_setup):
 
@@ -50,6 +54,15 @@ def test_streamfile_fail(nomad_setup):
     with pytest.raises(nomad.api.exceptions.BadRequestNomadException):
         a = nomad_setup.allocations.get_allocations()[0]["ID"]
         _ = nomad_setup.client.streamfile.stream(a, 1, "start", "/redis/executor")  #invalid file name
+
+
+@flaky(max_runs=5, min_passes=1)
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 8, 1), reason="Not supported in version")
+def test_streamlogs(nomad_setup):
+
+    a = nomad_setup.allocations.get_allocations()[0]["ID"]
+    _ = nomad_setup.client.streamlogs.stream(a, "redis", "stderr", False)
+
 
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 5, 6), reason="Not supported in version")

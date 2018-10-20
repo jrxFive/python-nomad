@@ -11,6 +11,7 @@ class Client(object):
         self.allocation = allocation(**kwargs)
         self.readat = readat(**kwargs)
         self.streamfile = streamfile(**kwargs)
+        self.streamlogs = streamlogs(**kwargs)
 
     def __str__(self):
         return "{0}".format(self.__dict__)
@@ -141,9 +142,9 @@ class streamfile(Requester):
         super(streamfile, self).__init__(**kwargs)
 
     def stream(self, id, offset, origin, path="/"):
-        """ Read contents of a file in an allocation directory.
+        """ This endpoint streams the contents of a file in an allocation directory.
 
-           https://www.nomadproject.io/docs/http/client-fs-cat.html
+            https://www.nomadproject.io/api/client.html#stream-file
 
             arguments:
               - id: (str) allocation_id required
@@ -159,6 +160,48 @@ class streamfile(Requester):
             "path": path,
             "offset": offset,
             "origin": origin
+        }
+        return self.request(id, params=params, method="get").text
+
+
+class streamlogs(Requester):
+
+    """
+    This endpoint streams a task's stderr/stdout logs.
+
+    https://www.nomadproject.io/api/client.html#stream-logs
+    """
+
+    ENDPOINT = "client/fs/logs"
+
+    def __init__(self, **kwargs):
+        super(streamlogs, self).__init__(**kwargs)
+
+    def stream(self, id, task, type, follow=False, offset=0, origin="start", plain=False):
+        """ This endpoint streams a task's stderr/stdout logs.
+
+            https://www.nomadproject.io/api/client.html#stream-logs
+
+            arguments:
+              - id: (str) allocation_id required
+              - task: (str) name of the task inside the allocation to stream logs from
+              - type: (str) Specifies the stream to stream. Either "stderr|stdout"
+              - follow: (bool) default false
+              - offset: (int) default 0
+              - origin: (str) either start|end, default "start"
+              - plain: (bool) Return just the plain text without framing. default False
+            returns: (str) text
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.BadRequestNomadException
+        """
+        params = {
+            "task": task,
+            "type": type,
+            "follow": follow,
+            "offset": offset,
+            "origin": origin,
+            "plain": plain
         }
         return self.request(id, params=params, method="get").text
 
