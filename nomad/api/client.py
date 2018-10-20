@@ -9,9 +9,10 @@ class Client(object):
         self.stat = stat(**kwargs)
         self.stats = stats(**kwargs)
         self.allocation = allocation(**kwargs)
-        self.readat = readat(**kwargs)
-        self.streamfile = streamfile(**kwargs)
-        self.streamlogs = streamlogs(**kwargs)
+        self.read_at = read_at(**kwargs)
+        self.stream_file = stream_file(**kwargs)
+        self.stream_logs = stream_logs(**kwargs)
+        self.gc_allocation = gc_allocation(**kwargs)
 
     def __str__(self):
         return "{0}".format(self.__dict__)
@@ -92,7 +93,7 @@ class cat(Requester):
             return self.request(params={"path": path}, method="get").text
 
 
-class readat(Requester):
+class read_at(Requester):
 
     """
     This endpoint reads the contents of a file in an allocation directory at a particular offset and limit.
@@ -103,7 +104,7 @@ class readat(Requester):
     ENDPOINT = "client/fs/readat"
 
     def __init__(self, **kwargs):
-        super(readat, self).__init__(**kwargs)
+        super(read_at, self).__init__(**kwargs)
 
     def read_file_offset(self, id, offset, limit, path="/"):
         """ Read contents of a file in an allocation directory.
@@ -128,7 +129,7 @@ class readat(Requester):
         return self.request(id, params=params, method="get").text
 
 
-class streamfile(Requester):
+class stream_file(Requester):
 
     """
     This endpoint streams the contents of a file in an allocation directory.
@@ -139,7 +140,7 @@ class streamfile(Requester):
     ENDPOINT = "client/fs/stream"
 
     def __init__(self, **kwargs):
-        super(streamfile, self).__init__(**kwargs)
+        super(stream_file, self).__init__(**kwargs)
 
     def stream(self, id, offset, origin, path="/"):
         """ This endpoint streams the contents of a file in an allocation directory.
@@ -164,7 +165,7 @@ class streamfile(Requester):
         return self.request(id, params=params, method="get").text
 
 
-class streamlogs(Requester):
+class stream_logs(Requester):
 
     """
     This endpoint streams a task's stderr/stdout logs.
@@ -175,7 +176,7 @@ class streamlogs(Requester):
     ENDPOINT = "client/fs/logs"
 
     def __init__(self, **kwargs):
-        super(streamlogs, self).__init__(**kwargs)
+        super(stream_logs, self).__init__(**kwargs)
 
     def stream(self, id, task, type, follow=False, offset=0, origin="start", plain=False):
         """ This endpoint streams a task's stderr/stdout logs.
@@ -297,3 +298,30 @@ class allocation(Requester):
               - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request(id, "stats", method="get").json()
+
+
+class gc_allocation(Requester):
+
+    """
+    This endpoint forces a garbage collection of a particular, stopped allocation on a node.
+
+    https://www.nomadproject.io/api/client.html#gc-allocation
+    """
+
+    ENDPOINT = "client/allocation"
+
+    def __init__(self, **kwargs):
+        super(gc_allocation, self).__init__(**kwargs)
+
+    def garbage_collect(self, id):
+        """ This endpoint forces a garbage collection of a particular, stopped allocation on a node.
+
+            https://www.nomadproject.io/api/client.html#gc-allocation
+
+            arguments:
+              - id: (str) full allocation_id
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
+        return self.request(id, "gc", method="get")
