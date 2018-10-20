@@ -13,6 +13,7 @@ class Client(object):
         self.stream_file = stream_file(**kwargs)
         self.stream_logs = stream_logs(**kwargs)
         self.gc_allocation = gc_allocation(**kwargs)
+        self.gc_all_allocations = gc_all_allocations(**kwargs)
 
     def __str__(self):
         return "{0}".format(self.__dict__)
@@ -325,3 +326,29 @@ class gc_allocation(Requester):
               - nomad.api.exceptions.URLNotFoundNomadException
         """
         self.request(id, "gc", method="get")
+
+
+class gc_all_allocations(Requester):
+
+    """
+    This endpoint forces a garbage collection of all stopped allocations on a node.
+
+    https://www.nomadproject.io/api/client.html#gc-all-allocation
+    """
+
+    ENDPOINT = "client/gc"
+
+    def __init__(self, **kwargs):
+        super(gc_all_allocations, self).__init__(**kwargs)
+
+    def garbage_collect(self, node_id=None):
+        """ This endpoint forces a garbage collection of all stopped allocations on a node.
+
+            https://www.nomadproject.io/api/client.html#gc-all-allocation
+
+            arguments:
+              - node_id: (str) full allocation_id
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+        """
+        self.request(params={"node_id": node_id}, method="get")
