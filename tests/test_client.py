@@ -85,6 +85,14 @@ def test_gc_allocation_fail(nomad_setup):
         f = nomad_setup.client.gc_allocation.garbage_collect(a)  # attempt on non-stopped allocation
 
 
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 8, 1), reason="Not supported in version")
+def test_gc_all_allocations(nomad_setup):
+
+    node_id = nomad_setup.nodes.get_nodes()[0]["ID"]
+    nomad_setup.client.gc_all_allocations.garbage_collect(node_id)
+    nomad_setup.client.gc_all_allocations.garbage_collect()
+
+
 def test_dunder_str(nomad_setup):
     assert isinstance(str(nomad_setup.client), str)
     assert isinstance(str(nomad_setup.client.ls), str)
