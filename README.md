@@ -101,6 +101,12 @@ vagrant up --provider virtualbox
 py.test --cov=nomad --cov-report=term-missing --runxfail tests/
 ```
 
+## Testing with nomad binary
+```python
+./nomad agent -dev -node pynomad1 --acl-enabled
+NOMAD_IP=127.0.0.1 NOMAD_VERSION=<SEMNATIC_VERSION> py.test --cov=nomad --cov-report=term-missing --runxfail tests/
+```
+
 - Examples
     - [x] Acl [:link:](docs/api/acl.md)
     - [x] Agent [:link:](docs/api/agent.md)
@@ -122,8 +128,3 @@ py.test --cov=nomad --cov-report=term-missing --runxfail tests/
     - [x] Status [:link:](docs/api/status.md)
     - [x] System [:link:](docs/api/system.md)
     - [x] Validate [:link:](docs/api/validate.md)
-
-## TODO
-- [ ] functional tests
-- [ ] Inherit Base class, remove duplication and override parent dunders
-- [ ] readthedocs
