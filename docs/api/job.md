@@ -502,7 +502,7 @@ This endpoint deregisters a job, and stops all allocations part of it.
 
 https://www.nomadproject.io/api/jobs.html#stop-a-job
 
-Example:
+Example of deferred removal of job (performed by Nomad garbage collector):
 
 ```
 import nomad
@@ -510,4 +510,14 @@ import nomad
 my_nomad = nomad.Nomad(host='192.168.33.10')
 
 my_nomad.job.deregister_job("example")
+```
+
+Example of immediate removal of job (job not queryable after this):
+
+```
+import nomad
+
+my_nomad = nomad.Nomad(host='192.168.33.10')
+
+my_nomad.job.deregister_job("example", purge=True)
 ```
