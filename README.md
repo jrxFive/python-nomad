@@ -58,6 +58,23 @@ NOMAD_TOKEN=xxxx-xxxx-xxxx-xxxx
 NOMAD_REGION=us-east-1a
 ```
 
+## With Vault integration.
+if you have configured a [Vault Integration ](https://www.nomadproject.io/docs/configuration/vault.html) to store your secrets.
+
+And you have configured: [`allow_unantenticated = false`](https://www.nomadproject.io/docs/configuration/vault.html#allow_unauthenticated)
+see  you must to export and send a valid `VAULT_TOKEN`.
+
+```bash
+VAULT_TOKEN=xxxx-xxxx-xxxx-xxxx
+```
+
+## Skipt vault tests
+if you want to test vault integration please export the variable:
+
+```bash
+VAULT_TEST=true
+```
+
 ## Class Dunders
 
 | Class | contains | len | getitem | iter |
@@ -98,13 +115,23 @@ pip install -r requirements-dev.txt
 ## Testing with vagrant and virtualbox
 ```
 vagrant up --provider virtualbox
+source /tmp/environment.vars.sh
 py.test --cov=nomad --cov-report=term-missing --runxfail tests/
 ```
 
 ## Testing with nomad binary
 ```
-./nomad agent -dev -node pynomad1 --acl-enabled
-NOMAD_IP=127.0.0.1 NOMAD_VERSION=<SEMNATIC_VERSION> py.test --cov=nomad --cov-report=term-missing --runxfail tests/
+export NOMAD_IP=127.0.0.1
+export NOMAD_VERSION=<SEMNATIC_VERSION>
+export VAULT_VERSION=<SEMNATIC_VERSION> # should be higher than 0.6.2
+export VAULT_TEST=true # if you select no, vault integration will not be tested
+./start_daemons.sh
+py.test --cov=nomad --cov-report=term-missing --runxfail tests/
+```
+
+after make your tests, you can stop the necesary daemons with
+```
+./stop_daemons.sh
 ```
 
 - Examples

@@ -1,0 +1,121 @@
+{
+    "Job": {
+        "Stop": null,
+        "Region": null,
+        "Namespace": null,
+        "ID": "vault",
+        "ParentID": null,
+        "Name": "vault",
+        "Type": "service",
+        "Priority": null,
+        "AllAtOnce": null,
+        "Datacenters": [
+            "dc1"
+        ],
+        "Constraints": null,
+        "TaskGroups": [
+            {
+                "Name": "web",
+                "Count": 1,
+                "Constraints": null,
+                "Tasks": [
+                    {
+                        "Name": "vatul-sercret",
+                        "Driver": "docker",
+                        "User": "",
+                        "Config": {
+                            "image": "i4spserrano/nomadvaultsecret:latest",
+                            "port_map": [
+                                {
+                                    "http": 8080
+                                }
+                            ]
+                        },
+                        "Constraints": null,
+                        "Env": null,
+                        "Services": null,
+                        "Resources": {
+                            "CPU": 500,
+                            "MemoryMB": 256,
+                            "DiskMB": null,
+                            "IOPS": null,
+                            "Networks": [
+                                {
+                                    "Device": "",
+                                    "CIDR": "",
+                                    "IP": "",
+                                    "MBits": 10,
+                                    "ReservedPorts": [
+                                        {
+                                            "Label": "http",
+                                            "Value": 8080
+                                        }
+                                    ],
+                                    "DynamicPorts": null
+                                }
+                            ]
+                        },
+                        "Meta": null,
+                        "KillTimeout": null,
+                        "LogConfig": null,
+                        "Artifacts": null,
+                        "Vault": {
+                            "Policies": [
+                                "policy-demo"
+                            ],
+                            "Env": true,
+                            "ChangeMode": "restart",
+                            "ChangeSignal": null
+                        },
+                        "Templates": [
+                            {
+                                "SourcePath": null,
+                                "DestPath": "secrets/vaultsecret.env",
+                                "EmbeddedTmpl": "  \t\t\t\tVAULT_SECRET=\"{{with secret \"secret/demo\"}}{{.Data.value}}{{end}}\"\n     \t\t  ",
+                                "ChangeMode": "restart",
+                                "ChangeSignal": null,
+                                "Splay": 5000000000,
+                                "Perms": "0644",
+                                "LeftDelim": null,
+                                "RightDelim": null,
+                                "Envvars": true,
+                                "VaultGrace": null
+                            }
+                        ],
+                        "DispatchPayload": null,
+                        "Leader": false,
+                        "ShutdownDelay": 0,
+                        "KillSignal": ""
+                    }
+                ],
+                "RestartPolicy": {
+                    "Interval": 60000000000,
+                    "Attempts": 2,
+                    "Delay": 15000000000,
+                    "Mode": "fail"
+                },
+                "ReschedulePolicy": null,
+                "EphemeralDisk": null,
+                "Update": null,
+                "Migrate": null,
+                "Meta": null
+            }
+        ],
+        "Update": null,
+        "Periodic": null,
+        "ParameterizedJob": null,
+        "Payload": null,
+        "Reschedule": null,
+        "Migrate": null,
+        "Meta": null,
+        "VaultToken": null,
+        "Status": null,
+        "StatusDescription": null,
+        "Stable": null,
+        "Version": null,
+        "SubmitTime": null,
+        "CreateIndex": null,
+        "ModifyIndex": null,
+        "JobModifyIndex": null
+    }
+}

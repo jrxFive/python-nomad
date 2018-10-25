@@ -10,11 +10,12 @@ class Requester(object):
 
     ENDPOINT = ""
 
-    def __init__(self, address=None, uri='http://127.0.0.1', port=4646, namespace=None, token=None, timeout=5, version='v1', verify=False, cert=(), region=None, **kwargs):
+    def __init__(self, address=None, uri='http://127.0.0.1', port=4646, namespace=None, token=None, vaulttoken=None, timeout=5, version='v1', verify=False, cert=(), region=None, **kwargs):
         self.uri = uri
         self.port = port
         self.namespace = namespace
         self.token = token
+        self.vaulttoken = vaulttoken
         self.timeout = timeout
         self.version = version
         self.verify = verify
@@ -98,6 +99,12 @@ class Requester(object):
                 headers["X-Nomad-Token"] = self.token
             except TypeError:
                 headers = {"X-Nomad-Token": self.token}
+
+        if method == "post":
+            if json:
+                if self.vaulttoken:
+                    if "Job" in json:
+                        json["Job"]["VaultToken"] = self.vaulttoken
 
         response = None
 
