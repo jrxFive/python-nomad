@@ -119,5 +119,19 @@ chmod 777 example*
 
 echo "Nomad: Starting Nomad"
 nohup /tmp/nomad agent -server -dev -config=/tmp/nomad.d > /dev/null 2>&1 &
-echo "Nomad: Started"
+
+
+PID=`ps -eaf | grep "vault server -dev" | grep -v grep | awk '{print $2}'`
+if [ "" !=  "$PID" ]; then
+  echo "VAULT: service is RUNNING"
+else
+  echo "VAULT: service is STOPED (could be not necessary)"
+fi
+
+PID=`ps -eaf | grep "nomad agent -server" | grep -v grep | awk '{print $2}'`
+if [ "" !=  "$PID" ]; then
+  echo "NOMAD: service is RUNNING"
+else
+  echo "NOMAD: service is STOPED"
+fi
 sleep 30
