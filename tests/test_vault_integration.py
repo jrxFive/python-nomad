@@ -25,7 +25,7 @@ def requests_retry_session(retries=3, backoff_factor=0.3,
 # Specific token for this policy
 # Register Job
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 2)
-    or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) == (0,8,3)
+    or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) == (0,8,5)
     or os.environ.get("VAULT_TEST") != "true",
     reason="Not supported in version. At version 0.8.5 see regresion of 8.5.6 at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md, or you have configured a false VAULT_TEST")
 @pytest.mark.run(order=-1)
@@ -39,7 +39,7 @@ def test_register_vault_job_valid(nomad_setup_vault_valid_token):
 # Specific token for this policy
 # Get Job
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 2)
-    or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) == (0,8,3)
+    or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) == (0,8,5)
     or os.environ.get("VAULT_TEST") != "true",
     reason="Not supported in version. At version 0.8.5 see regresion of 8.5.6 at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md, or you have configured a false VAULT_TEST")
 @pytest.mark.run(order=-2)
@@ -50,7 +50,7 @@ def test_get_vault_job_valid(nomad_setup_vault_valid_token):
 # Specific token for this policy
 # Validate Job
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 2)
-    or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) == (0,8,3)
+    or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) == (0,8,5)
     or os.environ.get("VAULT_TEST") != "true",
     reason="Not supported in version. At version 0.8.5 see regresion of 8.5.6 at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md, or you have configured a false VAULT_TEST")
 @pytest.mark.run(order=-3)
@@ -62,7 +62,7 @@ def test_get_vault_job_valid(nomad_setup_vault_valid_token):
 # deploy a container that run and http server
 # and shows the secret stored at vault
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 2)
-    or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) == (0,8,3)
+    or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) == (0,8,5)
     or os.environ.get("VAULT_TEST") != "true",
     reason="Not supported in version. At version 0.8.5 see regresion of 8.5.6 at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md, or you have configured a false VAULT_TEST")
 @pytest.mark.run(order=-4)
@@ -73,7 +73,7 @@ def test_get_secret_from_vault_job_valid():
 
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 2)
-    or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) == (0,8,3)
+    or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) == (0,8,5)
     or os.environ.get("VAULT_TEST") != "true",
     reason="Not supported in version. At version 0.8.5 see regresion of 8.5.6 at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md, or you have configured a false VAULT_TEST")
 @pytest.mark.run(order=-5)
@@ -84,7 +84,7 @@ def test_delete_vault_job(nomad_setup_vault_valid_token):
 # Specific BAD token for this policy
 # test non valid token for deploy
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 2)
-    or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) == (0,8,3)
+    or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) == (0,8,5)
     or os.environ.get("VAULT_TEST") != "true",
     reason="Not supported in version. At version 0.8.5 see regresion of 8.5.6 at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md, or you have configured a false VAULT_TEST")
 @pytest.mark.run(order=-6)
