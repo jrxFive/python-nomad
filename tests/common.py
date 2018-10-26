@@ -26,8 +26,8 @@ NOMAD_VERSION_NUMBER = int(NOMAD_VERSION.replace(".",""))
 if VAULT_TEST == "true":
     if NOMAD_VERSION_NUMBER >= NOMAD_INTEGRATION_VAULT_NUMBER:
     # create token based on policy "policy-demo"
-    headers = {'X-Vault-Token': 'root'}
-    payload = '{"policies": ["policy-demo"],"ttl": "3h","renewable": true}'
-    r = requests.post(VAULT_ADDR + "/v1" + "/auth/token/create", headers=headers, data=payload)
-    VAULT_POLICY_TOKEN=r.json()["auth"]["client_token"]
-    print("\n SecurityVaultAcl: {}\n".format(VAULT_POLICY_TOKEN))
+        headers = {'X-Vault-Token': 'root'}
+        payload = '{"policies": ["policy-demo"],"ttl": "3h","renewable": true}'
+        r = requests.post(VAULT_ADDR + "/v1" + "/auth/token/create", headers=headers, data=payload)
+        VAULT_POLICY_TOKEN=r.json()["auth"]["client_token"]
+        print("\n SecurityVaultAcl: {}\n".format(VAULT_POLICY_TOKEN))
