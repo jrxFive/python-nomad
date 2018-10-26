@@ -41,11 +41,7 @@ EOF
   sleep 5
 
   echo "Vault: Write Vault Policies with API"
-  # if [[ ${MAJOR_VERSION_VAULT_INTEGRATION} -gt 8 ]]; then
-  #   curl -s --data '{"policy":"path \"secret\/demo\" {capabilities = [\"read\"]}"}' --request PUT --header "X-Vault-Token: root" ${VAULT_ADDR}/v1/sys/policy/policy-demo
-  # else
-    curl -s --data '{"rules":"path \"secret/demo\" {capabilities = [\"read\",\"list\"]}"}' --request PUT --header "X-Vault-Token: root" ${VAULT_ADDR}/v1/sys/policy/policy-demo
-  # fi
+  curl -s --data '{"rules":"path \"secret/demo\" {capabilities = [\"read\",\"list\"]}"}' --request PUT --header "X-Vault-Token: root" ${VAULT_ADDR}/v1/sys/policy/policy-demo
 
   echo "Vault: Write Vault Secret"
   curl -s --data '{"value":"python_nomad"}' --request PUT --header "X-Vault-Token: root" ${VAULT_ADDR}/v1/secret/demo
