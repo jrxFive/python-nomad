@@ -27,7 +27,7 @@ echo "Nomad: Create config folder"
 rm -rf /tmp/nomad.d
 mkdir -p /tmp/nomad.d
 
-if [ "${VAULT_TEST}" == "true" ]; then
+if [ "${VAULT_TEST}" = "true" ]; then
 if [ ${MAJOR_VERSION_VAULT_INTEGRATION} -gt ${NOMAD_REQUIRED_TO_INEGRATE_WITH_VAULT} ]; then
   echo "Vault: Create policy file"
 cat << EOF > /tmp/policy-demo.hcl
