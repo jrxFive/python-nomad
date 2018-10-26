@@ -26,17 +26,7 @@ env:
   - VAULT_ADDR="http://127.0.0.1:8200"
   - VAULT_TEST=true
   matrix:
-  - NOMAD_VERSION="0.3.2"
-  - NOMAD_VERSION="0.4.1"
-  - NOMAD_VERSION="0.5.0"
-  - NOMAD_VERSION="0.5.6"
-  - NOMAD_VERSION="0.6.0"
-  - NOMAD_VERSION="0.7.1"
-  - NOMAD_VERSION="0.8.1"
-  - NOMAD_VERSION="0.8.3"
-  - NOMAD_VERSION="0.8.4"
-  - NOMAD_VERSION="0.8.5"
-  - NOMAD_VERSION="0.8.6"
+  - NOMAD_VERSION="0.3.2";VAULT_VERSION="0.6.2"
 install:
 - pip install -r requirements-dev.txt
 - pip install codecov

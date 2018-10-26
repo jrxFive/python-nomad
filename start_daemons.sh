@@ -1,19 +1,19 @@
 echo "Start daemons to test"
 
-if [ -z "${NOMAD_VERSION}" ]; then
+if [[ -z "${NOMAD_VERSION}" ]]; then
   echo "you should export NOMAD_VERSION"
   exit 1
 fi
 
-if [ -z "${NOMAD_IP}" ]; then
+if [[ -z "${NOMAD_IP}" ]]; then
   NOMAD_IP=127.0.0.1
 fi
 
-if [ -z "${NOMAD_PORT_GUEST}" ]; then
+if [[ -z "${NOMAD_PORT_GUEST}" ]]; then
   NOMAD_PORT_GUEST="4646"
 fi
 
-if [ -z "${VAULT_VERSION}" ]; then
+if [[ -z "${VAULT_VERSION}" ]]; then
   VAULT_VERSION="0.6.2"
 fi
 
