@@ -1,19 +1,19 @@
 echo "Start daemons to test"
 
-if [[ -z "${NOMAD_VERSION}" ]]; then
+if [ -z "${NOMAD_VERSION}" ]; then
   echo "you should export NOMAD_VERSION"
   exit 1
 fi
 
-if [[ -z "${NOMAD_IP}" ]]; then
-  NOMAD_IP=127.0.0.1
-fi
-
-if [[ -z "${NOMAD_PORT_GUEST}" ]]; then
+if [ -z "${NOMAD_PORT_GUEST}" ]; then
   NOMAD_PORT_GUEST="4646"
 fi
 
-if [[ -z "${VAULT_VERSION}" ]]; then
+if [ -z "${NOMAD_IP}" ]; then
+  NOMAD_IP=127.0.0.1
+fi
+
+if [ -z "${VAULT_VERSION}" ]; then
   VAULT_VERSION="0.6.2"
 fi
 
@@ -27,8 +27,8 @@ echo "Nomad: Create config folder"
 rm -rf /tmp/nomad.d
 mkdir -p /tmp/nomad.d
 
-if [[ "${VAULT_TEST}" == "true" ]]; then
-if [[ ${MAJOR_VERSION_VAULT_INTEGRATION} -gt ${NOMAD_REQUIRED_TO_INEGRATE_WITH_VAULT} ]]; then
+if [ "${VAULT_TEST}" == "true" ]; then
+if [ ${MAJOR_VERSION_VAULT_INTEGRATION} -gt ${NOMAD_REQUIRED_TO_INEGRATE_WITH_VAULT} ]; then
   echo "Vault: Create policy file"
 cat << EOF > /tmp/policy-demo.hcl
 path "secret/demo" {
@@ -101,7 +101,7 @@ server
 }
 EOF
 
-if [[ ${MAJOR_VERSION} -gt 6 ]]; then
+if [ ${MAJOR_VERSION} -gt 6 ]; then
 echo "Nomad: Version $NOMAD_VERSION supports acls"
 echo "Nomad: Config ACL"
 cat << EOF > /tmp/nomad.d/acl.hcl
