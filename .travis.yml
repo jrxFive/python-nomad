@@ -38,7 +38,7 @@ before_install:
 - /tmp/nomad agent -dev -bind ${NOMAD_IP} -node pynomad1 ${ACL_ENABLED} > /dev/null 2>&1 &
 - sleep 30
 install:
-- pip install -r requirements-dev.txt
+- pip install -r requirements.txt -r requirements-dev.txt
 - pip install codecov
 before_script:
   - /tmp/nomad init
