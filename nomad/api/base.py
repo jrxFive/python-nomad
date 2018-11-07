@@ -89,7 +89,7 @@ class Requester(object):
         qs = self._query_string_builder(endpoint)
 
         if params:
-            qs.update(params)
+            params.update(qs)
         else:
             params = qs
 
