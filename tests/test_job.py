@@ -161,16 +161,3 @@ def test_delete_job_with_purge(nomad_setup):
 
     # Reregister job
     test_register_job(nomad_setup)
-    
-@responses.activate
-#
-# fix No data when you are using namespaces #82
-#
-def test_get_job_with_namespace(nomad_setup_with_namespace):
-    responses.add(
-        responses.GET,
-        "http://{ip}:{port}/v1/job/my-job?namespace={namespace}".format(ip=common.IP, port=common.NOMAD_PORT, namespace=common.NOMAD_NAMESPACE),
-        status=200,
-        json={"Region": "global","ID": "my-job", "ParentID": "", "Name": "my-job","Namespace": common.NOMAD_NAMESPACE, "Type": "batch", "Priority": 50}
-    )
-    assert common.NOMAD_NAMESPACE in nomad_setup_with_namespace.job.get_job("my-job")["Namespace"]
