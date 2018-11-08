@@ -1,6 +1,8 @@
 import pytest
 import json
 import uuid
+import responses
+import tests.common as common
 
 
 # integration tests requires nomad Vagrant VM or Binary running
@@ -51,3 +53,17 @@ def test_dunder_getattr(nomad_setup):
 
     with pytest.raises(AttributeError):
         d = nomad_setup.allocation.does_not_exist
+
+
+@responses.activate
+#
+# fix No data when you are using namespaces #82
+#
+def test_get_allocation_with_namespace(nomad_setup_with_namespace):
+    responses.add(
+        responses.GET,
+        "http://{ip}:{port}/v1/allocation/a8198d79-cfdb-6593-a999-1e9adabcba2e?namespace={namespace}".format(ip=common.IP, port=common.NOMAD_PORT, namespace=common.NOMAD_NAMESPACE),
+        status=200,
+        json={"ID": "a8198d79-cfdb-6593-a999-1e9adabcba2e","EvalID": "5456bd7a-9fc0-c0dd-6131-cbee77f57577","Namespace": common.NOMAD_NAMESPACE, "Name": "example.cache[0]","NodeID": "fb2170a8-257d-3c64-b14d-bc06cc94e34c","PreviousAllocation": "516d2753-0513-cfc7-57ac-2d6fac18b9dc","NextAllocation": "cd13d9b9-4f97-7184-c88b-7b451981616b"}
+    )
+    assert common.NOMAD_NAMESPACE in nomad_setup_with_namespace.allocation.get_allocation("a8198d79-cfdb-6593-a999-1e9adabcba2e")["Namespace"]

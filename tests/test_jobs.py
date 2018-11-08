@@ -1,7 +1,8 @@
 import os
 import pytest
 import json
-
+import responses
+import tests.common as common
 
 # integration tests requires nomad Vagrant VM or Binary running
 def test_register_job(nomad_setup):
@@ -66,3 +67,16 @@ def test_dunder_iter(nomad_setup):
 
 def test_dunder_len(nomad_setup):
     assert len(nomad_setup.jobs) >= 0
+
+@responses.activate
+#
+# fix No data when you are using namespaces #82
+#
+def test_get_jobs_with_namespace(nomad_setup_with_namespace):
+    responses.add(
+        responses.GET,
+        "http://{ip}:{port}/v1/jobs?namespace={namespace}".format(ip=common.IP, port=common.NOMAD_PORT, namespace=common.NOMAD_NAMESPACE),
+        status=200,
+        json=[{"Region": "global","ID": "my-job", "ParentID": "", "Name": "my-job","Namespace": common.NOMAD_NAMESPACE, "Type": "batch", "Priority": 50}]
+    )
+    assert common.NOMAD_NAMESPACE in nomad_setup_with_namespace.jobs.get_jobs()[0]["Namespace"]

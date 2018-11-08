@@ -145,3 +145,19 @@ def test_dunder_getattr(nomad_setup):
 
     with pytest.raises(AttributeError):
         d = nomad_setup.job.does_not_exist
+
+def test_delete_job_with_invalid_purge_param_raises(nomad_setup):
+    with pytest.raises(exceptions.InvalidParameters):
+       nomad_setup.job.deregister_job("example", purge='True')
+
+def test_delete_job_with_purge(nomad_setup):
+    # Run this last since it will purge the job completely, resetting things like
+    # job version
+    assert "EvalID" in nomad_setup.job.deregister_job("example", purge=True)
+
+    # Job should not be available after a purge.
+    with pytest.raises(exceptions.URLNotFoundNomadException):
+        nomad_setup.job.get_job("example")
+
+    # Reregister job
+    test_register_job(nomad_setup)
