@@ -4,7 +4,6 @@ import json
 import responses
 import tests.common as common
 
-
 # integration tests requires nomad Vagrant VM or Binary running
 def test_register_job(nomad_setup):
 
@@ -68,22 +67,6 @@ def test_dunder_iter(nomad_setup):
 
 def test_dunder_len(nomad_setup):
     assert len(nomad_setup.jobs) >= 0
-
-def test_delete_job_with_invalid_purge_param_raises(nomad_setup):
-    with pytest.raises(exceptions.InvalidParameters):
-       nomad_setup.job.deregister_job("example", purge='True')
-
-def test_delete_job_with_purge(nomad_setup):
-    # Run this last since it will purge the job completely, resetting things like
-    # job version
-    assert "EvalID" in nomad_setup.job.deregister_job("example", purge=True)
-
-    # Job should not be available after a purge.
-    with pytest.raises(exceptions.URLNotFoundNomadException):
-        nomad_setup.job.get_job("example")
-
-    # Reregister job
-    test_register_job(nomad_setup)
 
 @responses.activate
 #
