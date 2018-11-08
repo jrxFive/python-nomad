@@ -212,7 +212,7 @@ class Job(Requester):
               - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request(id, "periodic", "force", method="post").json()
-    
+
     def dispatch_job(self, id, payload=None, meta=None):
         """ Dispatches a new instance of a parameterized job.
 
@@ -271,16 +271,27 @@ class Job(Requester):
                        "Stable": stable}
         return self.request(id, "stable", json=revert_json, method="post").json()
 
-    def deregister_job(self, id):
+    def deregister_job(self, id, purge=None):
         """ Deregisters a job, and stops all allocations part of it.
 
            https://www.nomadproject.io/docs/http/job.html
 
             arguments:
               - id
+              - purge (bool), optionally specifies whether the job should be
+                stopped and purged immediately (`purge=True`) or deferred to the
+                Nomad garbage collector (`purge=False`).
+
             returns: dict
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
+              - nomad.api.exceptions.InvalidParameters
         """
-        return self.request(id, method="delete").json()
+        params = None
+        if purge is not None:
+            if not isinstance(purge, bool):
+                raise nomad.api.exceptions.InvalidParameters("purge is invalid "
+                        "(expected type %s but got %s)"%(type(bool()), type(purge)))
+            params = {"purge": purge}
+        return self.request(id, params=params, method="delete").json()
