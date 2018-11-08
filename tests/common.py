@@ -9,3 +9,6 @@ NOMAD_PORT = os.environ.get("NOMAD_PORT", 4646)
 
 # Security token
 NOMAD_TOKEN = os.environ.get("NOMAD_TOKEN", None)
+
+# Test namespace
+NOMAD_NAMESPACE = "admin"
