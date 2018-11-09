@@ -5,6 +5,10 @@ if [ -z "${NOMAD_VERSION}" ]; then
   exit 1
 fi
 
+if [ -z "${NOMAD_INTEGRATION_VAULT}" ]; then
+  NOMAD_INTEGRATION_VAULT="0.6.2"
+fi
+
 if [ -z "${NOMAD_PORT_GUEST}" ]; then
   NOMAD_PORT_GUEST="4646"
 fi
@@ -16,6 +20,22 @@ fi
 if [ -z "${VAULT_VERSION}" ]; then
   VAULT_VERSION="0.6.2"
 fi
+
+if [ ! -f /tmp/nomad ]; then
+  rm -rf /tmp/nomad
+fi
+echo "NOMAD: Get Binary Files"
+wget -q -P /tmp/ https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip
+yes | unzip -o -d /tmp /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip
+
+
+if [ ! -f /tmp/vault ]; then
+  rm -rf /tmp/vault
+fi
+echo "VAULT: Get Binary Files"
+wget -q -P /tmp/ https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip
+yes | unzip -o -d /tmp /tmp/vault_${VAULT_VERSION}_linux_amd64.zip
+
 
 VAULT_ADDR="http://localhost:8200"
 
@@ -123,15 +143,17 @@ nohup /tmp/nomad agent -server -dev -config=/tmp/nomad.d > /dev/null 2>&1 &
 
 PID=`ps -eaf | grep "vault server -dev" | grep -v grep | awk '{print $2}'`
 if [ "" !=  "$PID" ]; then
-  echo "VAULT: service is RUNNING"
+  echo "Vault: service is RUNNING"
 else
-  echo "VAULT: service is STOPED (could be not necessary)"
+  echo "Vault: service is STOPED (could be not necessary)"
 fi
 
 PID=`ps -eaf | grep "nomad agent -server" | grep -v grep | awk '{print $2}'`
 if [ "" !=  "$PID" ]; then
-  echo "NOMAD: service is RUNNING"
+  echo "Nomad: service is RUNNING"
 else
-  echo "NOMAD: service is STOPED"
+  echo "Nomad: service is STOPED"
 fi
-sleep 30
+sleep 15
+
+echo "You can execute your test! ENJOY!"

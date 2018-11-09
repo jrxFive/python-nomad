@@ -91,6 +91,5 @@ def test_delete_vault_job(nomad_setup_vault_valid_token):
 def test_register_vault_job_invalid(nomad_setup_vault_invalid_token):
     with open("vault.json") as fh:
         job = json.loads(fh.read())
-
         with pytest.raises(nomad.api.exceptions.BaseNomadException):
             nomad_setup_vault_invalid_token.job.register_job("vault", job)
