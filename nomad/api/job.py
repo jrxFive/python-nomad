@@ -212,7 +212,7 @@ class Job(Requester):
               - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request(id, "periodic", "force", method="post").json()
-    
+
     def dispatch_job(self, id, payload=None, meta=None):
         """ Dispatches a new instance of a parameterized job.
 

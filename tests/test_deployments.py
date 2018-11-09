@@ -1,6 +1,8 @@
 import json
 import pytest
 import os
+import responses
+import tests.common as common
 
 
 def test_register_job(nomad_setup):
@@ -64,3 +66,16 @@ def test_dunder_getattr(nomad_setup):
 
     with pytest.raises(AttributeError):
         _ = nomad_setup.deployments.does_not_exist
+
+@responses.activate
+#
+# fix No data when you are using namespaces #82
+#
+def test_get_deployments_with_namespace(nomad_setup_with_namespace):
+    responses.add(
+        responses.GET,
+        "http://{ip}:{port}/v1/deployments?namespace={namespace}".format(ip=common.IP, port=common.NOMAD_PORT, namespace=common.NOMAD_NAMESPACE),
+        status=200,
+        json=[{"ID": "70638f62-5c19-193e-30d6-f9d6e689ab8e","JobID": "example",  "JobVersion": 1, "JobModifyIndex": 17, "JobSpecModifyIndex": 17, "JobCreateIndex": 7,"Namespace": common.NOMAD_NAMESPACE, "Name": "example.cache[0]"}]
+    )
+    assert common.NOMAD_NAMESPACE in nomad_setup_with_namespace.deployments.get_deployments()[0]["Namespace"]
