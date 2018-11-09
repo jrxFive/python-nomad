@@ -14,6 +14,7 @@ NOMAD_TOKEN = os.environ.get("NOMAD_TOKEN", None)
 # Test namespace
 NOMAD_NAMESPACE = "admin"
 
+
 # Security token
 VAULT_TOKEN = os.environ.get("VAULT_TOKEN", "root")
 VAULT_ADDR  = os.environ.get("VAULT_ADDR", "http://" + IP + ":8200")
