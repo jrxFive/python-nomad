@@ -85,6 +85,7 @@ env:
   - NOMAD_VERSION="0.8.4";VAULT_VERSION="0.11.0"
   - NOMAD_VERSION="0.8.5";VAULT_VERSION="0.11.0"
   - NOMAD_VERSION="0.8.6";VAULT_VERSION="0.11.0"
+  
 install:
 - pip install -r requirements.txt -r requirements-dev.txt
 - pip install codecov
