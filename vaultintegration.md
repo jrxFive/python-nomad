@@ -41,3 +41,9 @@ template {
   EOF
 }
 ```
+
+## Non working versions
+
+- NOMAD v 0.5.6 --> server/vault: Fix Vault Client panic when given nonexistent role [GH-2648]
+- NOMAD v 0.8.5 --> vault: Fix a regression in which Nomad was only compatible with Vault versions greater than 0.10.0 [GH-4698]
+- NOMAD (all version) vs Vault 0.11.0 --> Make crash nomad agent. 
