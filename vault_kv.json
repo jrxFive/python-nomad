@@ -71,7 +71,7 @@
                             {
                                 "SourcePath": null,
                                 "DestPath": "secrets/vaultsecret.env",
-                                "EmbeddedTmpl": "  \t\t\t\tVAULT_SECRET=\"{{with secret \"secret/demo\"}}{{.Data.value}}{{end}}\"\n     \t\t  ",
+                                "EmbeddedTmpl": "  \t\t\t\tVAULT_SECRET=\"{{with secret \"secret/data/demo\"}}{{.Data.data.value}}{{end}}\"\n     \t\t  ",
                                 "ChangeMode": "restart",
                                 "ChangeSignal": null,
                                 "Splay": 5000000000,

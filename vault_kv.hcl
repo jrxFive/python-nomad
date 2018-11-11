@@ -20,7 +20,7 @@ job "vault" {
       }
       template {
           data = <<EOH
-  				VAULT_SECRET="{{with secret "secret/demo"}}{{.Data.value}}{{end}}"
+  				VAULT_SECRET="{{with secret "secret/data/demo"}}{{.Data.data.value}}{{end}}"
      		  EOH
         	destination = "secrets/vaultsecret.env"
         	env         = true

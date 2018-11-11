@@ -124,7 +124,6 @@ py.test --cov=nomad --cov-report=term-missing --runxfail tests/
 export NOMAD_IP=127.0.0.1
 export NOMAD_VERSION=<SEMNATIC_VERSION>
 export VAULT_VERSION=<SEMNATIC_VERSION> # should be higher than 0.6.2
-export VAULT_TEST=true # if you select no, vault integration will not be tested
 ./start_daemons.sh
 py.test --cov=nomad --cov-report=term-missing --runxfail tests/
 ```

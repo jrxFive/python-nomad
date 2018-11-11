@@ -5,10 +5,6 @@ if [ -z "${NOMAD_VERSION}" ]; then
   exit 1
 fi
 
-if [ -z "${NOMAD_INTEGRATION_VAULT}" ]; then
-  NOMAD_INTEGRATION_VAULT="0.6.2"
-fi
-
 if [ -z "${NOMAD_PORT_GUEST}" ]; then
   NOMAD_PORT_GUEST="4646"
 fi
@@ -21,10 +17,17 @@ if [ -z "${VAULT_VERSION}" ]; then
   VAULT_VERSION="0.6.2"
 fi
 
+NOMAD_MAJOR_VERSION=`echo ${NOMAD_VERSION} | tr -d "."|sed "s/^0*//"`
+VAULT_MAJOR_VERSION=`echo ${VAULT_VERSION} | tr -d "."|sed "s/^0*//"`
+
+if [ ${VAULT_MAJOR_VERSION} -lt 62 ]; then
+  echo "ATTENTION: Nomad Vault integration require Vault version >= 0.6.2. See https://www.nomadproject.io/guides/operations/vault-integration/index.html"
+fi
+
 if [ ! -f /tmp/nomad ]; then
   rm -rf /tmp/nomad
 fi
-echo "NOMAD: Get Binary Files"
+echo "Nomad: Get Binary Files"
 wget -q -P /tmp/ https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip
 yes | unzip -o -d /tmp /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip
 
@@ -32,41 +35,61 @@ yes | unzip -o -d /tmp /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip
 if [ ! -f /tmp/vault ]; then
   rm -rf /tmp/vault
 fi
-echo "VAULT: Get Binary Files"
+echo "Vault: Get Binary Files"
 wget -q -P /tmp/ https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip
 yes | unzip -o -d /tmp /tmp/vault_${VAULT_VERSION}_linux_amd64.zip
 
 
 VAULT_ADDR="http://localhost:8200"
 
-MAJOR_VERSION=`echo ${NOMAD_VERSION} | cut -d "." -f 2`
-MAJOR_VERSION_VAULT_INTEGRATION=`echo ${NOMAD_VERSION} | tr -d "."|sed "s/^0*//"`
-NOMAD_REQUIRED_TO_INEGRATE_WITH_VAULT=`echo ${NOMAD_INTEGRATION_VAULT}|tr -d "."|sed "s/^0*//"`
 
 echo "Nomad: Create config folder"
 rm -rf /tmp/nomad.d
 mkdir -p /tmp/nomad.d
 
-if [ "${VAULT_TEST}" = "true" ]; then
-if [ ${MAJOR_VERSION_VAULT_INTEGRATION} -gt ${NOMAD_REQUIRED_TO_INEGRATE_WITH_VAULT} ]; then
-  echo "Vault: Create policy file"
+
+if [ ${VAULT_MAJOR_VERSION} -lt 62  ]; then
+  echo "Vault: this version is not supported"
+else
+echo "Vault: Create policy file"
 cat << EOF > /tmp/policy-demo.hcl
 path "secret/demo" {
   capabilities = ["read"]
 }
 EOF
 
-  echo "Vault: Start Daemon Version: ${VAULT_VERSION}"
-  /tmp/vault server -dev -dev-listen-address=0.0.0.0:8200 -dev-root-token-id="root" > /dev/null 2>&1 &
-  sleep 5
+    echo "Vault: Start Daemon Version: ${VAULT_VERSION}"
+    /tmp/vault server -dev -dev-listen-address=0.0.0.0:8200 -dev-root-token-id="root" > /dev/null 2>&1 &
+    sleep 5
 
-  echo "Vault: Write Vault Policies with API"
-  curl -s --data '{"rules":"path \"secret/demo\" {capabilities = [\"read\",\"list\"]}"}' --request PUT --header "X-Vault-Token: root" ${VAULT_ADDR}/v1/sys/policy/policy-demo
+    echo "Vault: Write Vault Policies with API"
+    #
+    # For version > 0.9.0 deprecated use of policies. Rules vs Policy
+    #
+    if [ ${VAULT_MAJOR_VERSION} -lt 90 ]; then
+      curl -s --data '{"rules":"path \"secret/demo\" {capabilities = [\"read\",\"list\"]}"}' --request PUT --header "X-Vault-Token: root" ${VAULT_ADDR}/v1/sys/policy/policy-demo
+    else
+        curl -s --data '{"policy":"path \"secret/data/demo\" {capabilities = [\"read\",\"list\"]}"}' --request PUT --header "X-Vault-Token: root" ${VAULT_ADDR}/v1/sys/policy/policy-demo
+    fi
 
-  echo "Vault: Write Vault Secret"
-  curl -s --data '{"value":"python_nomad"}' --request PUT --header "X-Vault-Token: root" ${VAULT_ADDR}/v1/secret/demo
+    echo "Vault: Write Vault Secret"
+    #
+    # Vault version >= 0.9.0 require versioned secrets
+    #
+    if [ ${VAULT_MAJOR_VERSION} -lt 90 ]; then
+      curl -s --data '{"value":"python_nomad"}' --request PUT --header "X-Vault-Token: root" ${VAULT_ADDR}/v1/secret/demo
+    else
+      curl -s --data '{"options": {"cas": 0},"data": {"value": "python_nomad"}}' --request PUT --header "X-Vault-Token: root" ${VAULT_ADDR}/v1/secret/data/demo
+    fi
 
-  echo "Nomad: Enable Config Vault"
+
+fi
+
+
+
+
+if [ ${NOMAD_MAJOR_VERSION} -ge 50  ]; then
+echo "Nomad: Enable Config Vault"
 cat << EOF > /tmp/nomad.d/vault.hcl
 vault
 {
@@ -76,7 +99,6 @@ vault
   allow_unauthenticated = false
 }
 EOF
-  fi
 fi
 
 echo "Nomad: Config base"
@@ -117,7 +139,7 @@ server
 }
 EOF
 
-if [ ${MAJOR_VERSION} -gt 6 ]; then
+if [ ${NOMAD_MAJOR_VERSION} -gt 60 ]; then
 echo "Nomad: Version $NOMAD_VERSION supports acls"
 echo "Nomad: Config ACL"
 cat << EOF > /tmp/nomad.d/acl.hcl
@@ -133,6 +155,8 @@ else
 fi
 
 echo "Nomad: Create test job samples"
+rm -rf example.nomad
+rm -rf example.json
 /tmp/nomad init
 /tmp/nomad run -output example.nomad > example.json
 chmod 777 example*
@@ -154,6 +178,6 @@ if [ "" !=  "$PID" ]; then
 else
   echo "Nomad: service is STOPED"
 fi
-sleep 15
+sleep 10
 
 echo "You can execute your test! ENJOY!"

@@ -21,75 +21,100 @@ def requests_retry_session(retries=3, backoff_factor=0.3,
         session.mount('https://', adapter)
         return session
 
-# # integration tests requires nomad Vagrant VM or Binary running
+# VAULT INTEGRATION
 # Specific token for this policy
 # Register Job
-@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 2)
+# Depens on version uses versioned secrets
+#
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("VAULT_VERSION").split(".")) < (0, 6, 2)
     or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) == (0,8,5)
-    or os.environ.get("VAULT_TEST") != "true",
+    or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) <= (0,5,0)
+    or os.environ.get("VAULT_TEST") == "false",
     reason="Not supported in version. At version 0.8.5 see regresion of 8.5.6 at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md, or you have configured a false VAULT_TEST")
-@pytest.mark.run(order=-1)
 def test_register_vault_job_valid(nomad_setup_vault_valid_token):
-    with open("vault.json") as fh:
+    if tuple(int(i) for i in os.environ.get("VAULT_VERSION").split(".")) < (0, 9, 0):
+        vault_job = "vault.json"
+    else:
+        vault_job = "vault_kv.json"
+    with open(vault_job) as fh:
         job = json.loads(fh.read())
         nomad_setup_vault_valid_token.job.register_job("vault", job)
         assert "vault" in nomad_setup_vault_valid_token.job
 
 
+# VAULT INTEGRATION
 # Specific token for this policy
 # Get Job
-@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 2)
+# Depens on version uses versioned secrets
+#
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("VAULT_VERSION").split(".")) < (0, 6, 2)
     or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) == (0,8,5)
-    or os.environ.get("VAULT_TEST") != "true",
+    or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) <= (0,5,0)
+    or os.environ.get("VAULT_TEST") == "false",
     reason="Not supported in version. At version 0.8.5 see regresion of 8.5.6 at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md, or you have configured a false VAULT_TEST")
-@pytest.mark.run(order=-2)
 def test_get_vault_job_valid(nomad_setup_vault_valid_token):
     assert isinstance(nomad_setup_vault_valid_token.job.get_job("vault"), dict) == True
 
 
+# VAULT INTEGRATION
 # Specific token for this policy
 # Validate Job
-@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 2)
+# Depens on version uses versioned secrets
+#
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("VAULT_VERSION").split(".")) < (0, 6, 2)
     or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) == (0,8,5)
-    or os.environ.get("VAULT_TEST") != "true",
+    or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) <= (0,5,0)
+    or os.environ.get("VAULT_TEST") == "false",
     reason="Not supported in version. At version 0.8.5 see regresion of 8.5.6 at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md, or you have configured a false VAULT_TEST")
-@pytest.mark.run(order=-3)
 def test_get_vault_job_valid(nomad_setup_vault_valid_token):
     assert isinstance(nomad_setup_vault_valid_token.job.get_job("vault"), dict) == True
 
+# VAULT INTEGRATION
 # Specific token for this policy
 # Validate secret from vault
-# deploy a container that run and http server
-# and shows the secret stored at vault
-@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 2)
+# Depens on version uses versioned secrets
+#
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("VAULT_VERSION").split(".")) < (0, 6, 2)
     or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) == (0,8,5)
-    or os.environ.get("VAULT_TEST") != "true",
+    or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) <= (0,5,0)
+    or os.environ.get("VAULT_TEST") == "false",
     reason="Not supported in version. At version 0.8.5 see regresion of 8.5.6 at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md, or you have configured a false VAULT_TEST")
-@pytest.mark.run(order=-4)
 def test_get_secret_from_vault_job_valid():
     url="http://localhost:8080"
     response = requests_retry_session(retries=20).get(url,timeout=60)
     assert "python_nomad" in response.text
 
 
-@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 2)
+# VAULT INTEGRATION
+# Specific token for this policy
+# De-Register Job
+# Depens on version uses versioned secrets
+#
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("VAULT_VERSION").split(".")) < (0, 6, 2)
     or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) == (0,8,5)
-    or os.environ.get("VAULT_TEST") != "true",
+    or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) <= (0,5,0)
+    or os.environ.get("VAULT_TEST") == "false",
     reason="Not supported in version. At version 0.8.5 see regresion of 8.5.6 at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md, or you have configured a false VAULT_TEST")
-@pytest.mark.run(order=-5)
 def test_delete_vault_job(nomad_setup_vault_valid_token):
     assert "EvalID" in nomad_setup_vault_valid_token.job.deregister_job("vault")
     test_register_vault_job_valid(nomad_setup_vault_valid_token)
 
-# Specific BAD token for this policy
-# test non valid token for deploy
-@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 2)
+# VAULT INTEGRATION
+# Specific token for this policy
+# Register Job with Bad Vault Token. It will report not authorized
+# Depens on version uses versioned secrets
+#
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("VAULT_VERSION").split(".")) < (0, 6, 2)
     or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) == (0,8,5)
-    or os.environ.get("VAULT_TEST") != "true",
+    or tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) <= (0,5,0)
+    or os.environ.get("VAULT_TEST") == "false",
     reason="Not supported in version. At version 0.8.5 see regresion of 8.5.6 at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md, or you have configured a false VAULT_TEST")
-@pytest.mark.run(order=-6)
 def test_register_vault_job_invalid(nomad_setup_vault_invalid_token):
-    with open("vault.json") as fh:
+    if tuple(int(i) for i in os.environ.get("VAULT_VERSION").split(".")) < (0, 9, 0):
+        vault_job = "vault.json"
+    else:
+        vault_job = "vault_kv.json"
+    with open(vault_job) as fh:
         job = json.loads(fh.read())
         with pytest.raises(nomad.api.exceptions.BaseNomadException):
             nomad_setup_vault_invalid_token.job.register_job("vault", job)
