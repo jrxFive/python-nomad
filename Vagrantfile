@@ -63,7 +63,7 @@ source /tmp/environment.vars.sh
 cd /vagrant
 ./start_daemons.sh
 
-py.test -s -v --cov=nomad --cov-report=term-missing --runxfail tests/
+py.test --cov=nomad --cov-report=term-missing --runxfail tests/
 
 SHELL
 

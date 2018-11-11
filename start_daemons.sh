@@ -167,16 +167,16 @@ nohup /tmp/nomad agent -server -dev -config=/tmp/nomad.d > /dev/null 2>&1 &
 
 PID=`ps -eaf | grep "vault server -dev" | grep -v grep | awk '{print $2}'`
 if [ "" !=  "$PID" ]; then
-  echo "Vault: service is RUNNING"
+  echo "Vault: service is Running"
 else
-  echo "Vault: service is STOPED (could be not necessary)"
+  echo "Vault: service is Stoped (could be not necessary)"
 fi
 
 PID=`ps -eaf | grep "nomad agent -server" | grep -v grep | awk '{print $2}'`
 if [ "" !=  "$PID" ]; then
-  echo "Nomad: service is RUNNING"
+  echo "Nomad: service is Running"
 else
-  echo "Nomad: service is STOPED"
+  echo "Nomad: service is Stoped. This make problems to make test!"
 fi
 sleep 10
 

@@ -59,6 +59,9 @@ NOMAD_REGION=us-east-1a
 ```
 
 ## With Vault integration.
+
+Vault info [:link:](vaultintegration.md)
+
 if you have configured a [Vault Integration ](https://www.nomadproject.io/docs/configuration/vault.html) to store your secrets.
 
 And you have configured: [`allow_unantenticated = false`](https://www.nomadproject.io/docs/configuration/vault.html#allow_unauthenticated)
@@ -66,13 +69,6 @@ see  you must to export and send a valid `VAULT_TOKEN`.
 
 ```bash
 VAULT_TOKEN=xxxx-xxxx-xxxx-xxxx
-```
-
-## Skipt vault tests
-if you want to test vault integration please export the variable:
-
-```bash
-VAULT_TEST=true
 ```
 
 ## Class Dunders
@@ -113,10 +109,15 @@ pip install -r requirements-dev.txt
 ```
 
 ## Testing with vagrant and virtualbox
+
+- Define versions at vagrant file
+- Execute tests
 ```
 vagrant up --provider virtualbox
-source /tmp/environment.vars.sh
-py.test --cov=nomad --cov-report=term-missing --runxfail tests/
+```
+- Destroy Vagrant
+```
+vagrant destroy
 ```
 
 ## Testing with nomad binary

@@ -22,7 +22,6 @@ env:
   global:
   - NOMAD_IP="127.0.0.1"
   - NOMAD_PORT="4646"
-  - NOMAD_INTEGRATION_VAULT="0.6.2"
   - VAULT_ADDR="http://127.0.0.1:8200"
   - VAULT_TEST="true"
   matrix:
