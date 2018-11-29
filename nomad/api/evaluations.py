@@ -57,14 +57,17 @@ class Evaluations(Requester):
         evaluations = self.get_evaluations()
         return iter(evaluations)
 
-    def get_evaluations(self):
+    def get_evaluations(self, prefix=None):
         """ Lists all the evaluations.
 
            https://www.nomadproject.io/docs/http/evals.html
-
+            arguments:
+              - prefix :(str) optional, specifies a string to filter evaluations on based on an prefix.
+                        This is specified as a querystring parameter.
             returns: list
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(method="get").json()
+        params = {"prefix": prefix}
+        return self.request(method="get", params=params).json()

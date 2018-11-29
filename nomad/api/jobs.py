@@ -63,17 +63,20 @@ class Jobs(Requester):
         jobs = self.get_jobs()
         return iter(jobs)
 
-    def get_jobs(self):
+    def get_jobs(self, prefix=None):
         """ Lists all the jobs registered with Nomad.
 
            https://www.nomadproject.io/docs/http/jobs.html
-
+            arguments:
+              - prefix :(str) optional, specifies a string to filter jobs on based on an prefix.
+                        This is specified as a querystring parameter.
             returns: list
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(method="get").json()
+        params = {"prefix": prefix}
+        return self.request(method="get", params=params).json()
 
     def register_job(self, job):
         """ Register a job with Nomad.

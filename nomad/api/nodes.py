@@ -61,14 +61,17 @@ class Nodes(Requester):
         nodes = self.get_nodes()
         return iter(nodes)
 
-    def get_nodes(self):
+    def get_nodes(self, prefix=None):
         """ Lists all the client nodes registered with Nomad.
 
            https://www.nomadproject.io/docs/http/nodes.html
-
+            arguments:
+              - prefix :(str) optional, specifies a string to filter nodes on based on an prefix.
+                        This is specified as a querystring parameter.
             returns: list
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(method="get").json()
+        params = {"prefix": prefix}
+        return self.request(method="get", params=params).json()
