@@ -6,6 +6,12 @@ def test_get_nodes(nomad_setup):
     assert isinstance(nomad_setup.nodes.get_nodes(), list) == True
 
 
+def test_get_nodes_prefix(nomad_setup):
+    nodes = nomad_setup.nodes.get_nodes()
+    prefix = nodes[0]["ID"][:4]
+    nomad_setup.nodes.get_nodes(prefix=prefix)
+
+
 def test_dunder_getitem_exist(nomad_setup):
     n = nomad_setup.nodes["pynomad1"]
     assert isinstance(n, dict)

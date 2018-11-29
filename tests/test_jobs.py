@@ -17,6 +17,10 @@ def test_get_jobs(nomad_setup):
     assert isinstance(nomad_setup.jobs.get_jobs(), list) == True
 
 
+def test_get_jobs_prefix(nomad_setup):
+    nomad_setup.jobs.get_jobs(prefix="ex")
+
+
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 8, 3), reason="Not supported in version")
 def test_parse_job(nomad_setup):
     with open("example.nomad") as fh:

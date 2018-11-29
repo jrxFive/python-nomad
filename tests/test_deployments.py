@@ -20,6 +20,13 @@ def test_get_evaluation(nomad_setup):
 
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version")
+def test_get_deployments_prefix(nomad_setup):
+    deployments = nomad_setup.deployments.get_deployments()
+    prefix = deployments[0]["ID"][:4]
+    nomad_setup.deployments.get_deployments(prefix=prefix)
+
+
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version")
 def test_dunder_getitem_exist(nomad_setup):
     jobID = nomad_setup.deployments.get_deployments()[0]["ID"]
     d = nomad_setup.deployment[jobID]

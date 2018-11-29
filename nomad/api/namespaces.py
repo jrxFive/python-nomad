@@ -57,14 +57,17 @@ class Namespaces(Requester):
         namespaces = self.get_namespaces()
         return iter(namespaces)
 
-    def get_namespaces(self):
+    def get_namespaces(self, prefix=None):
         """ Lists all the namespaces registered with Nomad.
 
            https://www.nomadproject.io/docs/enterprise/namespaces/index.html
-
+            arguments:
+              - prefix :(str) optional, specifies a string to filter namespaces on based on an prefix.
+                        This is specified as a querystring parameter.
             returns: list
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(method="get").json()
+        params = {"prefix": prefix}
+        return self.request(method="get", params=params).json()

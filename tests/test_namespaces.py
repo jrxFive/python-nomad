@@ -31,6 +31,25 @@ def test_get_namespaces(nomad_setup):
 
 
 @responses.activate
+def test_get_namespaces_prefix(nomad_setup):
+    responses.add(
+        responses.GET,
+        "http://{ip}:{port}/v1/namespaces?prefix=api-".format(ip=common.IP, port=common.NOMAD_PORT),
+        status=200,
+        json=[
+                {
+                    "CreateIndex": 31,
+                    "Description": "Production API Servers",
+                    "ModifyIndex": 31,
+                    "Name": "api-prod"
+                },
+            ]
+    )
+
+    assert isinstance(nomad_setup.namespaces.get_namespaces(prefix="api-"), list) == True
+
+
+@responses.activate
 def test_namespaces_iter(nomad_setup):
     responses.add(
         responses.GET,

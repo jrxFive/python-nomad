@@ -15,6 +15,12 @@ def test_get_evaluations(nomad_setup):
     assert isinstance(nomad_setup.evaluations.get_evaluations(), list) == True
 
 
+def test_get_evaluations_prefix(nomad_setup):
+    evaluations = nomad_setup.evaluations.get_evaluations()
+    prefix = evaluations[0]["ID"][:4]
+    nomad_setup.evaluations.get_evaluations(prefix=prefix)
+
+
 def test_dunder_getitem_exist(nomad_setup):
     evalID = nomad_setup.job.get_allocations("example")[0]["EvalID"]
     e = nomad_setup.evaluations[evalID]
