@@ -56,7 +56,7 @@ class Deployments(Requester):
         except nomad.api.exceptions.URLNotFoundNomadException:
             raise KeyError
 
-    def get_deployments(self, prefix=""):
+    def get_deployments(self, prefix="", index=None):
         """ This endpoint lists all deployments.
 
            https://www.nomadproject.io/docs/http/deployments.html
@@ -64,6 +64,8 @@ class Deployments(Requester):
             optional_arguments:
               - prefix, (default "") Specifies a string to filter deployments on based on an index prefix.
                         This is specified as a querystring parameter.
+              - index  :(dict) optional, provides a dictionary for keeping track of x-nomad-index
+
 
             returns: list of dicts
             raises:

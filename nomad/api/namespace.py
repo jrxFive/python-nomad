@@ -48,19 +48,20 @@ class Namespace(Requester):
         except nomad.api.exceptions.URLNotFoundNomadException:
             raise KeyError
 
-    def get_namespace(self, id):
+    def get_namespace(self, id, index=None):
         """ Query a single namespace.
 
            https://www.nomadproject.io/api/namespaces.html
 
             arguments:
               - id
+              - index  :(dict) optional, provides a dictionary for keeping track of x-nomad-index
             returns: dict
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, method="get").json()
+        return self.request(id, method="get", index=index).json()
 
     def create_namespace(self, namespace):
         """ create namespace

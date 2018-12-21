@@ -79,12 +79,13 @@ class Requester(object):
             data=kwargs.get("data", None),
             json=kwargs.get("json", None),
             headers=kwargs.get("headers", None),
-            allow_redirects=kwargs.get("allow_redirects", False)
+            allow_redirects=kwargs.get("allow_redirects", False),
+            index=kwargs.get("index", None)
         )
 
         return response
 
-    def _request(self, method, endpoint, params=None, data=None, json=None, headers=None, allow_redirects=None):
+    def _request(self, method, endpoint, params=None, data=None, json=None, headers=None, allow_redirects=None, index=None):
         url = self._url_builder(endpoint)
         qs = self._query_string_builder(endpoint)
 
@@ -98,6 +99,9 @@ class Requester(object):
                 headers["X-Nomad-Token"] = self.token
             except TypeError:
                 headers = {"X-Nomad-Token": self.token}
+
+        if index and index.get("X-Nomad-Index"):
+            headers["X-Nomad-Index"] = index["X-Nomad-Index"]
 
         response = None
 
@@ -148,6 +152,8 @@ class Requester(object):
                 )
 
             if response.ok:
+                if index:
+                    index["X-Nomad-Index"] = response.headers["X-Nomad-Index"]
                 return response
             elif response.status_code == 400:
                 raise nomad.api.exceptions.BadRequestNomadException(response)

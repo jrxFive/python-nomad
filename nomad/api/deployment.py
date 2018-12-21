@@ -43,33 +43,35 @@ class Deployment(Requester):
         except nomad.api.exceptions.URLNotFoundNomadException:
             raise KeyError
 
-    def get_deployment(self, id):
+    def get_deployment(self, id, index=None):
         """ This endpoint reads information about a specific deployment by ID.
 
            https://www.nomadproject.io/docs/http/deployments.html
 
             arguments:
               - id
+              - index  :(dict) optional, provides a dictionary for keeping track of x-nomad-index
             returns: dict
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, method="get").json()
+        return self.request(id, method="get", index=index).json()
 
-    def get_deployment_allocations(self, id):
+    def get_deployment_allocations(self, id, index=None):
         """ This endpoint lists the allocations created or modified for the given deployment.
 
            https://www.nomadproject.io/docs/http/deployments.html
 
             arguments:
               - id
+              - index  :(dict) optional, provides a dictionary for keeping track of x-nomad-index
             returns: list of dicts
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request("allocations", id, method="get").json()
+        return self.request("allocations", id, method="get", index=index).json()
 
     def fail_deployment(self, id):
         """ This endpoint is used to mark a deployment as failed. This should be done to force the scheduler to stop

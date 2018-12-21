@@ -37,10 +37,13 @@ class Acl(Requester):
         """
         return self.request("bootstrap", method="post").json()
 
-    def get_tokens(self):
+    def get_tokens(self, index=None):
         """ Get a list of tokens.
 
             https://www.nomadproject.io/api/acl-tokens.html
+
+            optional_arguments:
+              - index  :(dict) optional, provides a dictionary for keeping track of x-nomad-index
 
             returns: list
 
@@ -49,33 +52,39 @@ class Acl(Requester):
               - nomad.api.exceptions.URLNotFoundNomadException
         """
 
-        return self.request("tokens", method="get").json()
+        return self.request("tokens", method="get", index=index).json()
 
-    def get_token(self, id):
+    def get_token(self, id, index=None):
         """ Retrieve specific token.
 
             https://www.nomadproject.io/api/acl-tokens.html
 
+            optional_arguments:
+              - index  :(dict) optional, provides a dictionary for keeping track of x-nomad-index
+
             returns: dict
 
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request("token", id, method="get").json()
+        return self.request("token", id, method="get", index=index).json()
 
-    def get_self_token(self):
+    def get_self_token(self, index=None):
         """ Retrieve self token used for auth.
 
             https://www.nomadproject.io/api/acl-tokens.html
 
+            optional_arguments:
+              - index  :(dict) optional, provides a dictionary for keeping track of x-nomad-index
+
             returns: dict
 
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request("token", "self", method="get").json()
+        return self.request("token", "self", method="get", index=index).json()
 
     def create_token(self, token):
         """ Create token.

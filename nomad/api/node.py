@@ -48,29 +48,35 @@ class Node(Requester):
         except nomad.api.exceptions.URLNotFoundNomadException:
             raise KeyError
 
-    def get_node(self, id):
+    def get_node(self, id, index=None):
         """ Query the status of a client node registered with Nomad.
 
            https://www.nomadproject.io/docs/http/node.html
+
+            arguments:
+              - index  :(dict) optional, provides a dictionary for keeping track of x-nomad-index
 
             returns: dict
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, method="get").json()
+        return self.request(id, method="get", index=index).json()
 
-    def get_allocations(self, id):
+    def get_allocations(self, id, index=None):
         """ Query the allocations belonging to a single node.
 
            https://www.nomadproject.io/docs/http/node.html
+
+            arguments:
+              - index  :(dict) optional, provides a dictionary for keeping track of x-nomad-index
 
             returns: list
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, "allocations", method="get").json()
+        return self.request(id, "allocations", method="get", index=index).json()
 
     def evaluate_node(self, id):
         """ Creates a new evaluation for the given node.
