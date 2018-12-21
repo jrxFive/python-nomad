@@ -101,7 +101,7 @@ class Requester(object):
                 headers = {"X-Nomad-Token": self.token}
 
         if index and index.get("X-Nomad-Index"):
-            headers["X-Nomad-Index"] = index["X-Nomad-Index"]
+            params["index"] = index["X-Nomad-Index"]
 
         response = None
 
