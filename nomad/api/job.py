@@ -48,7 +48,7 @@ class Job(Requester):
         except nomad.api.exceptions.URLNotFoundNomadException:
             raise KeyError
 
-    def get_job(self, id, link=None):
+    def get_job(self, id, index=None):
         """ Query a single job for its specification and status.
 
            https://www.nomadproject.io/docs/http/job.html
@@ -61,9 +61,9 @@ class Job(Requester):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, method="get", link=link).json()
+        return self.request(id, method="get", index=index).json()
 
-    def get_versions(self, id, link=None):
+    def get_versions(self, id, index=None):
         """ This endpoint reads information about all versions of a job.
 
            https://www.nomadproject.io/docs/http/job.html
@@ -76,9 +76,9 @@ class Job(Requester):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, "versions", method="get", link=link).json()
+        return self.request(id, "versions", method="get", index=index).json()
 
-    def get_allocations(self, id, link=None):
+    def get_allocations(self, id, index=None):
         """ Query the allocations belonging to a single job.
 
            https://www.nomadproject.io/docs/http/job.html
@@ -91,9 +91,9 @@ class Job(Requester):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, "allocations", method="get", link=link).json()
+        return self.request(id, "allocations", method="get", index=index).json()
 
-    def get_evaluations(self, id, link=None):
+    def get_evaluations(self, id, index=None):
         """ Query the evaluations belonging to a single job.
 
            https://www.nomadproject.io/docs/http/job.html
@@ -106,9 +106,9 @@ class Job(Requester):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, "evaluations", method="get", link=link).json()
+        return self.request(id, "evaluations", method="get", index=index).json()
 
-    def get_deployments(self, id, link=None):
+    def get_deployments(self, id, index=None):
         """ This endpoint lists a single job's deployments
 
            https://www.nomadproject.io/docs/http/job.html
@@ -121,9 +121,9 @@ class Job(Requester):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, "deployments", method="get", link=link).json()
+        return self.request(id, "deployments", method="get", index=index).json()
 
-    def get_deployment(self, id, link=None):
+    def get_deployment(self, id, index=None):
         """ This endpoint returns a single job's most recent deployment.
 
            https://www.nomadproject.io/docs/http/job.html
@@ -136,9 +136,9 @@ class Job(Requester):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, "deployment", method="get", link=link).json()
+        return self.request(id, "deployment", method="get", index=index).json()
 
-    def get_summary(self, id, link=None):
+    def get_summary(self, id, index=None):
         """ Query the summary of a job.
 
            https://www.nomadproject.io/docs/http/job.html
@@ -151,7 +151,7 @@ class Job(Requester):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, "summary", method="get", link=link).json()
+        return self.request(id, "summary", method="get", index=index).json()
 
     def register_job(self, id, job):
         """ Registers a new job or updates an existing job
