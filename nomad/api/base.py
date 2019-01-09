@@ -10,7 +10,7 @@ class Requester(object):
 
     ENDPOINT = ""
 
-    def __init__(self, address=None, uri='http://127.0.0.1', port=4646, namespace=None, token=None, timeout=5, blocking_timeout=300, version='v1', verify=False, cert=(), region=None, **kwargs):
+    def __init__(self, address=None, uri='http://127.0.0.1', port=4646, namespace=None, token=None, timeout=5, blocking_timeout=360, version='v1', verify=False, cert=(), region=None, **kwargs):
         self.uri = uri
         self.port = port
         self.namespace = namespace
@@ -109,7 +109,7 @@ class Requester(object):
         try:
             method = method.lower()
             if method == "get":
-                timeout = blocking_timeout if index else timeout
+                timeout = self.blocking_timeout if index else self.timeout
                 response = self.session.get(
                     url=url,
                     params=params,
