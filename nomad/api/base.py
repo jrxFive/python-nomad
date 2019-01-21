@@ -154,7 +154,7 @@ class Requester(object):
                 )
 
             if response.ok:
-                if index:
+                if index is not None:
                     index["X-Nomad-Index"] = response.headers["X-Nomad-Index"]
                 return response
             elif response.status_code == 400:
