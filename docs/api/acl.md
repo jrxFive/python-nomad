@@ -140,7 +140,7 @@ import nomad
 
 my_nomad = nomad.Nomad(host='192.168.33.10', token='10f0cf19-2c8c-cb4b-721a-fda2a388740b')
 
-self_token = my_nomad.acl.get_selftoken()
+self_token = my_nomad.acl.get_self_token()
 ```
 
 ### Delete token
