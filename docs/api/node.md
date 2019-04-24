@@ -65,7 +65,11 @@ import nomad
 
 my_nomad = nomad.Nomad(host='192.168.33.10')
 
-my_nomad.node.drain_node('ed1bbae7-c38a-df2d-1de7-50dbc753fc98')
+#enable drain mode
+my_nomad.node.drain_node('ed1bbae7-c38a-df2d-1de7-50dbc753fc98', enable=True)
+
+#disable drain mode
+my_nomad.node.drain_node('ed1bbae7-c38a-df2d-1de7-50dbc753fc98', enable=False)
 ```
 
 ### Drain node with DrainSpec
@@ -98,7 +102,7 @@ my_nomad.node.drain_node('ed1bbae7-c38a-df2d-1de7-50dbc753fc98', drain_spec={}, 
 
 This endpoint toggles the eligibility of the node. When a node's "SchedulingEligibility" is ineligible  the scheduler will not consider it for new placements.
 
-https://www.nomadproject.io/api/nodes.html#drain-node
+https://www.nomadproject.io/api/nodes.html#toggle-node-eligibility
 
 Example:
 
