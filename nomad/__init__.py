@@ -4,18 +4,19 @@ import os
 
 class Nomad(object):
 
-    def __init__(self, 
-        host='127.0.0.1', 
-        secure=False, 
+    def __init__(self,
+        host='127.0.0.1',
+        secure=False,
         port=4646,
         address=os.getenv('NOMAD_ADDR', None),
         namespace=os.getenv('NOMAD_NAMESPACE', None),
-        token=os.getenv('NOMAD_TOKEN', None), 
-        timeout=5, 
-        region=os.getenv('NOMAD_REGION', None), 
-        version='v1', 
-        verify=False, 
-        cert=()):
+        token=os.getenv('NOMAD_TOKEN', None),
+        timeout=5,
+        region=os.getenv('NOMAD_REGION', None),
+        version='v1',
+        verify=False,
+        cert=(os.getenv('NOMAD_CLIENT_CERT', None),
+              os.getenv('NOMAD_CLIENT_KEY', None))):
         """ Nomad api client
 
           https://github.com/jrxFive/python-nomad/
@@ -51,7 +52,7 @@ class Nomad(object):
         self.version = version
         self.token = token
         self.verify = verify
-        self.cert = cert
+        self.cert = cert if all(cert) else ()
         self.__namespace = namespace
 
         self.requester_settings = {
