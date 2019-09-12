@@ -10,11 +10,12 @@ class Nomad(object):
         port=4646,
         address=os.getenv('NOMAD_ADDR', None),
         namespace=os.getenv('NOMAD_NAMESPACE', None),
-        token=os.getenv('NOMAD_TOKEN', None), 
-        timeout=5, 
-        region=os.getenv('NOMAD_REGION', None), 
-        version='v1', 
-        verify=False, 
+        token=os.getenv('NOMAD_TOKEN', None),
+        vaulttoken=os.getenv('VAULT_TOKEN', None),
+        timeout=5,
+        region=os.getenv('NOMAD_REGION', None),
+        version='v1',
+        verify=False,
         cert=()):
         """ Nomad api client
 
@@ -35,6 +36,9 @@ class Nomad(object):
                                 be use to deploy or to ask info to nomad.
             - token (defaults to None), Specifies to append ACL token to the headers to
                                 make authentication on secured based nomad environemnts.
+            - vaulttoken (defaults to None), Specifies to append ACL token to the job and
+                                make authentication on environemnts with allow_unantenticated = false, where
+                                you must to send a valid vault token for policies.
            returns: Nomad api client object
 
            raises:
@@ -50,6 +54,7 @@ class Nomad(object):
         self.timeout = timeout
         self.version = version
         self.token = token
+        self.vaulttoken = vaulttoken
         self.verify = verify
         self.cert = cert
         self.__namespace = namespace
@@ -60,6 +65,7 @@ class Nomad(object):
             "port": self.port,
             "namespace": self.__namespace,
             "token": self.token,
+            "vaulttoken": self.vaulttoken,
             "timeout": self.timeout,
             "version": self.version,
             "verify": self.verify,
@@ -102,6 +108,9 @@ class Nomad(object):
 
     def get_token(self):
         return self.token
+
+    def get_vaulttoken(self):
+        return self.vaulttoken
 
     @property
     def jobs(self):
