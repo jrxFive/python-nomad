@@ -9,17 +9,14 @@ class BaseNomadException(Exception):
 
 class URLNotFoundNomadException(BaseNomadException):
     """The requeted URL given does not exist"""
-    pass
 
 
 class URLNotAuthorizedNomadException(BaseNomadException):
     """The requested URL is not authorized. ACL"""
-    pass
 
 
 class BadRequestNomadException(BaseNomadException):
     """Validation failure and if a parameter is modified in the request, it could potentially succeed."""
-    pass
 
 
 class InvalidParameters(Exception):
