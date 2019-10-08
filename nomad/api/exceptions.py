@@ -3,23 +3,20 @@ class BaseNomadException(Exception):
     def __init__(self, nomad_resp):
         self.nomad_resp = nomad_resp
 
+    def __str__(self):
+        return 'The {0} was raised with following response: {1}.'.format(self.__class__.__name__, self.nomad_resp.text)
+
 
 class URLNotFoundNomadException(BaseNomadException):
     """The requeted URL given does not exist"""
-    def __init__(self, nomad_resp):
-        self.nomad_resp = nomad_resp
-        
+
 
 class URLNotAuthorizedNomadException(BaseNomadException):
     """The requested URL is not authorized. ACL"""
-    def __init__(self, nomad_resp):
-        self.nomad_resp = nomad_resp
 
 
 class BadRequestNomadException(BaseNomadException):
     """Validation failure and if a parameter is modified in the request, it could potentially succeed."""
-    def __init__(self, nomad_resp):
-        self.nomad_resp = nomad_resp
 
 
 class InvalidParameters(Exception):
