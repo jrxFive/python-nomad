@@ -48,14 +48,16 @@ n.job.deregister_job(j)
 
 ## Environment Variables
 
-This library also supports environment variables: `NOMAD_ADDR`, `NOMAD_NAMESPACE`, `NOMAD_TOKEN`, `NOMAD_REGION` for ease of configuration
-and unifying with nomad cli tools and other libraries.
+This library also supports environment variables: `NOMAD_ADDR`, `NOMAD_NAMESPACE`, `NOMAD_TOKEN`, `NOMAD_REGION`, `NOMAD_CLIENT_CERT`, and `NOMAD_CLIENT_KEY`
+for ease of configuration and unifying with nomad cli tools and other libraries.
 
 ```bash
 NOMAD_ADDR=http://127.0.0.1:4646
 NOMAD_NAMESPACE=default
 NOMAD_TOKEN=xxxx-xxxx-xxxx-xxxx
 NOMAD_REGION=us-east-1a
+NOMAD_CLIENT_CERT=/path/to/tls/client.crt
+NOMAD_CLIENT_KEY=/path/to/tls/client.key
 ```
 
 ## Class Dunders
