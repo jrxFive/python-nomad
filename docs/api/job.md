@@ -349,7 +349,7 @@ import nomad
 
 my_nomad = nomad.Nomad(host='192.168.33.10')
 
-prior_job_version = my_nomad.job.job.get_deployment("example")["JobVersion"]
+current_job_version = my_nomad.job.job.get_deployment("example")["JobVersion"]
 
 prior_job_version = current_job_version - 1
 
