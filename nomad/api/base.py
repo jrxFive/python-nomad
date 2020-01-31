@@ -158,5 +158,5 @@ class Requester(object):
             else:
                 raise nomad.api.exceptions.BaseNomadException(response)
 
-        except requests.RequestException:
-            raise nomad.api.exceptions.BaseNomadException(response)
+        except requests.RequestException as error:
+            raise nomad.api.exceptions.BaseNomadException(error)
