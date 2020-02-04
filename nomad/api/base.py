@@ -36,7 +36,9 @@ class Requester(object):
                                 "allocations",
                                 "deployment",
                                 "deployments",
-                                "acl"
+                                "acl",
+                                "client",
+                                "node"
                              ]
         # split 0 -> Api Version
         # split 1 -> Working Endpoint
