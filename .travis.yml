@@ -1,15 +1,13 @@
 sudo: required
-
 deploy:
   provider: pypi
   user: jrxfive
   password:
-    secure: KJFVOr1iqX1gh61IAzwztkn777Ya1bgN/Et+k5aI4hA+47n9kEPnoJLXP+Fak/OtwSx01oRElRgz/IP5y5yflLrnaTzLY4G7dpUsHf/bwOaWO4UEy43lnpTrjmhHEIUptHtufmue0FYSx4l/Os6XZYOZdUyJtLw+Zr72AuzMQlpgQhdwdjWngvI2FIX8gvoqda7rAJkyZyuW3vRJUdngDvzjWGhy8sRnZwCD56MLEbgnfD08Q2mSxbtHOb3B79EJdGZ3hqGV2AGdYuWfbf2q1yoUCH90AOCzKams8t+JCS/oRAOSlsG1iFMidpjtl+QKBashHrhJ/7xYNrmF49Hj6I8QFpZf4idUZQfo+uhoQd9YzzmEPb/Ys+PPD7Coy8RnD4xQpHQCMe6M+WJhEdFbXlNmjLLaNqm8Vfw9fnpWiFj3d64fZnr/TjTwKDLTVrITbEr95hs0jHx65VCon8ef2Yyt/w/rL66Nz7Skk7YzATloGaMNaennB7MzTxsTdjIvHmBFh2NlhRIAznYTzABewn7ktXHY6bAr7gIJRBr+2pdjQ+BMmtbvimHlUZ75xh94JpDv6vZKdyu2nkm9j444dwBEbCuqa8gPLasiik7OeKSoT0NtofwESb3lliHWsMDM1+kPx6aj1GYS1Kp7WndxVIKd3bEibhBgZY4JmuSWyuo=
+    secure: Wwy6E8My1CXssswhsVOZZDnEL/cGYFnZVF/Pq/X9T1DmRuVnCDOMmZ43t10ASXt4C7pCUVdhmlmnwbyOvNHbhMQ79EXH7Bqno7AnP2C8mC+l7u3KXqrXpvCQ+lIno8JwS3Wp3DQas+ROQ3VlyLenqoR+4bihWDQc573wwH8XM+9RM9jJcuwg2xc30sJAxG624loyD6S4BjMIit2ND/+MgupbiG69nBx9yWLrdJKj1BF0YO9hmumZ928asM+UdtrU2QtVT84g8I2aC5tM34kRZRiM/OQdApm93BVGwlo1hmAQ1YHJevZflMGSAouJjieOVxl4hkN+gYVyHxO1YjnzjgCTWzbKMtmCr7KtputclRwrf7wrsxl6FRn2HmOKPxLfY9CnVjv6r2e64iiYWmj4g8J/OgI1TD8B6k4e/ca2Oen/iu8/uiZWLT0XEOAtWLxpAc7kGwcfbXnfVNRUPgQY0ePLsI+Lp3VY7hh65YQQDaHqH+/Ib/MNS1XAhZMrMM1iJ4YgNMsmLuBXXI63Ef3T/T4Tw7plydw6jFy2Z2tyIG8/IFnV4t8CofvThX/Wfof8fX0YphuIFPGJZVzVRW+FSQbx8iniTDeu1Q7d76RxXYdoMd5Aesbn/dwWX22KLHO/x2gKlBNjPIVuvx4XxIsQGsan/7u1582MEC681AjggE4=
   on:
     tags: true
     repo: jrxFive/python-nomad
-    condition: $TRAVIS_PYTHON_VERSION = "2.7"
-
+    condition: $TRAVIS_PYTHON_VERSION = "3.7"
 services:
 - docker
 language: python
@@ -35,15 +33,18 @@ before_install:
 - curl -L -o /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip
 - yes | unzip -d /tmp /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip
 - MAJOR_VERSION=`echo ${NOMAD_VERSION} | cut -d "." -f 2`
-- if [[ ${MAJOR_VERSION} -gt 6 ]]; then echo "Nomad version $NOMAD_VERSION supports acls";export ACL_ENABLED="--acl-enabled"; else echo "Nomad version $NOMAD_VERSION";export ACL_ENABLED="";  fi
-- /tmp/nomad agent -dev -bind ${NOMAD_IP} -node pynomad1 ${ACL_ENABLED} > /dev/null 2>&1 &
+- if [[ ${MAJOR_VERSION} -gt 6 ]]; then echo "Nomad version $NOMAD_VERSION supports
+  acls";export ACL_ENABLED="--acl-enabled"; else echo "Nomad version $NOMAD_VERSION";export
+  ACL_ENABLED="";  fi
+- "/tmp/nomad agent -dev -bind ${NOMAD_IP} -node pynomad1 ${ACL_ENABLED} > /dev/null
+  2>&1 &"
 - sleep 30
 install:
 - pip install -r requirements.txt -r requirements-dev.txt
 - pip install codecov
 before_script:
-  - /tmp/nomad init
-  - /tmp/nomad run -output example.nomad > example.json
+- "/tmp/nomad init"
+- "/tmp/nomad run -output example.nomad > example.json"
 script:
 - py.test --cov=nomad --cov-report=term-missing --runxfail tests/
 after_success:
