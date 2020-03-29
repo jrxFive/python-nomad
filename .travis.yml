@@ -1,7 +1,9 @@
 sudo: required
 deploy:
   provider: pypi
-  user: jrxfive
+  user: __token__
+  distributions: "sdist bdist_wheel"
+  skip_existing: true
   password:
     secure: Wwy6E8My1CXssswhsVOZZDnEL/cGYFnZVF/Pq/X9T1DmRuVnCDOMmZ43t10ASXt4C7pCUVdhmlmnwbyOvNHbhMQ79EXH7Bqno7AnP2C8mC+l7u3KXqrXpvCQ+lIno8JwS3Wp3DQas+ROQ3VlyLenqoR+4bihWDQc573wwH8XM+9RM9jJcuwg2xc30sJAxG624loyD6S4BjMIit2ND/+MgupbiG69nBx9yWLrdJKj1BF0YO9hmumZ928asM+UdtrU2QtVT84g8I2aC5tM34kRZRiM/OQdApm93BVGwlo1hmAQ1YHJevZflMGSAouJjieOVxl4hkN+gYVyHxO1YjnzjgCTWzbKMtmCr7KtputclRwrf7wrsxl6FRn2HmOKPxLfY9CnVjv6r2e64iiYWmj4g8J/OgI1TD8B6k4e/ca2Oen/iu8/uiZWLT0XEOAtWLxpAc7kGwcfbXnfVNRUPgQY0ePLsI+Lp3VY7hh65YQQDaHqH+/Ib/MNS1XAhZMrMM1iJ4YgNMsmLuBXXI63Ef3T/T4Tw7plydw6jFy2Z2tyIG8/IFnV4t8CofvThX/Wfof8fX0YphuIFPGJZVzVRW+FSQbx8iniTDeu1Q7d76RxXYdoMd5Aesbn/dwWX22KLHO/x2gKlBNjPIVuvx4XxIsQGsan/7u1582MEC681AjggE4=
   on:
