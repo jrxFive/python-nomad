@@ -1,10 +1,16 @@
+import requests
+
+
 class BaseNomadException(Exception):
     """General Error occurred when interacting with nomad API"""
     def __init__(self, nomad_resp):
         self.nomad_resp = nomad_resp
 
     def __str__(self):
-        return 'The {0} was raised with following response: {1}.'.format(self.__class__.__name__, self.nomad_resp.text)
+        if isinstance(self.nomad_resp, requests.Response) and hasattr(self.nomad_resp, "text"):
+            return 'The {0} was raised with following response: {1}.'.format(self.__class__.__name__, self.nomad_resp.text)
+        else:
+            return 'The {0} was raised due to the following error: {1}'.format(self.__class__.__name__,  str(self.nomad_resp))
 
 
 class URLNotFoundNomadException(BaseNomadException):

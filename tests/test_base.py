@@ -46,6 +46,13 @@ def test_base_delete_connection_error():
         j = n.job.deregister_job("example")
 
 
+def test_base_raise_exception_():
+    n = nomad.Nomad(
+        host="162.16.10.102", port=common.NOMAD_PORT, timeout=0.001, verify=False)
+    with pytest.raises(nomad.api.exceptions.BaseNomadException):
+        j = n.job.deregister_job("example")
+
+
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 7, 0), reason="Nomad dispatch not supported")
 def test_base_get_connnection_not_authorized():
     n = nomad.Nomad(
