@@ -1,8 +1,12 @@
-import pytest
-import tests.common as common
-import nomad
 import os
+
+import mock
+import pytest
+import requests
 import responses
+
+import nomad
+import tests.common as common
 
 
 def test_base_region_qs():
@@ -44,6 +48,40 @@ def test_base_delete_connection_error():
         host="162.16.10.102", port=common.NOMAD_PORT, timeout=0.001, verify=False)
     with pytest.raises(nomad.api.exceptions.BaseNomadException):
         j = n.job.deregister_job("example")
+
+
+@mock.patch("nomad.api.base.requests.Session")
+def test_base_raise_exception_not_requests_response_object(mock_requests):
+    mock_requests().delete.side_effect = [requests.RequestException()]
+
+    with pytest.raises(nomad.api.exceptions.BaseNomadException) as excinfo:
+        n = nomad.Nomad(
+            host="162.16.10.102",
+            port=common.NOMAD_PORT,
+            timeout=0.001,
+            verify=False
+        )
+
+        _ = n.job.deregister_job("example")
+
+    # excinfo is a ExceptionInfo instance, which is a wrapper around the actual exception raised.
+    # The main attributes of interest are .type, .value and .traceback.
+    # https://docs.pytest.org/en/3.0.1/assert.html#assertions-about-expected-exceptions
+    assert hasattr(excinfo.value.nomad_resp, "text") is False
+    assert isinstance(excinfo.value.nomad_resp, requests.RequestException)
+    assert "raised due" in str(excinfo)
+
+
+def test_base_raise_exception_is_requests_response_object(nomad_setup):
+    with pytest.raises(nomad.api.exceptions.BaseNomadException) as excinfo:
+        _ = nomad_setup.job.get_job("examplezz")
+
+    # excinfo is a ExceptionInfo instance, which is a wrapper around the actual exception raised.
+    # The main attributes of interest are .type, .value and .traceback.
+    # https://docs.pytest.org/en/3.0.1/assert.html#assertions-about-expected-exceptions
+    assert hasattr(excinfo.value.nomad_resp, "text") is True
+    assert isinstance(excinfo.value.nomad_resp, requests.Response)
+    assert "raised with" in str(excinfo)
 
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 7, 0), reason="Nomad dispatch not supported")
