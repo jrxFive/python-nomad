@@ -23,7 +23,7 @@ class Sentinel(Requester):
     def __getattr__(self, item):
         raise AttributeError
 
-    def get_policies(self):
+    def get_policies(self, index=None):
         """ Get a list of policies.
 
             https://www.nomadproject.io/api/sentinel-policies.html
@@ -51,10 +51,13 @@ class Sentinel(Requester):
         """
         return self.request("policy", id, json=policy, method="post")
 
-    def get_policy(self, id):
+    def get_policy(self, id, index=None):
         """ Get a spacific policy.
 
             https://www.nomadproject.io/api/sentinel-policies.html
+
+            arguments:
+              - index  :(dict) optional, provides a dictionary for keeping track of x-nomad-index
 
             returns: dict
 
@@ -62,7 +65,7 @@ class Sentinel(Requester):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request("policy", id, method="get").json()
+        return self.request("policy", id, method="get", index=index).json()
 
     def update_policy(self, id, policy):
         """ Create policy.

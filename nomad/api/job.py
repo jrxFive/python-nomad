@@ -48,103 +48,110 @@ class Job(Requester):
         except nomad.api.exceptions.URLNotFoundNomadException:
             raise KeyError
 
-    def get_job(self, id):
+    def get_job(self, id, index=None):
         """ Query a single job for its specification and status.
 
            https://www.nomadproject.io/docs/http/job.html
 
             arguments:
               - id
+              - index  :(dict) optional, provides a dictionary for keeping track of x-nomad-index
             returns: dict
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, method="get").json()
+        return self.request(id, method="get", index=index).json()
 
-    def get_versions(self, id):
+    def get_versions(self, id, index=None):
         """ This endpoint reads information about all versions of a job.
 
            https://www.nomadproject.io/docs/http/job.html
 
             arguments:
               - id
+              - index  :(dict) optional, provides a dictionary for keeping track of x-nomad-index
             returns: list of dicts
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, "versions", method="get").json()
+        return self.request(id, "versions", method="get", index=index).json()
 
-    def get_allocations(self, id):
+    def get_allocations(self, id, index=None):
         """ Query the allocations belonging to a single job.
 
            https://www.nomadproject.io/docs/http/job.html
 
             arguments:
               - id
+              - index  :(dict) optional, provides a dictionary for keeping track of x-nomad-index
             returns: list
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, "allocations", method="get").json()
+        return self.request(id, "allocations", method="get", index=index).json()
 
-    def get_evaluations(self, id):
+    def get_evaluations(self, id, index=None):
         """ Query the evaluations belonging to a single job.
 
            https://www.nomadproject.io/docs/http/job.html
 
             arguments:
               - id
+              - index  :(dict) optional, provides a dictionary for keeping track of x-nomad-index
             returns: dict
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, "evaluations", method="get").json()
+        return self.request(id, "evaluations", method="get", index=index).json()
 
-    def get_deployments(self, id):
+    def get_deployments(self, id, index=None):
         """ This endpoint lists a single job's deployments
 
            https://www.nomadproject.io/docs/http/job.html
 
             arguments:
               - id
+              - index  :(dict) optional, provides a dictionary for keeping track of x-nomad-index
             returns: dict
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, "deployments", method="get").json()
+        return self.request(id, "deployments", method="get", index=index).json()
 
-    def get_deployment(self, id):
+    def get_deployment(self, id, index=None):
         """ This endpoint returns a single job's most recent deployment.
 
            https://www.nomadproject.io/docs/http/job.html
 
             arguments:
               - id
+              - index  :(dict) optional, provides a dictionary for keeping track of x-nomad-index
             returns: list of dicts
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, "deployment", method="get").json()
+        return self.request(id, "deployment", method="get", index=index).json()
 
-    def get_summary(self, id):
+    def get_summary(self, id, index=None):
         """ Query the summary of a job.
 
            https://www.nomadproject.io/docs/http/job.html
 
             arguments:
               - id
+              - index  :(dict) optional, provides a dictionary for keeping track of x-nomad-index
             returns: dict
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, "summary", method="get").json()
+        return self.request(id, "summary", method="get", index=index).json()
 
     def register_job(self, id, job):
         """ Registers a new job or updates an existing job

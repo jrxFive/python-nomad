@@ -45,13 +45,14 @@ class Evaluation(Requester):
         except nomad.api.exceptions.URLNotFoundNomadException:
             raise KeyError
 
-    def get_evaluation(self, id):
+    def get_evaluation(self, id, index=None):
         """ Query a specific evaluation.
 
            https://www.nomadproject.io/docs/http/eval.html
 
             arguments:
               - id
+              - index  :(dict) optional, provides a dictionary for keeping track of x-nomad-index
             returns: dict
             raises:
               - nomad.api.exceptions.BaseNomadException
@@ -59,16 +60,17 @@ class Evaluation(Requester):
         """
         return self.request(id, method="get").json()
 
-    def get_allocations(self, id):
+    def get_allocations(self, id, index=None):
         """ Query the allocations created or modified by an evaluation.
 
            https://www.nomadproject.io/docs/http/eval.html
 
             arguments:
               - id
+              - index  :(dict) optional, provides a dictionary for keeping track of x-nomad-index
             returns: list
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, "allocations", method="get").json()
+        return self.request(id, "allocations", method="get", index=index).json()

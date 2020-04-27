@@ -44,14 +44,17 @@ class Allocation(Requester):
         except nomad.api.exceptions.URLNotFoundNomadException:
             raise KeyError
 
-    def get_allocation(self, id):
+    def get_allocation(self, id, index=None):
         """ Query a specific allocation.
 
            https://www.nomadproject.io/docs/http/alloc.html
 
+            arguments:
+              - id
+              - index  :(dict) optional, provides a dictionary for keeping track of x-nomad-index
             returns: dict
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, method="get").json()
+        return self.request(id, method="get", index=index).json()

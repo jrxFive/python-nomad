@@ -10,12 +10,13 @@ class Requester(object):
 
     ENDPOINT = ""
 
-    def __init__(self, address=None, uri='http://127.0.0.1', port=4646, namespace=None, token=None, timeout=5, version='v1', verify=False, cert=(), region=None, **kwargs):
+    def __init__(self, address=None, uri='http://127.0.0.1', port=4646, namespace=None, token=None, timeout=5, blocking_timeout=360, version='v1', verify=False, cert=(), region=None, **kwargs):
         self.uri = uri
         self.port = port
         self.namespace = namespace
         self.token = token
         self.timeout = timeout
+        self.blocking_timeout = blocking_timeout
         self.version = version
         self.verify = verify
         self.cert = cert
@@ -81,12 +82,13 @@ class Requester(object):
             data=kwargs.get("data", None),
             json=kwargs.get("json", None),
             headers=kwargs.get("headers", None),
-            allow_redirects=kwargs.get("allow_redirects", False)
+            allow_redirects=kwargs.get("allow_redirects", False),
+            index=kwargs.get("index", None)
         )
 
         return response
 
-    def _request(self, method, endpoint, params=None, data=None, json=None, headers=None, allow_redirects=None):
+    def _request(self, method, endpoint, params=None, data=None, json=None, headers=None, allow_redirects=None, index=None):
         url = self._url_builder(endpoint)
         qs = self._query_string_builder(endpoint)
 
@@ -101,16 +103,20 @@ class Requester(object):
             except TypeError:
                 headers = {"X-Nomad-Token": self.token}
 
+        if index and index.get("X-Nomad-Index"):
+            params["index"] = index["X-Nomad-Index"]
+
         response = None
 
         try:
             method = method.lower()
             if method == "get":
+                timeout = self.blocking_timeout if index else self.timeout
                 response = self.session.get(
                     url=url,
                     params=params,
                     headers=headers,
-                    timeout=self.timeout,
+                    timeout=timeout,
                     verify=self.verify,
                     cert=self.cert,
                     allow_redirects=allow_redirects
@@ -150,6 +156,8 @@ class Requester(object):
                 )
 
             if response.ok:
+                if index is not None:
+                    index["X-Nomad-Index"] = response.headers["X-Nomad-Index"]
                 return response
             elif response.status_code == 400:
                 raise nomad.api.exceptions.BadRequestNomadException(response)
