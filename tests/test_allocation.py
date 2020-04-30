@@ -19,6 +19,11 @@ def test_get_allocation(nomad_setup):
     assert isinstance(nomad_setup.allocation.get_allocation(id), dict) == True
 
 
+def test_stop_allocation(nomad_setup):
+    id = nomad_setup.job.get_allocations("example")[0]["ID"]
+    assert isinstance(nomad_setup.allocation.stop_allocation(id), dict) == True
+
+
 def test_dunder_getitem_exist(nomad_setup):
     id = nomad_setup.job.get_allocations("example")[0]["ID"]
     a = nomad_setup.allocation[id]
