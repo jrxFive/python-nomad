@@ -3,6 +3,7 @@ import json
 import uuid
 import responses
 import tests.common as common
+import os
 
 
 # integration tests requires nomad Vagrant VM or Binary running
@@ -17,6 +18,12 @@ def test_register_job(nomad_setup):
 def test_get_allocation(nomad_setup):
     id = nomad_setup.job.get_allocations("example")[0]["ID"]
     assert isinstance(nomad_setup.allocation.get_allocation(id), dict) == True
+
+
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 9, 2), reason="Nomad alloc stop not supported")
+def test_stop_allocation(nomad_setup):
+    id = nomad_setup.job.get_allocations("example")[0]["ID"]
+    assert isinstance(nomad_setup.allocation.stop_allocation(id), dict) == True
 
 
 def test_dunder_getitem_exist(nomad_setup):
