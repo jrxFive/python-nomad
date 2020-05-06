@@ -19,6 +19,7 @@ def test_get_allocation(nomad_setup):
     id = nomad_setup.job.get_allocations("example")[0]["ID"]
     assert isinstance(nomad_setup.allocation.get_allocation(id), dict) == True
 
+
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 9, 2), reason="Nomad alloc stop not supported")
 def test_stop_allocation(nomad_setup):
     id = nomad_setup.job.get_allocations("example")[0]["ID"]
