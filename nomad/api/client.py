@@ -300,6 +300,18 @@ class allocation(Requester):
         """
         return self.request(id, "stats", method="get").json()
 
+    def restart_allocation(self, id):
+        """ Restart a specific allocation.
+
+           https://www.nomadproject.io/api-docs/allocations/#restart-allocation
+
+            returns: dict
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
+        return self.request(id, "restart", method="post").json()
+
 
 class gc_allocation(Requester):
 
