@@ -86,16 +86,16 @@ import nomad
 my_nomad = nomad.Nomad(host='192.168.33.10')
 
 #enable drain mode
-my_nomad.node.drain_node('ed1bbae7-c38a-df2d-1de7-50dbc753fc98', drain_spec={"Duration": "100000000"})
+my_nomad.node.drain_node_with_spec('ed1bbae7-c38a-df2d-1de7-50dbc753fc98', drain_spec={"Duration": "100000000"})
 
 #enable drain mode but leave system jobs on the specificed node
-my_nomad.node.drain_node('ed1bbae7-c38a-df2d-1de7-50dbc753fc98', drain_spec={"Duration": "100000000", "IgnoreSystemJobs": True})
+my_nomad.node.drain_node_with_spec('ed1bbae7-c38a-df2d-1de7-50dbc753fc98', drain_spec={"Duration": "100000000", "IgnoreSystemJobs": True})
 
 #disable drain but leave node in an ineligible state
-my_nomad.node.drain_node('ed1bbae7-c38a-df2d-1de7-50dbc753fc98', drain_spec={})
+my_nomad.node.drain_node_with_spec('ed1bbae7-c38a-df2d-1de7-50dbc753fc98', drain_spec={})
 
 #disable drain and put node in an eligible state
-my_nomad.node.drain_node('ed1bbae7-c38a-df2d-1de7-50dbc753fc98', drain_spec={}, mark_eligible=True)
+my_nomad.node.drain_node_with_spec('ed1bbae7-c38a-df2d-1de7-50dbc753fc98', drain_spec={}, mark_eligible=True)
 ```
 
 ### Eligible Node
