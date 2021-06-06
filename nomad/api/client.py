@@ -312,6 +312,25 @@ class allocation(Requester):
         """
         return self.request(id, "restart", method="post").json()
 
+    def signal_allocation(self, id, signal, task=None):
+        """ Sends a signal to an allocation or task.
+
+            https://www.nomadproject.io/api-docs/allocations#signal-allocation
+
+            arguments:
+              - id
+              - signal (str)
+            optional_arguments:
+              - task: (str) Optional, if omitted, the signal will be sent to all tasks in the allocation.
+
+            returns: dict
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
+        dispatch_json = {"Signal": signal, "Task": task}
+        return self.request(id, "signal", json=dispatch_json, method="post").json()
+
 
 class gc_allocation(Requester):
 
