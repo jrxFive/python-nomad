@@ -48,19 +48,22 @@ class Job(Requester):
         except nomad.api.exceptions.URLNotFoundNomadException:
             raise KeyError
 
-    def get_job(self, id):
+    def get_job(self, id, namespace=None):
         """ Query a single job for its specification and status.
 
            https://www.nomadproject.io/docs/http/job.html
 
             arguments:
               - id
+              - namespace :(str) optional, specifies the target namespace. Specifying * would return all jobs.
+                        This is specified as a querystring parameter.
             returns: dict
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, method="get").json()
+        params = {"namespace": namespace}
+        return self.request(id, method="get", params=params).json()
 
     def get_versions(self, id):
         """ This endpoint reads information about all versions of a job.
