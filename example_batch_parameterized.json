@@ -1,6 +1,6 @@
 {
     "Job": {
-        "Region": "example-region",
+        "Region": "",
         "ID": "example-batch",
         "ParentID": "",
         "Name": "example-batch",

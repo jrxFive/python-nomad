@@ -1,7 +1,11 @@
-import pytest
-import nomad
 import json
 import os
+
+import pytest
+import nomad
+
+from flaky import flaky
+
 from nomad.api import exceptions
 
 
@@ -42,6 +46,7 @@ def test_delete_job(nomad_setup):
     test_register_job(nomad_setup)
 
 
+@flaky(max_runs=5, min_passes=1)
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 5, 3), reason="Nomad dispatch not supported")
 def test_dispatch_job(nomad_setup):
     with open("example_batch_parameterized.json") as fh:
