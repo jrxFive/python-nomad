@@ -16,7 +16,14 @@ def test_register_job(nomad_setup):
         nomad_setup.job.register_job("example", job)
         assert "example" in nomad_setup.job
 
-    time.sleep(20)
+        max_iterations = 6
+
+        while nomad_setup.job["example"]["Status"] != "running":
+            time.sleep(5)
+            if max_iterations == 0:
+                raise Exception("register_job, job 'example' did not start")
+
+            max_iterations -= 1
 
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 5, 6), reason="Not supported in version")
