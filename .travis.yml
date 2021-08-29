@@ -48,4 +48,4 @@ before_script:
 script:
 - py.test --cov=nomad --cov-report=term-missing --runxfail tests/
 after_success:
-- codecov
+- test $NOMAD_VERSION=="0.8.3" && codecov
