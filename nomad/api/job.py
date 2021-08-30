@@ -62,7 +62,11 @@ class Job(Requester):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        params = {"namespace": namespace}
+        params = {}
+
+        if namespace:
+            params["namespace"] = namespace
+
         return self.request(id, method="get", params=params).json()
 
     def get_versions(self, id):
