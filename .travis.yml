@@ -14,8 +14,6 @@ services:
 - docker
 language: python
 python:
-- '2.7'
-- '3.5'
 - '3.6'
 - '3.7'
 - '3.8'
@@ -50,4 +48,4 @@ before_script:
 script:
 - py.test --cov=nomad --cov-report=term-missing --runxfail tests/
 after_success:
-- codecov
+- test $NOMAD_VERSION=="0.8.3" && codecov

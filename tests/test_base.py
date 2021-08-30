@@ -28,6 +28,31 @@ def test_base_region_and_namespace_qs():
     assert qs["namespace"] == "test"
 
 
+def test_base_region_and_namespace_qs_namespace_override():
+    n = nomad.Nomad(host=common.IP, port=common.NOMAD_PORT, verify=False, token=common.NOMAD_TOKEN, region="random", namespace="test")
+    qs = n.jobs._query_string_builder("v1/jobs", {"namespace": "new-namespace"})
+
+    assert "namespace" not in qs
+    assert "region" in qs
+    assert qs["region"] == "random"
+
+
+def test_base_region_and_namespace_qs_region_override():
+    n = nomad.Nomad(host=common.IP, port=common.NOMAD_PORT, verify=False, token=common.NOMAD_TOKEN, region="random", namespace="test")
+    qs = n.jobs._query_string_builder("v1/jobs", {"region": "new-region"})
+
+    assert "region" not in qs
+    assert "namespace" in qs
+    assert qs["namespace"] == "test"
+
+
+def test_base_region_and_namespace_qs_overrides_via_params():
+    n = nomad.Nomad(host=common.IP, port=common.NOMAD_PORT, verify=False, token=common.NOMAD_TOKEN, region="random", namespace="test")
+    qs = n.jobs._query_string_builder("v1/jobs", {"namespace": "new-namespace", "region": "new-region"})
+
+    assert qs == {}
+
+
 # integration tests requires nomad Vagrant VM or Binary running
 def test_base_get_connection_error():
     n = nomad.Nomad(
@@ -69,7 +94,7 @@ def test_base_raise_exception_not_requests_response_object(mock_requests):
     # https://docs.pytest.org/en/3.0.1/assert.html#assertions-about-expected-exceptions
     assert hasattr(excinfo.value.nomad_resp, "text") is False
     assert isinstance(excinfo.value.nomad_resp, requests.RequestException)
-    assert "raised due" in str(excinfo)
+    assert "raised due" in str(excinfo.value)
 
 
 def test_base_raise_exception_is_requests_response_object(nomad_setup):
@@ -81,7 +106,7 @@ def test_base_raise_exception_is_requests_response_object(nomad_setup):
     # https://docs.pytest.org/en/3.0.1/assert.html#assertions-about-expected-exceptions
     assert hasattr(excinfo.value.nomad_resp, "text") is True
     assert isinstance(excinfo.value.nomad_resp, requests.Response)
-    assert "raised with" in str(excinfo)
+    assert "raised with" in str(excinfo.value)
 
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 7, 0), reason="Nomad dispatch not supported")
