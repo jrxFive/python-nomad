@@ -77,7 +77,10 @@ class Jobs(Requester):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        params = {"prefix": prefix, "namespace": namespace}
+        params = {"prefix": prefix}
+        if namespace:
+            params["namespace"] = namespace
+
         return self.request(method="get", params=params).json()
 
     def register_job(self, job):
