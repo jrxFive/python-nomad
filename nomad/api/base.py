@@ -2,7 +2,6 @@ import requests
 import nomad.api.exceptions
 
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
-
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 
@@ -61,13 +60,16 @@ class Requester(object):
 
         return url
 
-    def _query_string_builder(self, endpoint):
+    def _query_string_builder(self, endpoint, params=None):
         qs = {}
 
-        if self.namespace and self._required_namespace(endpoint):
+        if not isinstance(params, dict):
+            params = {}
+
+        if ("namespace" not in params) and (self.namespace and self._required_namespace(endpoint)):
             qs["namespace"] = self.namespace
 
-        if self.region:
+        if "region" not in params and self.region:
             qs["region"] = self.region
 
         return qs
@@ -88,7 +90,7 @@ class Requester(object):
 
     def _request(self, method, endpoint, params=None, data=None, json=None, headers=None, allow_redirects=None):
         url = self._url_builder(endpoint)
-        qs = self._query_string_builder(endpoint)
+        qs = self._query_string_builder(endpoint=endpoint, params=params)
 
         if params:
             params.update(qs)
