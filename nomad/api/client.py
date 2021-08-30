@@ -40,28 +40,19 @@ class ls(Requester):
     def __init__(self, **kwargs):
         super(ls, self).__init__(**kwargs)
 
-    def list_files(self, id=None, path="/", params_merge=None):
+    def list_files(self, id=None, path="/"):
         """ List files in an allocation directory.
 
            https://www.nomadproject.io/docs/http/client-fs-ls.html
 
             arguments:
               - id
-              - path
-              - params_merge
+              - path          
             returns: list
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-
-        _params = {
-            "path": path
-        }
-
-        if params_merge and isinstance(params_merge, dict):
-            _params.update(params_merge)
-
         if id:
             return self.request(id, params={"path": path}, method="get").json()
         else:
