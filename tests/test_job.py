@@ -1,8 +1,12 @@
 import json
 import os
+import uuid
 
 import pytest
+import responses
+
 import nomad
+import tests.common as common
 
 from flaky import flaky
 
@@ -20,6 +24,43 @@ def test_register_job(nomad_setup):
 
 def test_get_job(nomad_setup):
     assert isinstance(nomad_setup.job.get_job("example"), dict) == True
+
+
+@responses.activate
+def test_get_jobs_with_namespace_override_no_namespace_declared_on_create_incorrect_declared_namespace(nomad_setup):
+    responses.add(
+        responses.GET,
+        "http://{ip}:{port}/v1/job/18a0f501-41d5-ae43-ff61-1d8ec3ec8314?namespace={namespace}".format(ip=common.IP, port=common.NOMAD_PORT, namespace=common.NOMAD_NAMESPACE),
+        status=200,
+        json=[{"Region": "global","ID": "my-job", "ParentID": "", "Name": "my-job","Namespace": common.NOMAD_NAMESPACE, "Type": "batch", "Priority": 50}]
+    )
+
+    with pytest.raises(exceptions.BaseNomadException):
+        nomad_setup.job.get_job(id=str(uuid.uuid4()))
+
+
+@responses.activate
+def test_get_jobs_with_namespace_override_no_namespace_declared_on_create(nomad_setup):
+    responses.add(
+        responses.GET,
+        "http://{ip}:{port}/v1/job/18a0f501-41d5-ae43-ff61-1d8ec3ec8314?namespace={namespace}".format(ip=common.IP, port=common.NOMAD_PORT, namespace=common.NOMAD_NAMESPACE),
+        status=200,
+        json=[{"Region": "global","ID": "my-job", "ParentID": "", "Name": "my-job","Namespace": common.NOMAD_NAMESPACE, "Type": "batch", "Priority": 50}]
+    )
+
+    nomad_setup.job.get_job(id="18a0f501-41d5-ae43-ff61-1d8ec3ec8314", namespace=common.NOMAD_NAMESPACE)
+
+
+@responses.activate
+def test_get_jobs_with_namespace_override_namespace_declared_on_create(nomad_setup_with_namespace):
+    responses.add(
+        responses.GET,
+        "http://{ip}:{port}/v1/job/18a0f501-41d5-ae43-ff61-1d8ec3ec8314?namespace={namespace}".format(ip=common.IP, port=common.NOMAD_PORT, namespace="override-namespace"),
+        status=200,
+        json=[{"Region": "global","ID": "my-job", "ParentID": "", "Name": "my-job","Namespace": common.NOMAD_NAMESPACE, "Type": "batch", "Priority": 50}]
+    )
+
+    nomad_setup_with_namespace.job.get_job(id="18a0f501-41d5-ae43-ff61-1d8ec3ec8314", namespace="override-namespace")
 
 
 def test_get_allocations(nomad_setup):

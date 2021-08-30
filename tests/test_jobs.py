@@ -76,10 +76,9 @@ def test_dunder_iter(nomad_setup):
 def test_dunder_len(nomad_setup):
     assert len(nomad_setup.jobs) >= 0
 
-@responses.activate
-#
+
 # fix No data when you are using namespaces #82
-#
+@responses.activate
 def test_get_jobs_with_namespace(nomad_setup_with_namespace):
     responses.add(
         responses.GET,
