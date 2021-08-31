@@ -23,8 +23,11 @@ def test_evaluate_node(nomad_setup):
     assert "EvalIDs" in nomad_setup.node.evaluate_node(nodeID)
 
 
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) > (1, 1, 0), reason="Not supported in version")
 def test_drain_node(nomad_setup):
     nodeID = nomad_setup.nodes["pynomad1"]["ID"]
+    print(nomad_setup.nodes.get_nodes())
+    print(nomad_setup.node.drain_node(nodeID))
     assert "EvalIDs" in nomad_setup.node.drain_node(nodeID)
     assert "EvalIDs" in nomad_setup.node.drain_node(nodeID, True)
     assert nomad_setup.node[nodeID]["Drain"] is True
