@@ -103,9 +103,7 @@ class stream(Requester):
         if namespace:
             params["namespace"] = namespace
 
-        if topic is None:
-            params["topic"] = "*:*"
-        else:
+        if topic:
             params["topic"] = topic
 
         if event_queue is None:
