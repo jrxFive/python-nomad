@@ -26,7 +26,7 @@ while True:
 
 ```
 import nomad
-n = nomad.Nomad("0.0.0.0")
+n = nomad.Nomad()
 
 stream, stream_exit_event, events = n.event.stream.get_stream(index=0, topic={"Node": "*"}, namespace="not-default")
 stream.start()
@@ -59,7 +59,7 @@ def stop_stream(exit_event, timeout):
     exit_event.set()
 
 
-n = nomad.Nomad("0.0.0.0")
+n = nomad.Nomad()
 
 stream, stream_exit_event, events = n.event.stream.get_stream(index=0, topic={"Node": "*"}, timeout=3.2)
 stream.start()
