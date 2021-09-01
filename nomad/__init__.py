@@ -1,22 +1,22 @@
-
 import nomad.api as api
 import os
+
 
 class Nomad(object):
 
     def __init__(self,
-        host='127.0.0.1',
-        secure=False,
-        port=4646,
-        address=os.getenv('NOMAD_ADDR', None),
-        namespace=os.getenv('NOMAD_NAMESPACE', None),
-        token=os.getenv('NOMAD_TOKEN', None),
-        timeout=5,
-        region=os.getenv('NOMAD_REGION', None),
-        version='v1',
-        verify=False,
-        cert=(os.getenv('NOMAD_CLIENT_CERT', None),
-              os.getenv('NOMAD_CLIENT_KEY', None))):
+                 host='127.0.0.1',
+                 secure=False,
+                 port=4646,
+                 address=os.getenv('NOMAD_ADDR', None),
+                 namespace=os.getenv('NOMAD_NAMESPACE', None),
+                 token=os.getenv('NOMAD_TOKEN', None),
+                 timeout=5,
+                 region=os.getenv('NOMAD_REGION', None),
+                 version='v1',
+                 verify=False,
+                 cert=(os.getenv('NOMAD_CLIENT_CERT', None),
+                       os.getenv('NOMAD_CLIENT_KEY', None))):
         """ Nomad api client
 
           https://github.com/jrxFive/python-nomad/
@@ -68,28 +68,29 @@ class Nomad(object):
             "region": self.region
         }
 
-        self._jobs = api.Jobs(**self.requester_settings)
-        self._job = api.Job(**self.requester_settings)
-        self._nodes = api.Nodes(**self.requester_settings)
-        self._node = api.Node(**self.requester_settings)
-        self._allocations = api.Allocations(**self.requester_settings)
-        self._allocation = api.Allocation(**self.requester_settings)
-        self._evaluations = api.Evaluations(**self.requester_settings)
-        self._evaluation = api.Evaluation(**self.requester_settings)
+        self._acl = api.Acl(**self.requester_settings)
         self._agent = api.Agent(**self.requester_settings)
+        self._allocation = api.Allocation(**self.requester_settings)
+        self._allocations = api.Allocations(**self.requester_settings)
         self._client = api.Client(**self.requester_settings)
-        self._deployments = api.Deployments(**self.requester_settings)
         self._deployment = api.Deployment(**self.requester_settings)
+        self._deployments = api.Deployments(**self.requester_settings)
+        self._evaluation = api.Evaluation(**self.requester_settings)
+        self._evaluations = api.Evaluations(**self.requester_settings)
+        self._event = api.Event(**self.requester_settings)
+        self._job = api.Job(**self.requester_settings)
+        self._jobs = api.Jobs(**self.requester_settings)
+        self._metrics = api.Metrics(**self.requester_settings)
+        self._namespace = api.Namespace(**self.requester_settings)
+        self._namespaces = api.Namespaces(**self.requester_settings)
+        self._node = api.Node(**self.requester_settings)
+        self._nodes = api.Nodes(**self.requester_settings)
+        self._operator = api.Operator(**self.requester_settings)
         self._regions = api.Regions(**self.requester_settings)
+        self._sentinel = api.Sentinel(**self.requester_settings)
         self._status = api.Status(**self.requester_settings)
         self._system = api.System(**self.requester_settings)
-        self._operator = api.Operator(**self.requester_settings)
         self._validate = api.Validate(**self.requester_settings)
-        self._namespaces = api.Namespaces(**self.requester_settings)
-        self._namespace = api.Namespace(**self.requester_settings)
-        self._acl = api.Acl(**self.requester_settings)
-        self._sentinel = api.Sentinel(**self.requester_settings)
-        self._metrics = api.Metrics(**self.requester_settings)
 
     def get_uri(self):
         if self.secure:
@@ -135,6 +136,10 @@ class Nomad(object):
     @property
     def evaluation(self):
         return self._evaluation
+
+    @property
+    def event(self):
+        return self._event
 
     @property
     def agent(self):

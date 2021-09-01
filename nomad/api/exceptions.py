@@ -27,3 +27,7 @@ class BadRequestNomadException(BaseNomadException):
 
 class InvalidParameters(Exception):
     """Invalid parameters given"""
+
+
+class TimeoutNomadException(requests.exceptions.RequestException):
+    """Timeout on request, if using a stream and timeout in conjunction"""

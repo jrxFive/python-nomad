@@ -83,12 +83,14 @@ class Requester(object):
             data=kwargs.get("data", None),
             json=kwargs.get("json", None),
             headers=kwargs.get("headers", None),
-            allow_redirects=kwargs.get("allow_redirects", False)
+            allow_redirects=kwargs.get("allow_redirects", False),
+            timeout=kwargs.get("timeout", self.timeout),
+            stream=kwargs.get("stream", False)
         )
 
         return response
 
-    def _request(self, method, endpoint, params=None, data=None, json=None, headers=None, allow_redirects=None):
+    def _request(self, method, endpoint, params=None, data=None, json=None, headers=None, allow_redirects=None, timeout=None, stream=False):
         url = self._url_builder(endpoint)
         qs = self._query_string_builder(endpoint=endpoint, params=params)
 
@@ -109,46 +111,47 @@ class Requester(object):
             method = method.lower()
             if method == "get":
                 response = self.session.get(
-                    url=url,
-                    params=params,
-                    headers=headers,
-                    timeout=self.timeout,
-                    verify=self.verify,
+                    allow_redirects=allow_redirects,
                     cert=self.cert,
-                    allow_redirects=allow_redirects
+                    headers=headers,
+                    params=params,
+                    stream=stream,
+                    timeout=timeout,
+                    url=url,
+                    verify=self.verify,
                 )
 
             elif method == "post":
                 response = self.session.post(
-                    url=url,
-                    params=params,
-                    json=json,
-                    headers=headers,
-                    data=data,
-                    timeout=self.timeout,
-                    verify=self.verify,
+                    allow_redirects=allow_redirects,
                     cert=self.cert,
-                    allow_redirects=allow_redirects
+                    data=data,
+                    headers=headers,
+                    json=json,
+                    params=params,
+                    timeout=timeout,
+                    url=url,
+                    verify=self.verify,
                 )
             elif method == "put":
                 response = self.session.put(
-                    url=url,
-                    params=params,
-                    json=json,
-                    headers=headers,
-                    data=data,
-                    verify=self.verify,
                     cert=self.cert,
-                    timeout=self.timeout
+                    data=data,
+                    headers=headers,
+                    json=json,
+                    params=params,
+                    timeout=timeout,
+                    url=url,
+                    verify=self.verify,
                 )
             elif method == "delete":
                 response = self.session.delete(
-                    url=url,
-                    params=params,
-                    headers=headers,
-                    verify=self.verify,
                     cert=self.cert,
-                    timeout=self.timeout
+                    headers=headers,
+                    params=params,
+                    timeout=timeout,
+                    url=url,
+                    verify=self.verify,
                 )
 
             if response.ok:
@@ -161,6 +164,12 @@ class Requester(object):
                 raise nomad.api.exceptions.URLNotFoundNomadException(response)
             else:
                 raise nomad.api.exceptions.BaseNomadException(response)
+
+        except requests.exceptions.ConnectionError as error:
+            if all([stream, timeout]):
+                raise nomad.api.exceptions.TimeoutNomadException(error)
+
+            raise nomad.api.exceptions.BaseNomadException(error)
 
         except requests.RequestException as error:
             raise nomad.api.exceptions.BaseNomadException(error)

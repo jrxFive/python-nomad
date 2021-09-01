@@ -70,6 +70,7 @@ NOMAD_CLIENT_KEY=/path/to/tls/client.key
 |client|N|N|N|N
 |evaluation|Y|N|Y|N
 |evaluations|Y|Y|Y|Y
+|event|N|N|N|N
 |job|Y|N|Y|N
 |jobs|Y|Y|Y|Y
 |node|Y|N|Y|N
@@ -119,6 +120,7 @@ NOMAD_IP=127.0.0.1 NOMAD_VERSION=<SEMNATIC_VERSION> py.test --cov=nomad --cov-re
     - [x] Client [:link:](docs/api/client.md)
     - [x] Evaluation [:link:](docs/api/evaluation.md)
     - [x] Evaluations [:link:](docs/api/evaluations.md)
+    - [x] Event [:link:](docs/api/event.md)
     - [x] Job [:link:](docs/api/job.md)
     - [x] Jobs [:link:](docs/api/jobs.md)
     - [x] Namespace [:link:](docs/api/namespace.md)
