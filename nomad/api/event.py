@@ -1,11 +1,15 @@
 import json
 import threading
-import queue
 
 import requests
 
 from nomad.api.base import Requester
 from nomad.api.exceptions import TimeoutNomadException
+
+try:
+    import queue
+except ImportError:
+    import Queue as queue
 
 
 class Event(object):
