@@ -1,0 +1,88 @@
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Python Nomad Test and Publish
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  registry_package:
+    types: [published]
+  release:
+    types: [created, published, released]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      NOMAD_IP: 127.0.0.1
+      NOMAD_PORT: 4646
+      NOMAD_LATEST: 1.1.4
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [2.7, 3.7]
+        nomad-verion: [1.0, 1.1.4]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Setup Nomad
+      shell: bash
+      run: |
+       curl -L -o /tmp/nomad_${{ matrix.nomad-version }}_linux_amd64.zip https://releases.hashicorp.com/nomad/${{ matrix.nomad-version }}/nomad_${{ matrix.nomad-version }}_linux_amd64.zip
+       yes | unzip -d /tmp /tmp/nomad_${{ matrix.nomad-version }}_linux_amd64.zip
+       MAJOR_VERSION=`echo ${{ matrix.nomad-version }} | cut -d "." -f 2`
+       
+       if [[ ${MAJOR_VERSION} -gt 6 ]]
+         then
+           echo "Nomad version $NOMAD_VERSION supports acls"
+           export ACL_ENABLED="--acl-enabled"
+       else 
+         echo "Nomad version $NOMAD_VERSION"
+         export ACL_ENABLED=""
+       fi
+ 
+        /tmp/nomad agent -dev -bind ${NOMAD_IP} -node pynomad1 ${ACL_ENABLED} > /dev/null 2>&1 &
+        sleep 30
+    - name: Install Dependencies
+      shell: bash
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
+    - name: Before Tests
+      shell: bash
+      run: |
+        /tmp/nomad init
+        /tmp/nomad run -output example.nomad > example.json
+    - name: Unit and Integration Tests
+      shell: bash
+      run: |
+        py.test --cov=nomad --cov-report=term-missing --runxfail tests/
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v2
+    - name: Create Package
+      shell: bash
+      run: |
+        python -m pip install build
+        python -m build --sdist --wheel
+    - name: Publish Test PyPi
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: __token__
+        password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+        repository_url: https://test.pypi.org/legacy/
+    - name: Publish/Release Package
+      if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_API_TOKEN }}
