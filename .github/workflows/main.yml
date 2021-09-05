@@ -41,10 +41,17 @@ jobs:
       run: |
        echo $NOMAD_VERSION
        echo ${NOMAD_VERSION}
+
+       echo "downloading nomad"
        curl -L -o /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip
+
+       echo "unzip nomad"
        yes 2>/dev/null | unzip -d /tmp /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip
+
+       echo "getting major version"
        MAJOR_VERSION=`echo ${NOMAD_VERSION} | cut -d "." -f 2`
-       
+
+       echo "cehcking nomad version"
        if [[ ${MAJOR_VERSION} -gt 6 ]]
          then
            echo "Nomad version $NOMAD_VERSION supports acls"
