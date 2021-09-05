@@ -37,9 +37,10 @@ jobs:
     - name: Setup Nomad
       shell: bash
       run: |
-       curl -L -o /tmp/nomad_${{ matrix.nomad-version }}_linux_amd64.zip https://releases.hashicorp.com/nomad/${{ matrix.nomad-version }}/nomad_${{ matrix.nomad-version }}_linux_amd64.zip
-       yes | unzip -d /tmp /tmp/nomad_${{ matrix.nomad-version }}_linux_amd64.zip
-       MAJOR_VERSION=`echo ${{ matrix.nomad-version }} | cut -d "." -f 2`
+       NOMAD_VESION="${{ matrix.nomad-version }}"
+       curl -L -o "/tmp/nomad_${NOMAD_VESION}_linux_amd64.zip https://releases.hashicorp.com/nomad/${NOMAD_VESION}/nomad_${NOMAD_VESION}_linux_amd64.zip"
+       yes | unzip -d /tmp "/tmp/nomad_${NOMAD_VESION}_linux_amd64.zip"
+       MAJOR_VERSION=`echo ${NOMAD_VESION} | cut -d "." -f 2`
        
        if [[ ${MAJOR_VERSION} -gt 6 ]]
          then
