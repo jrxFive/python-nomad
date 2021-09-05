@@ -76,6 +76,8 @@ jobs:
         /tmp/nomad init
         /tmp/nomad run -output example.nomad > example.json
     - name: Unit and Integration Tests
+      env:
+        NOMAD_VERSION: ${{ matrix.nomad-version }}
       shell: bash
       run: |
         py.test --cov=nomad --cov-report=term-missing --runxfail tests/
