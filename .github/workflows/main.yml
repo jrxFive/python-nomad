@@ -42,7 +42,7 @@ jobs:
        echo $NOMAD_VERSION
        echo ${NOMAD_VERSION}
        curl -L -o /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip
-       yes | unzip -d /tmp /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip
+       yes 2>/dev/null | unzip -d /tmp /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip
        MAJOR_VERSION=`echo ${NOMAD_VERSION} | cut -d "." -f 2`
        
        if [[ ${MAJOR_VERSION} -gt 6 ]]
