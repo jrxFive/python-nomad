@@ -46,7 +46,7 @@ jobs:
        curl -L -o /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip
 
        echo "unzip nomad"
-       yes 2>/dev/null | unzip -d /tmp /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip
+       unzip -d /tmp /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip
 
        echo "getting major version"
        MAJOR_VERSION=`echo ${NOMAD_VERSION} | cut -d "." -f 2`
