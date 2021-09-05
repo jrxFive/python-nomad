@@ -38,8 +38,8 @@ jobs:
       shell: bash
       run: |
        NOMAD_VESION="${{ matrix.nomad-version }}"
-       curl -L -o "/tmp/nomad_${NOMAD_VESION}_linux_amd64.zip https://releases.hashicorp.com/nomad/${NOMAD_VESION}/nomad_${NOMAD_VESION}_linux_amd64.zip"
-       yes | unzip -d /tmp "/tmp/nomad_${NOMAD_VESION}_linux_amd64.zip"
+       curl -L -o /tmp/nomad_${NOMAD_VESION}_linux_amd64.zip https://releases.hashicorp.com/nomad/${NOMAD_VESION}/nomad_${NOMAD_VESION}_linux_amd64.zip
+       yes | unzip -d /tmp /tmp/nomad_${NOMAD_VESION}_linux_amd64.zip
        MAJOR_VERSION=`echo ${NOMAD_VESION} | cut -d "." -f 2`
        
        if [[ ${MAJOR_VERSION} -gt 6 ]]
