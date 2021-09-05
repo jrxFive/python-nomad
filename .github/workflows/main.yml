@@ -18,15 +18,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      NOMAD_IP: 127.0.0.1
-      NOMAD_PORT: 4646
-      NOMAD_LATEST: 1.1.4
+      NOMAD_IP: '127.0.0.1'
+      NOMAD_PORT: '4646'
+      NOMAD_LATEST: '1.1.4'
 
     strategy:
       fail-fast: false
       matrix:
-        python-version: [2.7, 3.7]
-        nomad-verion: [1.0, 1.1.4]
+        python-version: ['2.7', '3.7']
+        nomad-verion: ['1.0.0', '1.1.4']
 
     steps:
     - uses: actions/checkout@v2
