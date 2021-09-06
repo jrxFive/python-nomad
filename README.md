@@ -1,9 +1,13 @@
 # python-nomad
 
 
-Branch | Status | Coverage |
----| ---| ---
-master | [![Build Status](https://travis-ci.org/jrxFive/python-nomad.svg?branch=master)](https://travis-ci.org/jrxFive/python-nomad) | [![codecov](https://codecov.io/gh/jrxFive/python-nomad/branch/master/graph/badge.svg)](https://codecov.io/gh/jrxFive/python-nomad)
+[![Python Nomad Test and Publish](https://github.com/jrxFive/python-nomad/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/jrxFive/python-nomad/actions/workflows/main.yml)
+[![codecov](https://codecov.io/gh/jrxFive/python-nomad/branch/master/graph/badge.svg)](https://codecov.io/gh/jrxFive/python-nomad)
+[![PyPI version](https://badge.fury.io/py/python-nomad.svg)](https://badge.fury.io/py/python-nomad)
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/python-nomad.svg)](https://pypi.python.org/pypi/python-nomad/)
+[![Downloads](https://pepy.tech/badge/python-nomad/month)](https://pepy.tech/project/python-nomad)
+[![Downloads](https://static.pepy.tech/personalized-badge/python-nomad?period=total&units=international_system&left_color=black&right_color=blue&left_text=Downloads)](https://pepy.tech/project/python-nomad)
+[![PyPI license](https://img.shields.io/pypi/l/python-nomad.svg)](https://pypi.python.org/pypi/python-nomad/)
 
 
 ## Installation

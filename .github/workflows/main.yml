@@ -18,15 +18,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      NOMAD_IP: 127.0.0.1
-      NOMAD_PORT: 4646
-      NOMAD_LATEST: 1.1.4
+      NOMAD_IP: '127.0.0.1'
+      NOMAD_PORT: '4646'
+      NOMAD_LATEST: '1.1.4'
 
     strategy:
       fail-fast: false
       matrix:
-        python-version: [2.7, 3.7]
-        nomad-verion: [1.0, 1.1.4]
+        python-version: ['2.7', '3.7']
+        nomad-version: ['1.0.0', '1.1.4']
 
     steps:
     - uses: actions/checkout@v2
@@ -34,36 +34,44 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Setup Nomad
+    - name: Setup Nomad ${{ matrix.nomad-version }}
+      env:
+        NOMAD_VERSION: ${{ matrix.nomad-version }}
       shell: bash
       run: |
-       curl -L -o /tmp/nomad_${{ matrix.nomad-version }}_linux_amd64.zip https://releases.hashicorp.com/nomad/${{ matrix.nomad-version }}/nomad_${{ matrix.nomad-version }}_linux_amd64.zip
-       yes | unzip -d /tmp /tmp/nomad_${{ matrix.nomad-version }}_linux_amd64.zip
-       MAJOR_VERSION=`echo ${{ matrix.nomad-version }} | cut -d "." -f 2`
-       
-       if [[ ${MAJOR_VERSION} -gt 6 ]]
-         then
-           echo "Nomad version $NOMAD_VERSION supports acls"
-           export ACL_ENABLED="--acl-enabled"
-       else 
-         echo "Nomad version $NOMAD_VERSION"
-         export ACL_ENABLED=""
-       fi
- 
-        /tmp/nomad agent -dev -bind ${NOMAD_IP} -node pynomad1 ${ACL_ENABLED} > /dev/null 2>&1 &
+       echo $NOMAD_VERSION
+       echo ${NOMAD_VERSION}
+
+       echo "downloading nomad"
+       curl -L -o /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip
+
+       echo "unzip nomad"
+       unzip -d /tmp /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip
+
+        echo "starting nomad server"
+        /tmp/nomad agent -dev -bind ${NOMAD_IP} -node pynomad1 --acl-enabled > /dev/null 2>&1 &
         sleep 30
     - name: Install Dependencies
+      env:
+        PYTHON_VERSION: ${{ matrix.python-version }}
       shell: bash
       run: |
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
+        if [ $PYTHON_VERSION = "2.7" ]
+          then
+            pip install -r requirements-dev-py27.txt
+        else
+          pip install -r requirements-dev.txt
+        fi
     - name: Before Tests
       shell: bash
       run: |
         /tmp/nomad init
         /tmp/nomad run -output example.nomad > example.json
     - name: Unit and Integration Tests
+      env:
+        NOMAD_VERSION: ${{ matrix.nomad-version }}
       shell: bash
       run: |
         py.test --cov=nomad --cov-report=term-missing --runxfail tests/
@@ -80,6 +88,7 @@ jobs:
         user: __token__
         password: ${{ secrets.TEST_PYPI_API_TOKEN }}
         repository_url: https://test.pypi.org/legacy/
+        skip_existing: true
     - name: Publish/Release Package
       if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
       uses: pypa/gh-action-pypi-publish@release/v1
