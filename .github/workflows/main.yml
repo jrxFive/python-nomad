@@ -35,10 +35,9 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Setup Nomad ${{ matrix.nomad-version }}
-      shell: bash
       env:
         NOMAD_VERSION: ${{ matrix.nomad-version }}
-        PYTHON_VERSION: ${{ matrix.python-version }}
+      shell: bash
       run: |
        echo $NOMAD_VERSION
        echo ${NOMAD_VERSION}
@@ -53,6 +52,8 @@ jobs:
         /tmp/nomad agent -dev -bind ${NOMAD_IP} -node pynomad1 --acl-enabled > /dev/null 2>&1 &
         sleep 30
     - name: Install Dependencies
+      env:
+        PYTHON_VERSION: ${{ matrix.python-version }}
       shell: bash
       run: |
         python -m pip install --upgrade pip
