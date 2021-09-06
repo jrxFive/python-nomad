@@ -180,7 +180,7 @@ for evaluation in evaluations:
 ```
 
 
-### List job deploymetns
+### List job deployments
 
 This endpoint lists a single job's deployments
 
