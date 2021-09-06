@@ -38,6 +38,7 @@ jobs:
       shell: bash
       env:
         NOMAD_VERSION: ${{ matrix.nomad-version }}
+        PYTHON_VERSION: ${{ matrix.python-version }}
       run: |
        echo $NOMAD_VERSION
        echo ${NOMAD_VERSION}
@@ -48,28 +49,20 @@ jobs:
        echo "unzip nomad"
        unzip -d /tmp /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip
 
-       echo "getting major version"
-       MAJOR_VERSION=`echo ${NOMAD_VERSION} | cut -d "." -f 2`
-
-       echo "cehcking nomad version"
-       if [[ ${MAJOR_VERSION} -gt 6 ]]
-         then
-           echo "Nomad version $NOMAD_VERSION supports acls"
-           export ACL_ENABLED="--acl-enabled"
-       else 
-         echo "Nomad version $NOMAD_VERSION"
-         export ACL_ENABLED=""
-       fi
-
         echo "starting nomad server"
-        /tmp/nomad agent -dev -bind ${NOMAD_IP} -node pynomad1 ${ACL_ENABLED} > /dev/null 2>&1 &
+        /tmp/nomad agent -dev -bind ${NOMAD_IP} -node pynomad1 --acl-enabled > /dev/null 2>&1 &
         sleep 30
     - name: Install Dependencies
       shell: bash
       run: |
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
+        if [ -f requirements-dev.txt ] && [ $PYTHON_VERSION -eq "2.7"]
+          then
+            pip install -r requirements-dev-py27.txt
+        else
+          pip install -r requirements-dev.txt
+        fi
     - name: Before Tests
       shell: bash
       run: |
