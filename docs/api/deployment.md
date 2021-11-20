@@ -116,7 +116,7 @@ import nomad
 
 my_nomad = nomad.Nomad(host='192.168.33.10')
 
-promote = my_nomad.deployment.pause_deployment("52c47d49-eefa-540f-f0f1-d25ba298c87f",True)
+promote = my_nomad.deployment.promote_deployment_all("52c47d49-eefa-540f-f0f1-d25ba298c87f",True)
 ```
 
 #### Promote Groups
@@ -130,7 +130,7 @@ import nomad
 
 my_nomad = nomad.Nomad(host='192.168.33.10')
 
-promote = my_nomad.deployment.pause_deployment("52c47d49-eefa-540f-f0f1-d25ba298c87f",groups=['task1','task2'])
+promote = my_nomad.deployment.promote_deployment_groups("52c47d49-eefa-540f-f0f1-d25ba298c87f",groups=['task1','task2'])
 ```
 
 
