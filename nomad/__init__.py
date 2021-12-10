@@ -1,5 +1,7 @@
 import nomad.api as api
+
 import os
+import warnings
 
 
 class Nomad(object):
@@ -23,19 +25,23 @@ class Nomad(object):
 
            optional arguments:
             - host (defaults 127.0.0.1), string ip or name of the nomad api server/agent that will be used.
+                    Should not set 'address' if 'host' is given, if both are set address will be used.
+            - address (defaults to NOMAD_ADDR environment variable if parameter is not given),
+                    url to reach nomad api server/agent. Should not set 'host' if 'address' is given, if both are set
+                    address will be used.
             - port (defaults 4646), integer port that will be used to connect.
             - secure (defaults False), define if the protocol is secured or not (https or http)
-            - version (defaults v1), vesion of the api of nomad.
+            - version (defaults v1), version of the api of nomad.
             - verify (defaults False), verify the certificate when tls/ssl is enabled
                                 at nomad.
             - cert (defaults empty), cert, or key and cert file to validate the certificate
                                 configured at nomad.
             - region (defaults None), version of the region to use. It will be used then
                                 regions of the current agent of the connection.
-            - namespace (defaults to None), Specifies the enterpise namespace that will
+            - namespace (defaults to None), Specifies the enterprise namespace that will
                                 be use to deploy or to ask info to nomad.
             - token (defaults to None), Specifies to append ACL token to the headers to
-                                make authentication on secured based nomad environemnts.
+                                make authentication on secured based nomad environments.
            returns: Nomad api client object
 
            raises:
@@ -54,6 +60,11 @@ class Nomad(object):
         self.verify = verify
         self.cert = cert if all(cert) else ()
         self.__namespace = namespace
+
+        if all([self.address, self.host]):
+            warnings.warn("address and host(may be the default) are both set, address parameter will be used."
+                          "To not see this message add import warnings; warnings.simplefilter('ignore') "
+                          "before instantiating nomad.Nomad(...)")
 
         self.requester_settings = {
             "address": self.address,
