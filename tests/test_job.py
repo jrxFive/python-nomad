@@ -149,15 +149,20 @@ def test_revert_job(nomad_setup):
     nomad_setup.job.revert_job("example", prior_job_version, current_job_version)
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version")
-def test_revert_job(nomad_setup):
-    current_job_version = nomad_setup.job.get_deployment("example")["JobVersion"]
-    prior_job_version = current_job_version - 1
-    nomad_setup.job.revert_job("example", prior_job_version, current_job_version)
-
-@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version")
 def test_stable_job(nomad_setup):
     current_job_version = nomad_setup.job.get_deployment("example")["JobVersion"]
     nomad_setup.job.stable_job("example", current_job_version, True)
+
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 12, 0), reason="Not supported in version")
+def test_scale_job(nomad_setup):
+    scale_response = nomad_setup.job.scale_job(
+        "example",
+        target={ "Group": "example-task-group" },
+        count=1,
+        message="test",
+        meta={ "answer": 42 }
+    )
+    assert "EvalID" in scale_response
 
 
 def test_dunder_getitem_exist(nomad_setup):
