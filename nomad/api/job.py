@@ -388,4 +388,4 @@ class Job(Requester):
                     " %s)") % (bool, type(policy_override)))
             scale_json["PolicyOverride"] = policy_override
 
-        return self.request(id, json=scale_json, method="post").json()
+        return self.request(id, "scale", json=scale_json, method="post").json()
