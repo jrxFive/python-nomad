@@ -32,12 +32,14 @@ class Allocations(Requester):
         response = self.get_allocations()
         return iter(response)
 
-    def get_allocations(self, prefix=None):
+    def get_allocations(self, prefix=None, namespace=None):
         """ Lists all the allocations.
 
            https://www.nomadproject.io/docs/http/allocs.html
             arguments:
               - prefix :(str) optional, specifies a string to filter allocations on based on an prefix.
+                        This is specified as a querystring parameter.
+              - namespace :(str) optional, specifies the target namespace. Specifying * would return all jobs.
                         This is specified as a querystring parameter.
             returns: list
             raises:
@@ -45,4 +47,7 @@ class Allocations(Requester):
               - nomad.api.exceptions.URLNotFoundNomadException
         """
         params = {"prefix": prefix}
+        if namespace:
+            params["namespace"] = namespace
+
         return self.request(method="get", params=params).json()

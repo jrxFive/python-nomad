@@ -56,13 +56,15 @@ class Deployments(Requester):
         except nomad.api.exceptions.URLNotFoundNomadException:
             raise KeyError
 
-    def get_deployments(self, prefix=""):
+    def get_deployments(self, prefix="", namespace=None):
         """ This endpoint lists all deployments.
 
            https://www.nomadproject.io/docs/http/deployments.html
 
             optional_arguments:
               - prefix, (default "") Specifies a string to filter deployments on based on an index prefix.
+                        This is specified as a querystring parameter.
+              - namespace :(str) optional, specifies the target namespace. Specifying * would return all jobs.
                         This is specified as a querystring parameter.
 
             returns: list of dicts
@@ -71,4 +73,7 @@ class Deployments(Requester):
               - nomad.api.exceptions.URLNotFoundNomadException
         """
         params = {"prefix": prefix}
+        if namespace:
+            params["namespace"] = namespace
+
         return self.request(params=params, method="get").json()
