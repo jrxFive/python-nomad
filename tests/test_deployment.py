@@ -123,3 +123,14 @@ def test_get_deployment_with_namespace(nomad_setup_with_namespace):
         json={"ID": "70638f62-5c19-193e-30d6-f9d6e689ab8e","JobID": "example",  "JobVersion": 1, "JobModifyIndex": 17, "JobSpecModifyIndex": 17, "JobCreateIndex": 7,"Namespace": common.NOMAD_NAMESPACE, "Name": "example.cache[0]"}
     )
     assert common.NOMAD_NAMESPACE in nomad_setup_with_namespace.deployment.get_deployment("a8198d79-cfdb-6593-a999-1e9adabcba2e")["Namespace"]
+
+@responses.activate
+def test_get_deployments_with_namespace_override_namespace_declared_on_create(nomad_setup_with_namespace):
+    responses.add(
+        responses.GET,
+        "http://{ip}:{port}/v1/deployment/a8198d79-cfdb-6593-a999-1e9adabcba2e?namespace={namespace}".format(ip=common.IP, port=common.NOMAD_PORT, namespace=common.NOMAD_NAMESPACE),
+        status=200,
+        json={"ID": "70638f62-5c19-193e-30d6-f9d6e689ab8e","JobID": "example",  "JobVersion": 1, "JobModifyIndex": 17, "JobSpecModifyIndex": 17, "JobCreateIndex": 7,"Namespace": common.NOMAD_NAMESPACE, "Name": "example.cache[0]"}
+    )
+
+    nomad_setup_with_namespace.deployments.get_deployments("a8198d79-cfdb-6593-a999-1e9adabcba2e", namespace="override-namespace")
