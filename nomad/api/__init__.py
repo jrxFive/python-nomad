@@ -20,6 +20,7 @@ from nomad.api.nodes import Nodes
 from nomad.api.operator import Operator
 from nomad.api.regions import Regions
 from nomad.api.sentinel import Sentinel
+from nomad.api.search import Search
 from nomad.api.status import Status
 from nomad.api.system import System
 from nomad.api.validate import Validate
