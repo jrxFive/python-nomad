@@ -20,7 +20,7 @@ jobs:
     env:
       NOMAD_IP: '127.0.0.1'
       NOMAD_PORT: '4646'
-      NOMAD_LATEST: '1.1.4'
+      NOMAD_LATEST: '1.1.18'
 
     strategy:
       fail-fast: false
