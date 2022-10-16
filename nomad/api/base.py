@@ -9,7 +9,7 @@ class Requester(object):
 
     ENDPOINT = ""
 
-    def __init__(self, address=None, uri='http://127.0.0.1', port=4646, namespace=None, token=None, timeout=5, version='v1', verify=False, cert=(), region=None, **kwargs):
+    def __init__(self, address=None, uri='http://127.0.0.1', port=4646, namespace=None, token=None, timeout=5, version='v1', verify=False, cert=(), region=None, session=None, **kwargs):
         self.uri = uri
         self.port = port
         self.namespace = namespace
@@ -19,7 +19,7 @@ class Requester(object):
         self.verify = verify
         self.cert = cert
         self.address = address
-        self.session = requests.Session()
+        self.session = session or requests.Session()
         self.region = region
 
     def _endpoint_builder(self, *args):

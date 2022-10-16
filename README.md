@@ -97,8 +97,8 @@ NOMAD_CLIENT_KEY=/path/to/tls/client.key
 * can either use the Vagrantfile for local integration testing or create environment variables `NOMAD_IP` and `NOMAD_PORT` that are assigned to a nomad binary that is running
 
 ```
-virutalenv venv
-source venv/bin/activate
+virtualenv .venv
+source .venv/bin/activate
 pip install -r requirements-dev.txt
 ```
 

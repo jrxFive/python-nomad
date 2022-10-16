@@ -16,7 +16,8 @@ class Nomad(object):
                  version='v1',
                  verify=False,
                  cert=(os.getenv('NOMAD_CLIENT_CERT', None),
-                       os.getenv('NOMAD_CLIENT_KEY', None))):
+                       os.getenv('NOMAD_CLIENT_KEY', None)),
+                 session=None):
         """ Nomad api client
 
           https://github.com/jrxFive/python-nomad/
@@ -36,6 +37,8 @@ class Nomad(object):
                                 be use to deploy or to ask info to nomad.
             - token (defaults to None), Specifies to append ACL token to the headers to
                                 make authentication on secured based nomad environemnts.
+            - session (defaults to None), allows for injecting a prepared requests.Session object that
+                                all requests to Nomad should use.
            returns: Nomad api client object
 
            raises:
@@ -53,6 +56,7 @@ class Nomad(object):
         self.token = token
         self.verify = verify
         self.cert = cert if all(cert) else ()
+        self.session = session
         self.__namespace = namespace
 
         self.requester_settings = {
@@ -65,7 +69,8 @@ class Nomad(object):
             "version": self.version,
             "verify": self.verify,
             "cert": self.cert,
-            "region": self.region
+            "region": self.region,
+            "session": self.session,
         }
 
         self._acl = api.Acl(**self.requester_settings)
