@@ -92,6 +92,7 @@ class Nomad(object):
         self._nodes = api.Nodes(**self.requester_settings)
         self._operator = api.Operator(**self.requester_settings)
         self._regions = api.Regions(**self.requester_settings)
+        self._scaling = api.Scaling(**self.requester_settings)
         self._sentinel = api.Sentinel(**self.requester_settings)
         self._status = api.Status(**self.requester_settings)
         self._system = api.System(**self.requester_settings)
@@ -165,6 +166,10 @@ class Nomad(object):
     @property
     def regions(self):
         return self._regions
+
+    @property
+    def scaling(self):
+        return self._scaling
 
     @property
     def status(self):
