@@ -16,7 +16,8 @@ class Nomad(object):
                  version='v1',
                  verify=False,
                  cert=(os.getenv('NOMAD_CLIENT_CERT', None),
-                       os.getenv('NOMAD_CLIENT_KEY', None))):
+                       os.getenv('NOMAD_CLIENT_KEY', None)),
+                 session=None):
         """ Nomad api client
 
           https://github.com/jrxFive/python-nomad/
@@ -36,6 +37,8 @@ class Nomad(object):
                                 be use to deploy or to ask info to nomad.
             - token (defaults to None), Specifies to append ACL token to the headers to
                                 make authentication on secured based nomad environemnts.
+            - session (defaults to None), allows for injecting a prepared requests.Session object that
+                                all requests to Nomad should use.
            returns: Nomad api client object
 
            raises:
@@ -53,6 +56,7 @@ class Nomad(object):
         self.token = token
         self.verify = verify
         self.cert = cert if all(cert) else ()
+        self.session = session
         self.__namespace = namespace
 
         self.requester_settings = {
@@ -65,7 +69,8 @@ class Nomad(object):
             "version": self.version,
             "verify": self.verify,
             "cert": self.cert,
-            "region": self.region
+            "region": self.region,
+            "session": self.session,
         }
 
         self._acl = api.Acl(**self.requester_settings)
@@ -87,6 +92,7 @@ class Nomad(object):
         self._nodes = api.Nodes(**self.requester_settings)
         self._operator = api.Operator(**self.requester_settings)
         self._regions = api.Regions(**self.requester_settings)
+        self._scaling = api.Scaling(**self.requester_settings)
         self._sentinel = api.Sentinel(**self.requester_settings)
         self._search = api.Search(**self.requester_settings)
         self._status = api.Status(**self.requester_settings)
@@ -161,6 +167,10 @@ class Nomad(object):
     @property
     def regions(self):
         return self._regions
+
+    @property
+    def scaling(self):
+        return self._scaling
 
     @property
     def status(self):
