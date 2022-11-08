@@ -43,7 +43,7 @@ class Search(Requester):
               - nomad.api.exceptions.URLNotFoundNomadException
               - nomad.api.exceptions.InvalidParameters
         """
-        accetaple_contexts = ["jobs", "evals", "allocs", "nodes", "deployment", "plugins", "volumes", "all"]
+        accetaple_contexts = ("jobs", "evals", "allocs", "nodes", "deployment", "plugins", "volumes", "all")
         if context not in accetaple_contexts:
             raise nomad.api.exceptions.InvalidParameters("context is invalid "
                 "(expected values are {} but got {})".format(accetaple_contexts, context))
@@ -75,7 +75,7 @@ class Search(Requester):
 
         params = {"Text": text, "Context": context}
 
-        accetaple_contexts = ["jobs", "allocs", "nodes", "plugins", "all"]
+        accetaple_contexts = ("jobs", "allocs", "nodes", "plugins", "all")
         if context not in accetaple_contexts:
             raise nomad.api.exceptions.InvalidParameters("context is invalid "
                 "(expected values are {} but got {})".format(accetaple_contexts,context))
