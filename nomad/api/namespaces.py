@@ -32,8 +32,8 @@ class Namespaces(Requester):
             for n in namespaces:
                 if n["Name"] == item:
                     return True
-            else:
-                return False
+            
+            return False
         except nomad.api.exceptions.URLNotFoundNomadException:
             return False
 
@@ -48,8 +48,8 @@ class Namespaces(Requester):
             for n in namespaces:
                 if n["Name"] == item:
                     return n
-            else:
-                raise KeyError
+            
+            raise KeyError
         except nomad.api.exceptions.URLNotFoundNomadException:
             raise KeyError
 

@@ -94,6 +94,7 @@ class Nomad(object):
         self._regions = api.Regions(**self.requester_settings)
         self._scaling = api.Scaling(**self.requester_settings)
         self._sentinel = api.Sentinel(**self.requester_settings)
+        self._search = api.Search(**self.requester_settings)
         self._status = api.Status(**self.requester_settings)
         self._system = api.System(**self.requester_settings)
         self._validate = api.Validate(**self.requester_settings)
@@ -202,6 +203,10 @@ class Nomad(object):
     @property
     def sentinel(self):
         return self._sentinel
+
+    @property
+    def search(self):
+        return self._search
 
     @property
     def metrics(self):

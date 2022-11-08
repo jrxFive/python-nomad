@@ -6,5 +6,5 @@
 .build
 .venv
 
-example.json
 example.nomad
+example.json
