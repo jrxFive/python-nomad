@@ -97,6 +97,8 @@ class Nomad(object):
         self._status = api.Status(**self.requester_settings)
         self._system = api.System(**self.requester_settings)
         self._validate = api.Validate(**self.requester_settings)
+        self._variable = api.Variable(**self.requester_settings)
+        self._variables = api.Variables(**self.requester_settings)
 
     def get_uri(self):
         if self.secure:
@@ -206,3 +208,11 @@ class Nomad(object):
     @property
     def metrics(self):
         return self._metrics
+
+    @property
+    def variable(self):
+        return self._variable
+
+    @property
+    def variables(self):
+        return self._variables

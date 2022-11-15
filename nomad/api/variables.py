@@ -36,12 +36,35 @@ class Variables(Requester):
 
     def __getitem__(self, item):
         try:
-            deployments = self.get_deployments()
+            variables = self.get_variables()
 
-            for d in deployments:
-                if d["ID"] == item:
-                    return d
+            for var in variables:
+                if var["Path"] == item:
+                    return var
             else:
                 raise KeyError
         except nomad.api.exceptions.URLNotFoundNomadException:
             raise KeyError
+
+    def get_variables(self, prefix="", namespace=None):
+        """ 
+        This endpoint lists variables.
+        https://developer.hashicorp.com/nomad/api-docs/variables
+
+        optional_arguments:
+            - prefix, (default "") Specifies a string to filter variables on based on an index prefix.
+                This is specified as a query string parameter.
+            - namespace :(str) optional, Specifies the target namespace.
+                Specifying * will return all variables across all the authorized namespaces.
+        returns: list of dicts
+        raises:
+            - nomad.api.exceptions.BaseNomadException
+            - nomad.api.exceptions.URLNotFoundNomadException
+        """
+        params = {"prefix": prefix}
+        if namespace:
+            params["namespace"] = namespace
+
+        return self.request(params=params, method="get").json()
+
+

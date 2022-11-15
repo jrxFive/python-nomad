@@ -22,5 +22,71 @@ class Variable(Requester):
     def __getattr__(self, item):
         raise AttributeError
 
+    def get_variable(self, var_path, namespace=None):
+        """
+        This endpoint reads a specific variable by path. This API returns the decrypted variable body.
+        https://developer.hashicorp.com/nomad/api-docs/variables#read-variable
 
-    def create_variable(self):
+        arguments:
+            - var_path :(str), path to variable
+        returns: dict
+        raises:
+            - nomad.api.exceptions.BaseNomadException
+            - nomad.api.exceptions.URLNotFoundNomadException
+        """
+        params = {}
+        if namespace:
+            params["namespace"] = namespace
+
+        return self.request(var_path, params=params, method="get").json()
+
+    def create_variable(self, var_path, payload, namespace=None, cas=None):
+        """
+        This endpoint creates or updates a variable.
+        https://developer.hashicorp.com/nomad/api-docs/variables#create-variable
+
+        arguments:
+            - var_path :(str), path to variable
+            - payload :(dict), variable object. Example: 
+            https://developer.hashicorp.com/nomad/api-docs/variables#sample-payload
+            - namespace :(str) optional, specifies the target namespace. Specifying * would return all jobs.
+                    This is specified as a querystring parameter.
+            - cas :(int) optional, If set, the variable will only be deleted if the cas value matches the 
+                    current variables ModifyIndex.
+        returns: dict
+        raises:
+            - nomad.api.exceptions.BaseNomadException
+            - nomad.api.exceptions.URLNotFoundNomadException
+        """
+        params = {}
+        if cas:
+            params["cas"] = cas
+        if namespace:
+            params["namespace"] = namespace
+
+        return self.request(var_path, params=params, json=payload, method="put").json()
+
+
+    def delete_variable(self, var_path, namespace=None, cas=None):
+        """
+        This endpoint reads a specific variable by path. This API returns the decrypted variable body.
+        https://developer.hashicorp.com/nomad/api-docs/variables#delete-variable
+
+        arguments:
+            - var_path :(str), path to variable
+            - namespace :(str) optional, specifies the target namespace. Specifying * would return all jobs.
+                    This is specified as a querystring parameter.
+            - cas :(int) optional, If set, the variable will only be deleted if the cas value matches the 
+                    current variables ModifyIndex.
+        returns: dict
+        raises:
+            - nomad.api.exceptions.BaseNomadException
+            - nomad.api.exceptions.URLNotFoundNomadException
+        """
+        params = {}
+        if cas:
+            params["cas"] = cas
+        if namespace:
+            params["namespace"] = namespace
+        
+        return self.request(var_path, params=params, method="delete").json()

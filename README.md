@@ -136,3 +136,5 @@ NOMAD_IP=127.0.0.1 NOMAD_VERSION=<SEMNATIC_VERSION> py.test --cov=nomad --cov-re
     - [x] Status [:link:](docs/api/status.md)
     - [x] System [:link:](docs/api/system.md)
     - [x] Validate [:link:](docs/api/validate.md)
+    - [x] Variable [:link:](docs/api/variable.md)
+    - [x] Variables [:link:](docs/api/variables.md)
