@@ -5,4 +5,5 @@
 * Add scaling policy endpoint (#136)
 * Drop Python 3.5 support
 * Up `requests` lib version 
+* Add support for /var and /vars endpoints ()
 * Add support for /search endpoint (#134)

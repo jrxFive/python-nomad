@@ -1,3 +1,5 @@
+import nomad.api.exceptions
+
 from nomad.api.base import Requester
 
 
@@ -21,6 +23,19 @@ class Variable(Requester):
 
     def __getattr__(self, item):
         raise AttributeError
+
+    def __contains__(self, item):
+        try:
+            self.get_variable(item)
+            return True
+        except nomad.api.exceptions.URLNotFoundNomadException:
+            return False
+
+    def __getitem__(self, item):
+        try:
+            return self.get_variable(item)
+        except nomad.api.exceptions.URLNotFoundNomadException:
+            raise KeyError
 
     def get_variable(self, var_path, namespace=None):
         """
@@ -47,19 +62,20 @@ class Variable(Requester):
 
         arguments:
             - var_path :(str), path to variable
-            - payload :(dict), variable object. Example: 
+            - payload :(dict), variable object. Example:
             https://developer.hashicorp.com/nomad/api-docs/variables#sample-payload
             - namespace :(str) optional, specifies the target namespace. Specifying * would return all jobs.
                     This is specified as a querystring parameter.
-            - cas :(int) optional, If set, the variable will only be deleted if the cas value matches the 
+            - cas :(int) optional, If set, the variable will only be deleted if the cas value matches the
                     current variables ModifyIndex.
         returns: dict
         raises:
             - nomad.api.exceptions.BaseNomadException
             - nomad.api.exceptions.URLNotFoundNomadException
+            - nomad.api.exceptions.VariableConflict
         """
         params = {}
-        if cas:
+        if cas is not None:
             params["cas"] = cas
         if namespace:
             params["namespace"] = namespace
@@ -82,11 +98,13 @@ class Variable(Requester):
         raises:
             - nomad.api.exceptions.BaseNomadException
             - nomad.api.exceptions.URLNotFoundNomadException
+            - nomad.api.exceptions.VariableConflict
         """
         params = {}
-        if cas:
+        if cas is not None:
             params["cas"] = cas
         if namespace:
             params["namespace"] = namespace
-        
-        return self.request(var_path, params=params, method="delete").json()
+
+        # we need to return json here but because of bug we recieve empty response
+        return self.request(var_path, params=params, method="delete")

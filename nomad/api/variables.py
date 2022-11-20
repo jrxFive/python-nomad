@@ -25,27 +25,21 @@ class Variables(Requester):
         raise AttributeError
 
     def __contains__(self, item):
-        try:
-            variables = self.get_variables()
+        variables = self.get_variables()
 
-            for var in variables:
-                if var["Path"] == item:
-                    return True
-            else:
-                return False
-        except nomad.api.exceptions.URLNotFoundNomadException:
+        for var in variables:
+            if var["Path"] == item:
+                return True
+        else:
             return False
 
     def __getitem__(self, item):
-        try:
-            variables = self.get_variables()
+        variables = self.get_variables()
 
-            for var in variables:
-                if var["Path"] == item:
-                    return var
-            else:
-                raise KeyError
-        except nomad.api.exceptions.URLNotFoundNomadException:
+        for var in variables:
+            if var["Path"] == item:
+                return var
+        else:
             raise KeyError
 
     def get_variables(self, prefix="", namespace=None):

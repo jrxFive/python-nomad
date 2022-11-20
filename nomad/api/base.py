@@ -2,6 +2,7 @@ import requests
 import nomad.api.exceptions
 
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 
@@ -9,7 +10,21 @@ class Requester(object):
 
     ENDPOINT = ""
 
-    def __init__(self, address=None, uri='http://127.0.0.1', port=4646, namespace=None, token=None, timeout=5, version='v1', verify=False, cert=(), region=None, session=None, **kwargs):
+    def __init__(
+        self,
+        address=None,
+        uri="http://127.0.0.1",
+        port=4646,
+        namespace=None,
+        token=None,
+        timeout=5,
+        version="v1",
+        verify=False,
+        cert=(),
+        region=None,
+        session=None,
+        **kwargs,
+    ):
         self.uri = uri
         self.port = port
         self.namespace = namespace
@@ -29,16 +44,16 @@ class Requester(object):
 
     def _required_namespace(self, endpoint):
         required_namespace = [
-                                "job",
-                                "jobs",
-                                "allocation",
-                                "allocations",
-                                "deployment",
-                                "deployments",
-                                "acl",
-                                "client",
-                                "node"
-                             ]
+            "job",
+            "jobs",
+            "allocation",
+            "allocations",
+            "deployment",
+            "deployments",
+            "acl",
+            "client",
+            "node",
+        ]
         # split 0 -> Api Version
         # split 1 -> Working Endpoint
         ENDPOINT_NAME = 1
@@ -85,12 +100,23 @@ class Requester(object):
             headers=kwargs.get("headers", None),
             allow_redirects=kwargs.get("allow_redirects", False),
             timeout=kwargs.get("timeout", self.timeout),
-            stream=kwargs.get("stream", False)
+            stream=kwargs.get("stream", False),
         )
 
         return response
 
-    def _request(self, method, endpoint, params=None, data=None, json=None, headers=None, allow_redirects=None, timeout=None, stream=False):
+    def _request(
+        self,
+        method,
+        endpoint,
+        params=None,
+        data=None,
+        json=None,
+        headers=None,
+        allow_redirects=None,
+        timeout=None,
+        stream=False,
+    ):
         url = self._url_builder(endpoint)
         qs = self._query_string_builder(endpoint=endpoint, params=params)
 
@@ -162,6 +188,8 @@ class Requester(object):
                 raise nomad.api.exceptions.URLNotAuthorizedNomadException(response)
             elif response.status_code == 404:
                 raise nomad.api.exceptions.URLNotFoundNomadException(response)
+            elif response.status_code == 409:
+                raise nomad.api.exceptions.VariableConflict(response)
             else:
                 raise nomad.api.exceptions.BaseNomadException(response)
 
