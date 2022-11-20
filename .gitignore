@@ -6,5 +6,7 @@
 .build
 .venv
 
+# dev related files
 example.json
 example.nomad
+nomad.log

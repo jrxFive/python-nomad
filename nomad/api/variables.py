@@ -1,3 +1,5 @@
+import nomad.api.exceptions
+
 from nomad.api.base import Requester
 
 
@@ -27,7 +29,7 @@ class Variables(Requester):
             variables = self.get_variables()
 
             for var in variables:
-                if var["ID"] == item:
+                if var["Path"] == item:
                     return True
             else:
                 return False

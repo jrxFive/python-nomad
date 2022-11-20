@@ -4,4 +4,4 @@
 * Add support for pre-populated Sessions (#132)
 * Add scaling policy endpoint (#136)
 * Drop Python 3.5 support
-* Upgrade `request` lib version 
+* Up `requests` lib version 
