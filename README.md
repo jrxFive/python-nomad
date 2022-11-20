@@ -133,6 +133,7 @@ NOMAD_IP=127.0.0.1 NOMAD_VERSION=<SEMNATIC_VERSION> py.test --cov=nomad --cov-re
     - [x] Nodes [:link:](docs/api/nodes.md)
     - [x] Regions [:link:](docs/api/regions.md)
     - [x] Sentinel [:link:](docs/api/sentinel.md)
+    - [x] Search [:link:](docs/api/search.md)
     - [x] Status [:link:](docs/api/status.md)
     - [x] System [:link:](docs/api/system.md)
     - [x] Validate [:link:](docs/api/validate.md)
