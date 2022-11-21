@@ -1,6 +1,6 @@
 ## Variables
 
-### List jobs
+### List variables
 
 This endpoint lists all known variables in the system registered with Nomad.
 

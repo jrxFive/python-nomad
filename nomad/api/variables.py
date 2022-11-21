@@ -42,6 +42,10 @@ class Variables(Requester):
         else:
             raise KeyError
 
+    def __iter__(self):
+        variables = self.get_variables()
+        return iter(variables)
+
     def get_variables(self, prefix="", namespace=None):
         """ 
         This endpoint lists variables.

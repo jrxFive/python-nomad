@@ -18,6 +18,12 @@ def test_get_variables_from_namespace(nomad_setup):
     assert 1 == len(nomad_setup.variables.get_variables(namespace="default"))
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (1, 4, 0), reason="Not supported in version")
+def test_iter_variables(nomad_setup):
+    assert hasattr(nomad_setup.variables, '__iter__')
+    for _ in nomad_setup.variables:
+        pass
+
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (1, 4, 0), reason="Not supported in version")
 def test_variables_str(nomad_setup):
     assert isinstance(str(nomad_setup.variables), str)
 
@@ -43,6 +49,7 @@ def test_variables_getitem_not_exist(nomad_setup):
     with pytest.raises(KeyError):
         nomad_setup.variables["no_exists"]
 
+@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (1, 4, 0), reason="Not supported in version")
 def test_variables_getattr(nomad_setup):
     with pytest.raises(AttributeError):
         nomad_setup.variables.does_not_exist
