@@ -8,15 +8,15 @@ import responses
 @responses.activate
 def test_create_namespace(nomad_setup):
 
-        responses.add(
-            responses.POST,
-            "http://{ip}:{port}/v1/namespace".format(ip=common.IP, port=common.NOMAD_PORT),
-            status=200
-        )
+    responses.add(
+        responses.POST,
+        "http://{ip}:{port}/v1/namespace".format(ip=common.IP, port=common.NOMAD_PORT),
+        status=200
+    )
 
-        namespace_api = '{"Name":"api","Description":"api server namespace"}'
-        namespace = json.loads(namespace_api)
-        nomad_setup.namespace.create_namespace(namespace)
+    namespace_api = '{"Name":"api","Description":"api server namespace"}'
+    namespace = json.loads(namespace_api)
+    nomad_setup.namespace.create_namespace(namespace)
 
 
 @responses.activate

@@ -162,6 +162,8 @@ class Requester(object):
                 raise nomad.api.exceptions.URLNotAuthorizedNomadException(response)
             elif response.status_code == 404:
                 raise nomad.api.exceptions.URLNotFoundNomadException(response)
+            elif response.status_code == 409:
+                raise nomad.api.exceptions.VariableConflict(response)
             else:
                 raise nomad.api.exceptions.BaseNomadException(response)
 

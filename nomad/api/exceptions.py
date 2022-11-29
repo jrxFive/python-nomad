@@ -25,6 +25,10 @@ class BadRequestNomadException(BaseNomadException):
     """Validation failure and if a parameter is modified in the request, it could potentially succeed."""
 
 
+class VariableConflict(BaseNomadException):
+    """In the case of a compare-and-set variable conflict"""
+
+
 class InvalidParameters(Exception):
     """Invalid parameters given"""
 

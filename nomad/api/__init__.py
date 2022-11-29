@@ -25,3 +25,5 @@ from nomad.api.search import Search
 from nomad.api.status import Status
 from nomad.api.system import System
 from nomad.api.validate import Validate
+from nomad.api.variable import Variable
+from nomad.api.variables import Variables

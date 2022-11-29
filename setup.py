@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='python-nomad',
-    version='1.4.1',
+    version='1.5.0',
     install_requires=['requests'],
     packages=['nomad', 'nomad.api'],
     url='http://github.com/jrxfive/python-nomad',
@@ -25,6 +25,7 @@ setuptools.setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
     ],
     keywords='nomad hashicorp client',
 )
