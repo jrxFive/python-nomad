@@ -153,6 +153,20 @@ class Job(Requester):
         """
         return self.request(id, "summary", method="get").json()
 
+    def get_scale_status(self, id):
+        """ This endpoint reads scale information about a job.
+
+           https://www.nomadproject.io/docs/http/job.html
+
+            arguments:
+              - id
+            returns: dict
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+        """
+        return self.request(id, "scale", method="get").json()
+
     def register_job(self, id, job):
         """ Registers a new job or updates an existing job
 
@@ -299,6 +313,79 @@ class Job(Requester):
         if purge is not None:
             if not isinstance(purge, bool):
                 raise nomad.api.exceptions.InvalidParameters("purge is invalid "
-                        "(expected type %s but got %s)"%(type(bool()), type(purge)))
+                        "(expected type %s but got %s)"%(bool, type(purge)))
             params = {"purge": purge}
         return self.request(id, params=params, method="delete").json()
+
+    def scale_job(
+            self,
+            id,
+            target,
+            count=None,
+            message=None,
+            error=None,
+            meta=None,
+            policy_override=None):
+        """ This endpoint performs a scaling action against a job. Currently, this
+            endpoint supports scaling the count for a task group. This will raise
+            a `BadRequestNomadException` if the job has an active deployment.
+
+           https://www.nomadproject.io/docs/http/job.html
+
+            arguments:
+              - id
+              - target (dict), Specifies the target of the scaling operation.
+                Must contain a field `Group` with the name of the task group that
+                is the target of this scaling action
+              - count (int), Optional, specifies the new task group count
+              - message (str), Optional, description of the scale action,
+                persisted as part of the scaling event. Indicates information or
+                reason for scaling.
+              - error (str), Optional, description of the scale action, persisted
+                as part of the scaling event. Indicates an error state preventing
+                scaling.
+              - meta (any JSON-serializable value), JSON block that is persisted
+                as part of the scaling event
+              - policy_override (bool), Optional. If set, any soft mandatory
+                Sentinel policies will be overridden. This allows a job to be
+                scaled when it would be denied by policy. Default: False.
+
+            returns: dict
+            raises:
+              - nomad.api.exceptions.BaseNomadException
+              - nomad.api.exceptions.URLNotFoundNomadException
+              - nomad.api.exceptions.InvalidParameters
+        """
+        scale_json = {
+            "Target": target
+        }
+
+        if count is not None:
+            if not isinstance(count, int):
+                raise nomad.api.exceptions.InvalidParameters("count is invalid "
+                        "(expected type %s but got %s)"%(int, type(count)))
+            scale_json["Count"] = count
+
+        if message is not None:
+            if not isinstance(message, str):
+                raise nomad.api.exceptions.InvalidParameters("message is invalid "
+                        "(expected type %s but got %s)"%(str, type(message)))
+            scale_json["Message"] = str(message)
+
+        if error is not None:
+            if not isinstance(error, str):
+                raise nomad.api.exceptions.InvalidParameters("error is invalid "
+                        "(expected type %s but got %s)"%(str, type(error)))
+            scale_json["Error"] = str(error)
+
+        if meta is not None:
+            scale_json["Meta"] = meta
+
+        if policy_override is not None:
+            if not isinstance(policy_override, bool):
+                raise nomad.api.exceptions.InvalidParameters(
+                    ("policy_override is invalid (expected type %s but got"
+                    " %s)") % (bool, type(policy_override)))
+            scale_json["PolicyOverride"] = policy_override
+
+        return self.request(id, "scale", json=scale_json, method="post").json()
