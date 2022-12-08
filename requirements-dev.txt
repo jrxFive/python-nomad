@@ -5,4 +5,3 @@ mkdocs==1.4.2
 mock==4.0.3
 flaky==3.7.0
 responses==0.22.0
-pylint==2.15.8
