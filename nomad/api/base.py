@@ -1,15 +1,30 @@
+"""Requester"""
 import requests
-import nomad.api.exceptions
 
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
-requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+import nomad.api.exceptions
 
 
 class Requester(object):
+    """
+    Base object for endpoints
+    """
 
     ENDPOINT = ""
 
-    def __init__(self, address=None, uri='http://127.0.0.1', port=4646, namespace=None, token=None, timeout=5, version='v1', verify=False, cert=(), region=None, session=None, **kwargs):
+    def __init__(
+        self,
+        address=None,
+        uri="http://127.0.0.1",
+        port=4646,
+        namespace=None,
+        token=None,
+        timeout=5,
+        version="v1",
+        verify=False,
+        cert=(),
+        region=None,
+        session=None
+    ):
         self.uri = uri
         self.port = port
         self.namespace = namespace
@@ -24,28 +39,28 @@ class Requester(object):
 
     def _endpoint_builder(self, *args):
         if args:
-            u = "/".join(args)
-            return "{v}/".format(v=self.version) + u
+            args_str = "/".join(args)
+            return f"{self.version}/" + args_str
 
     def _required_namespace(self, endpoint):
         required_namespace = [
-                                "job",
-                                "jobs",
-                                "allocation",
-                                "allocations",
-                                "deployment",
-                                "deployments",
-                                "acl",
-                                "client",
-                                "node"
-                             ]
+            "job",
+            "jobs",
+            "allocation",
+            "allocations",
+            "deployment",
+            "deployments",
+            "acl",
+            "client",
+            "node",
+        ]
         # split 0 -> Api Version
         # split 1 -> Working Endpoint
-        ENDPOINT_NAME = 1
         endpoint_split = endpoint.split("/")
         try:
-            required = endpoint_split[ENDPOINT_NAME] in required_namespace
-        except:
+            endpoint_name = 1
+            required = endpoint_split[endpoint_name] in required_namespace
+        except IndexError:
             required = False
 
         return required
@@ -54,27 +69,29 @@ class Requester(object):
         url = self.address
 
         if self.address is None:
-            url = "{uri}:{port}".format(uri=self.uri, port=self.port)
-
-        url = "{url}/{endpoint}".format(url=url, endpoint=endpoint)
+            url = f"{self.uri}:{self.port}"
+        url = f"{url}/{endpoint}"
 
         return url
 
     def _query_string_builder(self, endpoint, params=None):
-        qs = {}
+        query_string = {}
 
         if not isinstance(params, dict):
             params = {}
 
         if ("namespace" not in params) and (self.namespace and self._required_namespace(endpoint)):
-            qs["namespace"] = self.namespace
+            query_string["namespace"] = self.namespace
 
         if "region" not in params and self.region:
-            qs["region"] = self.region
+            query_string["region"] = self.region
 
-        return qs
+        return query_string
 
     def request(self, *args, **kwargs):
+        """
+        Send HTTP Request (wrapper around requests)
+        """
         endpoint = self._endpoint_builder(self.ENDPOINT, *args)
         response = self._request(
             endpoint=endpoint,
@@ -85,19 +102,30 @@ class Requester(object):
             headers=kwargs.get("headers", None),
             allow_redirects=kwargs.get("allow_redirects", False),
             timeout=kwargs.get("timeout", self.timeout),
-            stream=kwargs.get("stream", False)
+            stream=kwargs.get("stream", False),
         )
 
         return response
 
-    def _request(self, method, endpoint, params=None, data=None, json=None, headers=None, allow_redirects=None, timeout=None, stream=False):
+    def _request(
+        self,
+        method,
+        endpoint,
+        params=None,
+        data=None,
+        json=None,
+        headers=None,
+        allow_redirects=None,
+        timeout=None,
+        stream=False,
+    ):
         url = self._url_builder(endpoint)
-        qs = self._query_string_builder(endpoint=endpoint, params=params)
+        query_string = self._query_string_builder(endpoint=endpoint, params=params)
 
         if params:
-            params.update(qs)
+            params.update(query_string)
         else:
-            params = qs
+            params = query_string
 
         if self.token:
             try:

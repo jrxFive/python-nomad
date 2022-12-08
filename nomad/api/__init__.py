@@ -1,3 +1,4 @@
+"""Nomad Python library"""
 import nomad.api.exceptions
 from nomad.api.acl import Acl
 from nomad.api.agent import Agent

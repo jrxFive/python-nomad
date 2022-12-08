@@ -1,8 +1,11 @@
+# we want to have backward compatibility here
+# pylint: disable=invalid-name
+"""Nomad Client: https://developer.hashicorp.com/nomad/api-docs/client"""
 from nomad.api.base import Requester
-
-
 class Client(object):
-
+    """
+    The /client endpoints are used to interact with the Nomad clients.
+    """
     def __init__(self, **kwargs):
         self.ls = ls(**kwargs)
         self.cat = cat(**kwargs)
@@ -16,10 +19,10 @@ class Client(object):
         self.gc_all_allocations = gc_all_allocations(**kwargs)
 
     def __str__(self):
-        return "{0}".format(self.__dict__)
+        return f"{self.__dict__}"
 
     def __repr__(self):
-        return "{0}".format(self.__dict__)
+        return f"{self.__dict__}"
 
     def __getattr__(self, item):
         raise AttributeError
@@ -40,23 +43,23 @@ class ls(Requester):
     def __init__(self, **kwargs):
         super(ls, self).__init__(**kwargs)
 
-    def list_files(self, id=None, path="/"):
+    def list_files(self, _id=None, path="/"):
         """ List files in an allocation directory.
 
            https://www.nomadproject.io/docs/http/client-fs-ls.html
 
             arguments:
-              - id
-              - path          
+              - _id
+              - path
             returns: list
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        if id:
-            return self.request(id, params={"path": path}, method="get").json()
-        else:
-            return self.request(params={"path": path}, method="get").json()
+        if _id:
+            return self.request(_id, params={"path": path}, method="get").json()
+
+        return self.request(params={"path": path}, method="get").json()
 
 
 class cat(Requester):
@@ -75,23 +78,23 @@ class cat(Requester):
     def __init__(self, **kwargs):
         super(cat, self).__init__(**kwargs)
 
-    def read_file(self, id=None, path="/"):
+    def read_file(self, _id=None, path="/"):
         """ Read contents of a file in an allocation directory.
 
            https://www.nomadproject.io/docs/http/client-fs-cat.html
 
             arguments:
-              - id
+              - _id
               - path
             returns: (str) text
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        if id:
-            return self.request(id, params={"path": path}, method="get").text
-        else:
-            return self.request(params={"path": path}, method="get").text
+        if _id:
+            return self.request(_id, params={"path": path}, method="get").text
+
+        return self.request(params={"path": path}, method="get").text
 
 
 class read_at(Requester):
@@ -107,13 +110,13 @@ class read_at(Requester):
     def __init__(self, **kwargs):
         super(read_at, self).__init__(**kwargs)
 
-    def read_file_offset(self, id, offset, limit, path="/"):
+    def read_file_offset(self, _id, offset, limit, path="/"):
         """ Read contents of a file in an allocation directory.
 
            https://www.nomadproject.io/docs/http/client-fs-cat.html
 
             arguments:
-              - id: (str) allocation_id required
+              - _id: (str) allocation_id required
               - offset: (int) required
               - limit: (int) required
               - path: (str) optional
@@ -127,7 +130,7 @@ class read_at(Requester):
             "offset": offset,
             "limit": limit
         }
-        return self.request(id, params=params, method="get").text
+        return self.request(_id, params=params, method="get").text
 
 
 class stream_file(Requester):
@@ -143,13 +146,13 @@ class stream_file(Requester):
     def __init__(self, **kwargs):
         super(stream_file, self).__init__(**kwargs)
 
-    def stream(self, id, offset, origin, path="/"):
+    def stream(self, _id, offset, origin, path="/"):
         """ This endpoint streams the contents of a file in an allocation directory.
 
             https://www.nomadproject.io/api/client.html#stream-file
 
             arguments:
-              - id: (str) allocation_id required
+              - _id: (str) allocation_id required
               - offset: (int) required
               - origin: (str) either start|end
               - path: (str) optional
@@ -163,7 +166,7 @@ class stream_file(Requester):
             "offset": offset,
             "origin": origin
         }
-        return self.request(id, params=params, method="get").text
+        return self.request(_id, params=params, method="get").text
 
 
 class stream_logs(Requester):
@@ -179,15 +182,15 @@ class stream_logs(Requester):
     def __init__(self, **kwargs):
         super(stream_logs, self).__init__(**kwargs)
 
-    def stream(self, id, task, type, follow=False, offset=0, origin="start", plain=False):
+    def stream(self, _id, task, _type, follow=False, offset=0, origin="start", plain=False):
         """ This endpoint streams a task's stderr/stdout logs.
 
             https://www.nomadproject.io/api/client.html#stream-logs
 
             arguments:
-              - id: (str) allocation_id required
+              - _id: (str) allocation_id required
               - task: (str) name of the task inside the allocation to stream logs from
-              - type: (str) Specifies the stream to stream. Either "stderr|stdout"
+              - _type: (str) Specifies the stream to stream. Either "stderr|stdout"
               - follow: (bool) default false
               - offset: (int) default 0
               - origin: (str) either start|end, default "start"
@@ -199,19 +202,18 @@ class stream_logs(Requester):
         """
         params = {
             "task": task,
-            "type": type,
+            "type": _type,
             "follow": follow,
             "offset": offset,
             "origin": origin,
             "plain": plain
         }
-        return self.request(id, params=params, method="get").text
+        return self.request(_id, params=params, method="get").text
 
 
 class stat(Requester):
-
     """
-    The /fs/stat endpoint is used to show stat information 
+    The /fs/stat endpoint is used to show stat information
     This API endpoint is hosted by the Nomad client and requests have to be
     made to the Nomad client where the particular allocation was placed.
 
@@ -223,23 +225,23 @@ class stat(Requester):
     def __init__(self, **kwargs):
         super(stat, self).__init__(**kwargs)
 
-    def stat_file(self, id=None, path="/"):
+    def stat_file(self, _id=None, path="/"):
         """ Stat a file in an allocation directory.
 
            https://www.nomadproject.io/docs/http/client-fs-stat.html
 
             arguments:
-              - id
+              - _id
               - path
             returns: dict
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        if id:
-            return self.request(id, params={"path": path}, method="get").json()
-        else:
-            return self.request(params={"path": path}, method="get").json()
+        if _id:
+            return self.request(_id, params={"path": path}, method="get").json()
+
+        return self.request(params={"path": path}, method="get").json()
 
 
 class stats(Requester):
@@ -275,8 +277,8 @@ class allocation(Requester):
 
     """
     The allocation/:alloc_id/stats endpoint is used to query the actual
-    resources consumed by an allocation. The API endpoint is hosted by the 
-    Nomad client and requests have to be made to the nomad client whose 
+    resources consumed by an allocation. The API endpoint is hosted by the
+    Nomad client and requests have to be made to the nomad client whose
     resource usage metrics are of interest.
 
     https://www.nomadproject.io/api/client.html#read-allocation
@@ -287,7 +289,7 @@ class allocation(Requester):
     def __init__(self, **kwargs):
         super(allocation, self).__init__(**kwargs)
 
-    def read_allocation_stats(self, id):
+    def read_allocation_stats(self, _id):
         """ Query the actual resources consumed by an allocation.
 
             https://www.nomadproject.io/api/client.html#read-allocation
@@ -298,9 +300,9 @@ class allocation(Requester):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, "stats", method="get").json()
+        return self.request(_id, "stats", method="get").json()
 
-    def restart_allocation(self, id):
+    def restart_allocation(self, _id):
         """ Restart a specific allocation.
 
            https://www.nomadproject.io/api-docs/allocations/#restart-allocation
@@ -310,7 +312,7 @@ class allocation(Requester):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, "restart", method="post").json()
+        return self.request(_id, "restart", method="post").json()
 
 
 class gc_allocation(Requester):
@@ -326,18 +328,18 @@ class gc_allocation(Requester):
     def __init__(self, **kwargs):
         super(gc_allocation, self).__init__(**kwargs)
 
-    def garbage_collect(self, id):
+    def garbage_collect(self, _id):
         """ This endpoint forces a garbage collection of a particular, stopped allocation on a node.
 
             https://www.nomadproject.io/api/client.html#gc-allocation
 
             arguments:
-              - id: (str) full allocation_id
+              - _id: (str) full allocation_id
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        self.request(id, "gc", method="get")
+        self.request(_id, "gc", method="get")
 
 
 class gc_all_allocations(Requester):

@@ -1,3 +1,4 @@
+"""Nomad allocation: https://developer.hashicorp.com/nomad/api-docs/allocations"""
 import nomad.api.exceptions
 
 from nomad.api.base import Requester
@@ -18,10 +19,10 @@ class Allocation(Requester):
         super(Allocation, self).__init__(**kwargs)
 
     def __str__(self):
-        return "{0}".format(self.__dict__)
+        return f"{self.__dict__}"
 
     def __repr__(self):
-        return "{0}".format(self.__dict__)
+        return f"{self.__dict__}"
 
     def __getattr__(self, item):
         raise AttributeError
@@ -41,10 +42,10 @@ class Allocation(Requester):
 
             if response["ID"] == item:
                 return response
-        except nomad.api.exceptions.URLNotFoundNomadException:
-            raise KeyError
+        except nomad.api.exceptions.URLNotFoundNomadException as exc:
+            raise KeyError from exc
 
-    def get_allocation(self, id):
+    def get_allocation(self, _id):
         """ Query a specific allocation.
 
            https://www.nomadproject.io/docs/http/alloc.html
@@ -54,9 +55,9 @@ class Allocation(Requester):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, method="get").json()
+        return self.request(_id, method="get").json()
 
-    def stop_allocation(self, id):
+    def stop_allocation(self, _id):
         """ Stop a specific allocation.
 
            https://www.nomadproject.io/api-docs/allocations/#stop-allocation
@@ -66,4 +67,4 @@ class Allocation(Requester):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, "stop", method="post").json()
+        return self.request(_id, "stop", method="post").json()

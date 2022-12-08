@@ -1,9 +1,12 @@
-import nomad.api as api
+"""Nomad Python library"""
 import os
 
+import nomad.api as api
 
 class Nomad(object):
-
+    """
+    Nomad API
+    """
     def __init__(self,
                  host='127.0.0.1',
                  secure=False,
@@ -102,36 +105,60 @@ class Nomad(object):
         self._variables = api.Variables(**self.requester_settings)
 
     def get_uri(self):
+        """
+        Get Nomad host
+        """
         if self.secure:
             protocol = "https"
         else:
             protocol = "http"
-        return "{protocol}://{host}".format(protocol=protocol, host=self.host)
+        return f"{protocol}://{self.host}"
 
     def get_namespace(self):
+        """
+        Get Nomad namaspace
+        """
         return self.__namespace
 
     def get_token(self):
+        """
+        Get Nomad token
+        """
         return self.token
 
     @property
     def jobs(self):
+        """
+        Get jobs instance
+        """
         return self._jobs
 
     @property
     def job(self):
+        """
+        Get job instance
+        """
         return self._job
 
     @property
     def nodes(self):
+        """
+        Get nodes instance
+        """
         return self._nodes
 
     @property
     def node(self):
+        """
+        Get node instance
+        """
         return self._node
 
     @property
     def allocations(self):
+        """
+        Get allocation instance
+        """
         return self._allocations
 
     @property
