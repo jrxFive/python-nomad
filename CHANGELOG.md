@@ -1,3 +1,7 @@
+## 2.0.0 (unreleased)
+* Up `requests` lib version to 2.28.1
+* Drop Python 2 and Python 3.6 support
+
 ## 1.5.0
 * Add `namespace` agrument support for `get_allocations` and `get_deployments` endpoints (#133)
 * Add Python 3.10 support (#133)
