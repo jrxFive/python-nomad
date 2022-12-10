@@ -36,7 +36,7 @@ def test_get_jobs_with_namespace_override_no_namespace_declared_on_create_incorr
     )
 
     with pytest.raises(exceptions.BaseNomadException):
-        nomad_setup.job.get_job(id=str(uuid.uuid4()))
+        nomad_setup.job.get_job(_id=str(uuid.uuid4()))
 
 
 @responses.activate
@@ -48,7 +48,7 @@ def test_get_jobs_with_namespace_override_no_namespace_declared_on_create(nomad_
         json=[{"Region": "global","ID": "my-job", "ParentID": "", "Name": "my-job","Namespace": common.NOMAD_NAMESPACE, "Type": "batch", "Priority": 50}]
     )
 
-    nomad_setup.job.get_job(id="18a0f501-41d5-ae43-ff61-1d8ec3ec8314", namespace=common.NOMAD_NAMESPACE)
+    nomad_setup.job.get_job(_id="18a0f501-41d5-ae43-ff61-1d8ec3ec8314", namespace=common.NOMAD_NAMESPACE)
 
 
 @responses.activate
@@ -60,7 +60,7 @@ def test_get_jobs_with_namespace_override_namespace_declared_on_create(nomad_set
         json=[{"Region": "global","ID": "my-job", "ParentID": "", "Name": "my-job","Namespace": common.NOMAD_NAMESPACE, "Type": "batch", "Priority": 50}]
     )
 
-    nomad_setup_with_namespace.job.get_job(id="18a0f501-41d5-ae43-ff61-1d8ec3ec8314", namespace="override-namespace")
+    nomad_setup_with_namespace.job.get_job(_id="18a0f501-41d5-ae43-ff61-1d8ec3ec8314", namespace="override-namespace")
 
 
 def test_get_allocations(nomad_setup):
