@@ -4,7 +4,7 @@ import requests
 import nomad.api.exceptions
 
 
-class Requester(object):
+class Requester():
     """
     Base object for endpoints
     """

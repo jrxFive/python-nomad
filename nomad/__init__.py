@@ -3,7 +3,7 @@ import os
 
 import nomad.api as api
 
-class Nomad(object):
+class Nomad():
     """
     Nomad API
     """

@@ -2,7 +2,7 @@
 # pylint: disable=invalid-name
 """Nomad Client: https://developer.hashicorp.com/nomad/api-docs/client"""
 from nomad.api.base import Requester
-class Client(object):
+class Client():
     """
     The /client endpoints are used to interact with the Nomad clients.
     """

@@ -1,3 +1,4 @@
+"""Nomad Deployment: https://developer.hashicorp.com/nomad/api-docs/deployments"""
 import nomad.api.exceptions
 
 from nomad.api.base import Requester
@@ -16,10 +17,10 @@ class Deployments(Requester):
         super(Deployments, self).__init__(**kwargs)
 
     def __str__(self):
-        return "{0}".format(self.__dict__)
+        return f"{self.__dict__}"
 
     def __repr__(self):
-        return "{0}".format(self.__dict__)
+        return f"{self.__dict__}"
 
     def __getattr__(self, item):
         raise AttributeError
@@ -35,26 +36,23 @@ class Deployments(Requester):
     def __contains__(self, item):
         try:
             deployments = self.get_deployments()
-
-            for d in deployments:
-                if d["ID"] == item:
+            for deployment in deployments:
+                if deployment["ID"] == item:
                     return True
-            else:
-                return False
+
+            return False
         except nomad.api.exceptions.URLNotFoundNomadException:
             return False
 
     def __getitem__(self, item):
         try:
             deployments = self.get_deployments()
-
-            for d in deployments:
-                if d["ID"] == item:
-                    return d
-            else:
-                raise KeyError
-        except nomad.api.exceptions.URLNotFoundNomadException:
+            for deployment in deployments:
+                if deployment["ID"] == item:
+                    return deployment
             raise KeyError
+        except nomad.api.exceptions.URLNotFoundNomadException as exc:
+            raise KeyError from exc
 
     def get_deployments(self, prefix="", namespace=None):
         """ This endpoint lists all deployments.

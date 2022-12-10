@@ -3,7 +3,7 @@ import nomad.api.exceptions
 from nomad.api.base import Requester
 
 
-class Status(object):
+class Status():
 
     """
     By default, the agent's local region is used

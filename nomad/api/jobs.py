@@ -1,3 +1,4 @@
+"""Nomad job: https://developer.hashicorp.com/nomad/api-docs/jobs"""
 import nomad.api.exceptions
 
 from nomad.api.base import Requester
@@ -18,13 +19,13 @@ class Jobs(Requester):
         super(Jobs, self).__init__(**kwargs)
 
     def __str__(self):
-        return "{0}".format(self.__dict__)
+        return "{self.__dict__}"
 
     def __repr__(self):
-        return "{0}".format(self.__dict__)
+        return "{self.__dict__}"
 
     def __getattr__(self, item):
-        msg = "{0} does not exist".format(item)
+        msg = f"{item} does not exist"
         raise AttributeError(msg)
 
     def __contains__(self, item):
@@ -36,8 +37,7 @@ class Jobs(Requester):
                     return True
                 if j["Name"] == item:
                     return True
-            else:
-                return False
+            return False
         except nomad.api.exceptions.URLNotFoundNomadException:
             return False
 
@@ -54,10 +54,9 @@ class Jobs(Requester):
                     return j
                 if j["Name"] == item:
                     return j
-            else:
-                raise KeyError
-        except nomad.api.exceptions.URLNotFoundNomadException:
             raise KeyError
+        except nomad.api.exceptions.URLNotFoundNomadException as exc:
+            raise KeyError from exc
 
     def __iter__(self):
         jobs = self.get_jobs()
@@ -106,4 +105,6 @@ class Jobs(Requester):
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request("parse", json={"JobHCL": hcl, "Canonicalize": canonicalize}, method="post", allow_redirects=True).json()
+        return self.request(
+            "parse", json={"JobHCL": hcl, "Canonicalize": canonicalize}, method="post", allow_redirects=True
+        ).json()
