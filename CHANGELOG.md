@@ -1,7 +1,7 @@
 ## 2.0.0 (unreleased)
 ### BREAKING CHANGES
 * Drop Python 2 and Python 3.6 support
-* Rename `id` arguments to `_id` accross of code
+* Rename `id` arguments to `_id` across of code base
 ### Other changes
 * Up `requests` lib version to 2.28.1
 

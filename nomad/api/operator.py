@@ -1,3 +1,4 @@
+"""Nomad Operator: https://developer.hashicorp.com/nomad/api-docs/operator"""
 from nomad.api.base import Requester
 
 
@@ -16,13 +17,14 @@ class Operator(Requester):
         super(Operator, self).__init__(**kwargs)
 
     def __str__(self):
-        return "{0}".format(self.__dict__)
+        return f"{self.__dict__}"
 
     def __repr__(self):
-        return "{0}".format(self.__dict__)
+        return f"{self.__dict__}"
 
     def __getattr__(self, item):
-        raise AttributeError
+        msg = f"{item} does not exist"
+        raise AttributeError(msg)
 
     def get_configuration(self, stale=False):
         """ Query the status of a client node registered with Nomad.

@@ -18,10 +18,10 @@ class Search(Requester):
         super(Search, self).__init__(**kwargs)
 
     def __str__(self):
-        return "{0}".format(self.__dict__)
+        return f"{self.__dict__}"
 
     def __repr__(self):
-        return "{0}".format(self.__dict__)
+        return f"{self.__dict__}"
 
     def __getattr__(self, item):
         raise AttributeError
@@ -46,7 +46,7 @@ class Search(Requester):
         accetaple_contexts = ("jobs", "evals", "allocs", "nodes", "deployment", "plugins", "volumes", "all")
         if context not in accetaple_contexts:
             raise nomad.api.exceptions.InvalidParameters("context is invalid "
-                "(expected values are {} but got {})".format(accetaple_contexts, context))
+                f"(expected values are {accetaple_contexts} but got {context})")
         params = {"Prefix": prefix, "Context": context}
 
         return self.request(json=params, method="post").json()
@@ -78,6 +78,6 @@ class Search(Requester):
         accetaple_contexts = ("jobs", "allocs", "nodes", "plugins", "all")
         if context not in accetaple_contexts:
             raise nomad.api.exceptions.InvalidParameters("context is invalid "
-                "(expected values are {} but got {})".format(accetaple_contexts,context))
+                f"(expected values are {accetaple_contexts} but got {context})")
 
         return self.request("fuzzy", json=params, method="post").json()

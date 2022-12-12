@@ -1,3 +1,4 @@
+"""Nomad Scalling API: https://developer.hashicorp.com/nomad/api-docs/scaling-policies"""
 import nomad.api.exceptions
 
 from nomad.api.base import Requester
@@ -15,15 +16,17 @@ class Scaling(Requester):
         super(Scaling, self).__init__(**kwargs)
 
     def __str__(self):
-        return "{0}".format(self.__dict__)
+        return f"{self.__dict__}"
 
     def __repr__(self):
-        return "{0}".format(self.__dict__)
+        return f"{self.__dict__}"
 
     def __getattr__(self, item):
-        raise AttributeError
+        msg = f"{item} does not exist"
+        raise AttributeError(msg)
 
-    def get_scaling_policies(self, job="", type=""):
+    # we want to have common arguments name with Nomad API
+    def get_scaling_policies(self, job="", type=""):  # pylint: disable=redefined-builtin
         """
         This endpoint returns the scaling policies from all jobs.
 
@@ -46,23 +49,23 @@ class Scaling(Requester):
 
         if type not in type_of_scaling_policies:
             raise nomad.api.exceptions.InvalidParameters("type is invalid "
-                "(expected values are {} but got {})".format(type_of_scaling_policies, type))
+                f"(expected values are {type_of_scaling_policies} but got {type})")
 
         params = {"job": job, "type": type}
 
         return self.request("policies", method="get", params=params).json()
 
-    def get_scaling_policy(self, id):
+    def get_scaling_policy(self, _id):
         """
         This endpoint reads a specific scaling policy.
 
         https://developer.hashicorp.com/nomad/api-docs/scaling-policies#read-scaling-policy
 
         arguments:
-            - id
+            - _id
         returns: list of dicts
         raises:
             - nomad.api.exceptions.BaseNomadException
             - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request("policy/{}".format(id), method="get").json()
+        return self.request(f"policy/{_id}", method="get").json()
