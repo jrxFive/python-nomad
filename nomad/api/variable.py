@@ -1,3 +1,4 @@
+"""Nomad Valiables API: https://developer.hashicorp.com/nomad/api-docs/variables"""
 import nomad.api.exceptions
 
 from nomad.api.base import Requester
@@ -16,13 +17,14 @@ class Variable(Requester):
         super(Variable, self).__init__(**kwargs)
 
     def __str__(self):
-        return "{0}".format(self.__dict__)
+        return f"{self.__dict__}"
 
     def __repr__(self):
-        return "{0}".format(self.__dict__)
+        return f"{self.__dict__}"
 
     def __getattr__(self, item):
-        raise AttributeError
+        msg = f"{item} does not exist"
+        raise AttributeError(msg)
 
     def __contains__(self, item):
         try:
@@ -34,8 +36,8 @@ class Variable(Requester):
     def __getitem__(self, item):
         try:
             return self.get_variable(item)
-        except nomad.api.exceptions.URLNotFoundNomadException:
-            raise KeyError
+        except nomad.api.exceptions.URLNotFoundNomadException as exc:
+            raise KeyError from exc
 
     def get_variable(self, var_path, namespace=None):
         """
@@ -92,7 +94,7 @@ class Variable(Requester):
             - var_path :(str), path to variable
             - namespace :(str) optional, specifies the target namespace. Specifying * would return all jobs.
                     This is specified as a querystring parameter.
-            - cas :(int) optional, If set, the variable will only be deleted if the cas value matches the 
+            - cas :(int) optional, If set, the variable will only be deleted if the cas value matches the
                     current variables ModifyIndex.
         returns: dict
         raises:

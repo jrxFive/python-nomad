@@ -1,3 +1,4 @@
+"""Nomad Search API: https://developer.hashicorp.com/nomad/api-docs/search"""
 import nomad.api.exceptions
 
 from nomad.api.base import Requester
@@ -24,7 +25,8 @@ class Search(Requester):
         return f"{self.__dict__}"
 
     def __getattr__(self, item):
-        raise AttributeError
+        msg = f"{item} does not exist"
+        raise AttributeError(msg)
 
     def search(self, prefix, context):
         """ The endpoint returns matches for a given prefix and context, where a context can be jobs,
@@ -53,7 +55,7 @@ class Search(Requester):
 
     def fuzzy_search(self, text, context):
         """ The /search/fuzzy endpoint returns partial substring matches for a given search term and context,
-            where a context can be jobs, allocations, nodes, plugins, or namespaces. Additionally, 
+            where a context can be jobs, allocations, nodes, plugins, or namespaces. Additionally,
             fuzzy searching can be done across all contexts.
 
             https://developer.hashicorp.com/nomad/api-docs/search#fuzzy-searching

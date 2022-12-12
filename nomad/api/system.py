@@ -1,3 +1,4 @@
+"""Nomad System API: https://developer.hashicorp.com/nomad/api-docs/system"""
 from nomad.api.base import Requester
 
 
@@ -17,13 +18,14 @@ class System(Requester):
         super(System, self).__init__(**kwargs)
 
     def __str__(self):
-        return "{0}".format(self.__dict__)
+        return f"{self.__dict__}"
 
     def __repr__(self):
-        return "{0}".format(self.__dict__)
+        return f"{self.__dict__}"
 
     def __getattr__(self, item):
-        raise AttributeError
+        msg = f"{item} does not exist"
+        raise AttributeError(msg)
 
     def initiate_garbage_collection(self):
         """ Initiate garbage collection of jobs, evals, allocations and nodes.
