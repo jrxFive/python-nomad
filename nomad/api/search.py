@@ -16,7 +16,7 @@ class Search(Requester):
     ENDPOINT = "search"
 
     def __init__(self, **kwargs):
-        super(Search, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def __str__(self):
         return f"{self.__dict__}"

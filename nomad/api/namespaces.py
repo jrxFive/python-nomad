@@ -14,7 +14,7 @@ class Namespaces(Requester):
     ENDPOINT = "namespaces"
 
     def __init__(self, **kwargs):
-        super(Namespaces, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def __str__(self):
         return f"{self.__dict__}"

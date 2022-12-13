@@ -15,7 +15,7 @@ class Job(Requester):
     ENDPOINT = "job"
 
     def __init__(self, **kwargs):
-        super(Job, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def __str__(self):
         return f"{self.__dict__}"

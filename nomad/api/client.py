@@ -25,7 +25,8 @@ class Client():
         return f"{self.__dict__}"
 
     def __getattr__(self, item):
-        raise AttributeError
+        msg = f"{item} does not exist"
+        raise AttributeError(msg)
 
 
 class ls(Requester):
@@ -41,7 +42,7 @@ class ls(Requester):
     ENDPOINT = "client/fs/ls"
 
     def __init__(self, **kwargs):
-        super(ls, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def list_files(self, _id=None, path="/"):
         """ List files in an allocation directory.
@@ -76,7 +77,7 @@ class cat(Requester):
     ENDPOINT = "client/fs/cat"
 
     def __init__(self, **kwargs):
-        super(cat, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def read_file(self, _id=None, path="/"):
         """ Read contents of a file in an allocation directory.
@@ -108,7 +109,7 @@ class read_at(Requester):
     ENDPOINT = "client/fs/readat"
 
     def __init__(self, **kwargs):
-        super(read_at, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def read_file_offset(self, _id, offset, limit, path="/"):
         """ Read contents of a file in an allocation directory.
@@ -144,7 +145,7 @@ class stream_file(Requester):
     ENDPOINT = "client/fs/stream"
 
     def __init__(self, **kwargs):
-        super(stream_file, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def stream(self, _id, offset, origin, path="/"):
         """ This endpoint streams the contents of a file in an allocation directory.
@@ -180,7 +181,7 @@ class stream_logs(Requester):
     ENDPOINT = "client/fs/logs"
 
     def __init__(self, **kwargs):
-        super(stream_logs, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def stream(self, _id, task, _type, follow=False, offset=0, origin="start", plain=False):
         """ This endpoint streams a task's stderr/stdout logs.
@@ -223,7 +224,7 @@ class stat(Requester):
     ENDPOINT = "client/fs/stat"
 
     def __init__(self, **kwargs):
-        super(stat, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def stat_file(self, _id=None, path="/"):
         """ Stat a file in an allocation directory.
@@ -257,7 +258,7 @@ class stats(Requester):
     ENDPOINT = "client/stats"
 
     def __init__(self, **kwargs):
-        super(stats, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def read_stats(self, node_id=None):
         """ Query the actual resources consumed on a node.
@@ -287,7 +288,7 @@ class allocation(Requester):
     ENDPOINT = "client/allocation"
 
     def __init__(self, **kwargs):
-        super(allocation, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def read_allocation_stats(self, _id):
         """ Query the actual resources consumed by an allocation.
@@ -326,7 +327,7 @@ class gc_allocation(Requester):
     ENDPOINT = "client/allocation"
 
     def __init__(self, **kwargs):
-        super(gc_allocation, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def garbage_collect(self, _id):
         """ This endpoint forces a garbage collection of a particular, stopped allocation on a node.
@@ -353,7 +354,7 @@ class gc_all_allocations(Requester):
     ENDPOINT = "client/gc"
 
     def __init__(self, **kwargs):
-        super(gc_all_allocations, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def garbage_collect(self, node_id=None):
         """ This endpoint forces a garbage collection of all stopped allocations on a node.

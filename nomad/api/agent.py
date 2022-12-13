@@ -8,7 +8,7 @@ class Agent(Requester):
     ENDPOINT = "agent"
 
     def __init__(self, **kwargs):
-        super(Agent, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def __str__(self):
         return f"{self.__dict__}"

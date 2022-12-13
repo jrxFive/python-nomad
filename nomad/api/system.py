@@ -15,7 +15,7 @@ class System(Requester):
     ENDPOINT = "system"
 
     def __init__(self, **kwargs):
-        super(System, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def __str__(self):
         return f"{self.__dict__}"

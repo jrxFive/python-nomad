@@ -1,13 +1,13 @@
 """Nomad Python library"""
 import os
 
-import nomad.api as api
+from nomad import api
 
-class Nomad():
+class Nomad():  # pylint: disable=too-many-public-methods,too-many-instance-attributes
     """
     Nomad API
     """
-    def __init__(self,
+    def __init__(self,  # pylint: disable=too-many-arguments
                  host='127.0.0.1',
                  secure=False,
                  port=4646,

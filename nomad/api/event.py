@@ -34,7 +34,7 @@ class stream(Requester):  # pylint: disable=invalid-name
     ENDPOINT = "event/stream"
 
     def __init__(self, **kwargs):
-        super(stream, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def _get_stream(self, method, params, timeout, event_queue, exit_event):
         """

@@ -15,7 +15,7 @@ class Nodes(Requester):
     ENDPOINT = "nodes"
 
     def __init__(self, **kwargs):
-        super(Nodes, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def __str__(self):
         return f"{self.__dict__}"
