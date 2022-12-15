@@ -38,6 +38,7 @@ class Deployment(Requester):
             deployment = self.get_deployment(item)
             if deployment["ID"] == item:
                 return deployment
+            raise KeyError
         except nomad.api.exceptions.URLNotFoundNomadException as exp:
             raise KeyError from exp
 

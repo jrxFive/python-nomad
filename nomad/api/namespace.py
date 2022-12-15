@@ -44,8 +44,8 @@ class Namespace(Requester):
                 return job
             if job["Name"] == item:
                 return job
-            else:
-                raise KeyError
+
+            raise KeyError
         except nomad.api.exceptions.URLNotFoundNomadException as exc:
             raise KeyError from exc
 

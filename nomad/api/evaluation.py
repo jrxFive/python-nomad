@@ -39,9 +39,9 @@ class Evaluation(Requester):
 
         try:
             evaluation = self.get_evaluation(item)
-
             if evaluation["ID"] == item:
                 return evaluation
+            raise KeyError
         except nomad.api.exceptions.URLNotFoundNomadException as exc:
             raise KeyError from exc
 

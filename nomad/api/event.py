@@ -36,7 +36,7 @@ class stream(Requester):  # pylint: disable=invalid-name
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-    def _get_stream(self, method, params, timeout, event_queue, exit_event):
+    def _get_stream(self, method, params, timeout, event_queue, exit_event):  # pylint: disable=too-many-arguments
         """
         Used as threading target, to obtain json() value
         Args:
@@ -63,7 +63,7 @@ class stream(Requester):  # pylint: disable=invalid-name
             except requests.exceptions.ConnectionError:
                 continue
 
-    def get_stream(self, index=0, topic=None, namespace=None, event_queue=None, timeout=None):
+    def get_stream(self, index=0, topic=None, namespace=None, event_queue=None, timeout=None): # pylint: disable=too-many-arguments
         """
         Usage:
             stream, stream_exit_event, events = n.event.stream.get_stream()

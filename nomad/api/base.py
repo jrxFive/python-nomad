@@ -4,14 +4,14 @@ import requests
 import nomad.api.exceptions
 
 
-class Requester():
+class Requester():  # pylint: disable=too-many-instance-attributes,too-few-public-methods
     """
     Base object for endpoints
     """
 
     ENDPOINT = ""
 
-    def __init__(
+    def __init__(  # pylint: disable=too-many-arguments
         self,
         address=None,
         uri="http://127.0.0.1",
@@ -42,6 +42,8 @@ class Requester():
             args_str = "/".join(args)
             return f"{self.version}/" + args_str
 
+        return "/"
+
     def _required_namespace(self, endpoint):
         required_namespace = [
             "job",
@@ -53,6 +55,8 @@ class Requester():
             "acl",
             "client",
             "node",
+            "variable",
+            "variables",
         ]
         # split 0 -> Api Version
         # split 1 -> Working Endpoint
@@ -107,7 +111,7 @@ class Requester():
 
         return response
 
-    def _request(
+    def _request( # pylint: disable=too-many-arguments, too-many-branches
         self,
         method,
         endpoint,
@@ -184,16 +188,16 @@ class Requester():
 
             if response.ok:
                 return response
-            elif response.status_code == 400:
+            if response.status_code == 400:
                 raise nomad.api.exceptions.BadRequestNomadException(response)
-            elif response.status_code == 403:
+            if response.status_code == 403:
                 raise nomad.api.exceptions.URLNotAuthorizedNomadException(response)
-            elif response.status_code == 404:
+            if response.status_code == 404:
                 raise nomad.api.exceptions.URLNotFoundNomadException(response)
-            elif response.status_code == 409:
+            if response.status_code == 409:
                 raise nomad.api.exceptions.VariableConflict(response)
-            else:
-                raise nomad.api.exceptions.BaseNomadException(response)
+
+            raise nomad.api.exceptions.BaseNomadException(response)
 
         except requests.exceptions.ConnectionError as error:
             if all([stream, timeout]):

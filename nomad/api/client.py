@@ -1,5 +1,5 @@
 # we want to have backward compatibility here
-# pylint: disable=invalid-name
+# pylint: disable=invalid-name,too-many-instance-attributes,too-many-arguments
 """Nomad Client: https://developer.hashicorp.com/nomad/api-docs/client"""
 from nomad.api.base import Requester
 class Client():

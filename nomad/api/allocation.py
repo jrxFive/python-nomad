@@ -33,6 +33,7 @@ class Allocation(Requester):
 
             if response["ID"] == item:
                 return True
+            return False
         except nomad.api.exceptions.URLNotFoundNomadException:
             return False
 
@@ -42,6 +43,7 @@ class Allocation(Requester):
 
             if response["ID"] == item:
                 return response
+            raise KeyError
         except nomad.api.exceptions.URLNotFoundNomadException as exc:
             raise KeyError from exc
 

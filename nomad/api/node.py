@@ -44,8 +44,8 @@ class Node(Requester):
                 return node
             if node["Name"] == item:
                 return node
-            else:
-                raise KeyError
+
+            raise KeyError
         except nomad.api.exceptions.URLNotFoundNomadException as exc:
             raise KeyError from exc
 

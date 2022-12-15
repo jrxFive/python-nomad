@@ -129,122 +129,188 @@ class Nomad():  # pylint: disable=too-many-public-methods,too-many-instance-attr
     @property
     def jobs(self):
         """
-        Get jobs instance
+        Jobs API
         """
         return self._jobs
 
     @property
     def job(self):
         """
-        Get job instance
+        Job API
         """
         return self._job
 
     @property
     def nodes(self):
         """
-        Get nodes instance
+        Nodes API
         """
         return self._nodes
 
     @property
     def node(self):
         """
-        Get node instance
+        Node API
         """
         return self._node
 
     @property
     def allocations(self):
         """
-        Get allocation instance
+        Allocations API
         """
         return self._allocations
 
     @property
     def allocation(self):
+        """
+        Allocation API
+        """
         return self._allocation
 
     @property
     def evaluations(self):
+        """
+        Evaluations API
+        """
         return self._evaluations
 
     @property
     def evaluation(self):
+        """
+        Evaluation API
+        """
         return self._evaluation
 
     @property
     def event(self):
+        """
+        Event API
+        """
         return self._event
 
     @property
     def agent(self):
+        """
+        Agent API
+        """
         return self._agent
 
     @property
     def client(self):
+        """
+        Client API
+        """
         return self._client
 
     @property
     def deployments(self):
+        """
+        Deployments API
+        """
         return self._deployments
 
     @property
     def deployment(self):
+        """
+        Deployment API
+        """
         return self._deployment
 
     @property
     def regions(self):
+        """
+        Regions API
+        """
         return self._regions
 
     @property
     def scaling(self):
+        """
+        Scaling API
+        """
         return self._scaling
 
     @property
     def status(self):
+        """
+        Status API
+        """
         return self._status
 
     @property
     def system(self):
+        """
+        System API
+        """
         return self._system
 
     @property
     def operator(self):
+        """
+        Operator API
+        """
         return self._operator
 
     @property
     def validate(self):
+        """
+        Validate API
+        """
         return self._validate
 
     @property
     def namespaces(self):
+        """
+        Namespaces API
+        """
         return self._namespaces
 
     @property
     def namespace(self):
+        """
+        Namespace API
+        """
         return self._namespace
 
     @property
     def acl(self):
+        """
+        ACL API
+        """
         return self._acl
 
     @property
     def sentinel(self):
+        """
+        Sentinel API
+        """
         return self._sentinel
 
     @property
     def search(self):
+        """
+        Search API
+        """
         return self._search
 
     @property
     def metrics(self):
+        """
+        Metrics API
+        """
         return self._metrics
 
     @property
     def variable(self):
+        """
+        Variable API
+        """
         return self._variable
 
     @property
     def variables(self):
+        """
+        Variables API
+        """
         return self._variables
