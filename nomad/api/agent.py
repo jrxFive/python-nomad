@@ -1,5 +1,4 @@
-import nomad.api.exceptions
-
+"""Nomad Agent: https://developer.hashicorp.com/nomad/api-docs/agent"""
 from nomad.api.base import Requester
 
 
@@ -9,16 +8,16 @@ class Agent(Requester):
     ENDPOINT = "agent"
 
     def __init__(self, **kwargs):
-        super(Agent, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def __str__(self):
-        return "{0}".format(self.__dict__)
+        return f"{self.__dict__}"
 
     def __repr__(self):
-        return "{0}".format(self.__dict__)
+        return f"{self.__dict__}"
 
     def __getattr__(self, item):
-        msg = "{0} does not exist".format(item)
+        msg = f"{item} does not exist"
         raise AttributeError(msg)
 
     def get_agent(self):

@@ -1,3 +1,4 @@
+"""Nomad region: https://developer.hashicorp.com/nomad/api-docs/regions"""
 import nomad.api.exceptions
 
 from nomad.api.base import Requester
@@ -11,26 +12,26 @@ class Regions(Requester):
     ENDPOINT = "regions"
 
     def __init__(self, **kwargs):
-        super(Regions, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def __str__(self):
-        return "{0}".format(self.__dict__)
+        return f"{self.__dict__}"
 
     def __repr__(self):
-        return "{0}".format(self.__dict__)
+        return f"{self.__dict__}"
 
     def __getattr__(self, item):
-        raise AttributeError
+        msg = f"{item} does not exist"
+        raise AttributeError(msg)
 
     def __contains__(self, item):
         try:
             regions = self.get_regions()
 
-            for r in regions:
-                if r == item:
+            for region in regions:
+                if region == item:
                     return True
-            else:
-                return False
+            return False
         except nomad.api.exceptions.URLNotFoundNomadException:
             return False
 
@@ -42,13 +43,12 @@ class Regions(Requester):
         try:
             regions = self.get_regions()
 
-            for r in regions:
-                if r == item:
-                    return r
-            else:
-                raise KeyError
-        except nomad.api.exceptions.URLNotFoundNomadException:
+            for region in regions:
+                if region == item:
+                    return region
             raise KeyError
+        except nomad.api.exceptions.URLNotFoundNomadException as exc:
+            raise KeyError from exc
 
     def __iter__(self):
         regions = self.get_regions()

@@ -1,3 +1,4 @@
+"""Nomad namespace: https://developer.hashicorp.com/nomad/api-docs/namespaces"""
 import nomad.api.exceptions
 
 from nomad.api.base import Requester
@@ -14,22 +15,22 @@ class Namespace(Requester):
     ENDPOINT = "namespace"
 
     def __init__(self, **kwargs):
-        super(Namespace, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def __str__(self):
-        return "{0}".format(self.__dict__)
+        return f"{self.__dict__}"
 
     def __repr__(self):
-        return "{0}".format(self.__dict__)
+        return f"{self.__dict__}"
 
     def __getattr__(self, item):
-        msg = "{0} does not exist".format(item)
+        msg = f"{item} does not exist"
         raise AttributeError(msg)
 
     def __contains__(self, item):
 
         try:
-            j = self.get_namespace(item)
+            self.get_namespace(item)
             return True
         except nomad.api.exceptions.URLNotFoundNomadException:
             return False
@@ -37,30 +38,30 @@ class Namespace(Requester):
     def __getitem__(self, item):
 
         try:
-            j = self.get_namespace(item)
+            job = self.get_namespace(item)
 
-            if j["ID"] == item:
-                return j
-            if j["Name"] == item:
-                return j
-            else:
-                raise KeyError
-        except nomad.api.exceptions.URLNotFoundNomadException:
+            if job["ID"] == item:
+                return job
+            if job["Name"] == item:
+                return job
+
             raise KeyError
+        except nomad.api.exceptions.URLNotFoundNomadException as exc:
+            raise KeyError from exc
 
-    def get_namespace(self, id):
+    def get_namespace(self, _id):
         """ Query a single namespace.
 
            https://www.nomadproject.io/api/namespaces.html
 
             arguments:
-              - id
+              - _id
             returns: dict
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, method="get").json()
+        return self.request(_id, method="get").json()
 
     def create_namespace(self, namespace):
         """ create namespace
@@ -77,31 +78,31 @@ class Namespace(Requester):
         """
         return self.request(json=namespace, method="post")
 
-    def update_namespace(self, id, namespace):
+    def update_namespace(self, _id, namespace):
         """ Update namespace
 
            https://www.nomadproject.io/api/namespaces.html
 
             arguments:
-              - id
+              - _id
               - namespace (dict)
             returns: requests.Response
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, json=namespace, method="post")
+        return self.request(_id, json=namespace, method="post")
 
-    def delete_namespace(self, id):
+    def delete_namespace(self, _id):
         """ delete namespace.
 
            https://www.nomadproject.io/api/namespaces.html
 
             arguments:
-              - id
+              - _id
             returns: requests.Response
             raises:
               - nomad.api.exceptions.BaseNomadException
               - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id, method="delete")
+        return self.request(_id, method="delete")

@@ -36,7 +36,7 @@ def test_get_jobs_with_namespace_override_no_namespace_declared_on_create_incorr
     )
 
     with pytest.raises(exceptions.BaseNomadException):
-        nomad_setup.job.get_job(id=str(uuid.uuid4()))
+        nomad_setup.job.get_job(_id=str(uuid.uuid4()))
 
 
 @responses.activate
@@ -48,7 +48,7 @@ def test_get_jobs_with_namespace_override_no_namespace_declared_on_create(nomad_
         json=[{"Region": "global","ID": "my-job", "ParentID": "", "Name": "my-job","Namespace": common.NOMAD_NAMESPACE, "Type": "batch", "Priority": 50}]
     )
 
-    nomad_setup.job.get_job(id="18a0f501-41d5-ae43-ff61-1d8ec3ec8314", namespace=common.NOMAD_NAMESPACE)
+    nomad_setup.job.get_job(_id="18a0f501-41d5-ae43-ff61-1d8ec3ec8314", namespace=common.NOMAD_NAMESPACE)
 
 
 @responses.activate
@@ -60,7 +60,7 @@ def test_get_jobs_with_namespace_override_namespace_declared_on_create(nomad_set
         json=[{"Region": "global","ID": "my-job", "ParentID": "", "Name": "my-job","Namespace": common.NOMAD_NAMESPACE, "Type": "batch", "Priority": 50}]
     )
 
-    nomad_setup_with_namespace.job.get_job(id="18a0f501-41d5-ae43-ff61-1d8ec3ec8314", namespace="override-namespace")
+    nomad_setup_with_namespace.job.get_job(_id="18a0f501-41d5-ae43-ff61-1d8ec3ec8314", namespace="override-namespace")
 
 
 def test_get_allocations(nomad_setup):
@@ -137,7 +137,7 @@ def test_get_job_deployment(nomad_setup):
     assert "example" == nomad_setup.job.get_deployment("example")["JobID"]
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version")
-def test_get_job_deployment(nomad_setup):
+def test_get_summary(nomad_setup):
     assert "JobID" in nomad_setup.job.get_summary("example")
     assert isinstance(nomad_setup.job.get_summary("example"), dict)
     assert "example" == nomad_setup.job.get_summary("example")["JobID"]
@@ -148,11 +148,6 @@ def test_revert_job(nomad_setup):
     prior_job_version = current_job_version - 1
     nomad_setup.job.revert_job("example", prior_job_version, current_job_version)
 
-@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version")
-def test_revert_job(nomad_setup):
-    current_job_version = nomad_setup.job.get_deployment("example")["JobVersion"]
-    prior_job_version = current_job_version - 1
-    nomad_setup.job.revert_job("example", prior_job_version, current_job_version)
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version")
 def test_stable_job(nomad_setup):

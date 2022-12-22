@@ -1,8 +1,8 @@
+"""Nomad allocation: https://developer.hashicorp.com/nomad/api-docs/allocations"""
 from nomad.api.base import Requester
 
 
 class Allocations(Requester):
-
     """
     The allocations endpoint is used to query the status of allocations.
     By default, the agent's local region is used; another region can be
@@ -13,13 +13,13 @@ class Allocations(Requester):
     ENDPOINT = "allocations"
 
     def __init__(self, **kwargs):
-        super(Allocations, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def __str__(self):
-        return "{0}".format(self.__dict__)
+        return f"{self.__dict__}"
 
     def __repr__(self):
-        return "{0}".format(self.__dict__)
+        return f"{self.__dict__}"
 
     def __getattr__(self, item):
         raise AttributeError

@@ -180,7 +180,7 @@ class <Endpoint>(Requester):
     ENDPOINT = "<endpoint>" 
 
     def __init__(self, **kwargs):
-        super(<Endpoint>, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 ```
 
 ##### Entity
@@ -249,7 +249,7 @@ class cat(Requester):
     ENDPOINT = "client/fs/cat"
 
     def __init__(self, **kwargs):
-        super(cat, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def read_file(self, id=None, path="/"):
         """ Read contents of a file in an allocation directory.
@@ -382,7 +382,7 @@ class <Endpoint>(Requester):
     ENDPOINT = "<endpoint>" 
 
     def __init__(self, **kwargs):
-        super(<Endpoint>, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def __str__(self):
         return "{0}".format(self.__dict__)

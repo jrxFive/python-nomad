@@ -40,7 +40,7 @@ def test_create_policy(nomad_setup):
 
     policy_example = '{"Name": "my-policy", "Description": "This is a great policy", "Scope": "submit-job", "EnforcementLevel": "advisory", "Policy": "main = rule { true }"}'
     json_policy = json.loads(policy_example)
-    nomad_setup.sentinel.create_policy(id="my-policy", policy=json_policy)
+    nomad_setup.sentinel.create_policy(_id="my-policy", policy=json_policy)
 
 
 @responses.activate
@@ -48,13 +48,13 @@ def test_update_policy(nomad_setup):
 
     responses.add(
         responses.POST,
-        "http://{ip}:{port}/v1/sentinel/policy/my-policy".format(ip=common.IP, port=common.NOMAD_PORT),
+        f"http://{common.IP}:{common.NOMAD_PORT}/v1/sentinel/policy/my-policy",
         status=200
     )
 
     policy_example = '{"Name": "my-policy", "Description": "Update", "Scope": "submit-job", "EnforcementLevel": "advisory", "Policy": "main = rule { true }"}'
     json_policy = json.loads(policy_example)
-    nomad_setup.sentinel.update_policy(id="my-policy", policy=json_policy)
+    nomad_setup.sentinel.update_policy(_id="my-policy", policy=json_policy)
 
 
 @responses.activate
@@ -97,4 +97,4 @@ def test_delete_policy(nomad_setup):
         }
     )
 
-    nomad_setup.sentinel.delete_policy(id="my-policy")
+    nomad_setup.sentinel.delete_policy(_id="my-policy")

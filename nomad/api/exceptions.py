@@ -1,3 +1,4 @@
+"""Internal library exceptions"""
 import requests
 
 
@@ -8,9 +9,9 @@ class BaseNomadException(Exception):
 
     def __str__(self):
         if isinstance(self.nomad_resp, requests.Response) and hasattr(self.nomad_resp, "text"):
-            return 'The {0} was raised with following response: {1}.'.format(self.__class__.__name__, self.nomad_resp.text)
-        else:
-            return 'The {0} was raised due to the following error: {1}'.format(self.__class__.__name__,  str(self.nomad_resp))
+            return f"The {self.__class__.__name__} was raised with following response: {self.nomad_resp.text}."
+
+        return f"The {self.__class__.__name__} was raised due to the following error: {self.nomad_resp}"
 
 
 class URLNotFoundNomadException(BaseNomadException):

@@ -1,5 +1,4 @@
-import nomad.api.exceptions
-
+"""Nomad Valiables API: https://developer.hashicorp.com/nomad/api-docs/variables"""
 from nomad.api.base import Requester
 
 
@@ -13,16 +12,17 @@ class Variables(Requester):
     ENDPOINT = "vars"
 
     def __init__(self, **kwargs):
-        super(Variables, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def __str__(self):
-        return "{0}".format(self.__dict__)
+        return f"{self.__dict__}"
 
     def __repr__(self):
-        return "{0}".format(self.__dict__)
+        return f"{self.__dict__}"
 
     def __getattr__(self, item):
-        raise AttributeError
+        msg = f"{item} does not exist"
+        raise AttributeError(msg)
 
     def __contains__(self, item):
         variables = self.get_variables()
@@ -30,8 +30,7 @@ class Variables(Requester):
         for var in variables:
             if var["Path"] == item:
                 return True
-        else:
-            return False
+        return False
 
     def __getitem__(self, item):
         variables = self.get_variables()
@@ -39,15 +38,14 @@ class Variables(Requester):
         for var in variables:
             if var["Path"] == item:
                 return var
-        else:
-            raise KeyError
+        raise KeyError
 
     def __iter__(self):
         variables = self.get_variables()
         return iter(variables)
 
     def get_variables(self, prefix="", namespace=None):
-        """ 
+        """
         This endpoint lists variables.
         https://developer.hashicorp.com/nomad/api-docs/variables
 
@@ -66,5 +64,3 @@ class Variables(Requester):
             params["namespace"] = namespace
 
         return self.request(params=params, method="get").json()
-
-

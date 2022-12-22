@@ -46,7 +46,7 @@ def test_update_token(nomad_setup):
 
     token_update ='{"AccessorID":"' + created_token["AccessorID"] + '","Name": "Updated" ,"Type": "client","Policies": ["readonly"]}'
     json_token_update = json.loads(token_update)
-    update_token = nomad_setup.acl.update_token(id=created_token["AccessorID"],token=json_token_update)
+    update_token = nomad_setup.acl.update_token(_id=created_token["AccessorID"],token=json_token_update)
     assert "Updated" in update_token["Name"]
 
 
@@ -89,7 +89,7 @@ def test_get_policies(nomad_setup):
 def test_create_policy(nomad_setup):
     policy_example = '{ "Name": "my-policy", "Description": "This is a great policy", "Rules": "" }'
     json_policy = json.loads(policy_example)
-    nomad_setup.acl.create_policy(id="my-policy", policy=json_policy)
+    nomad_setup.acl.create_policy(_id="my-policy", policy=json_policy)
     assert False == any("my-policy" in x for x in nomad_setup.acl.get_policies())
 
 
@@ -103,11 +103,11 @@ def test_get_policy(nomad_setup):
 def test_update_policy(nomad_setup):
     policy_update = '{"Name": "my-policy","Description": "Updated","Rules": ""}'
     json_policy_update = json.loads(policy_update)
-    nomad_setup.acl.update_policy(id="my-policy", policy=json_policy_update)
+    nomad_setup.acl.update_policy(_id="my-policy", policy=json_policy_update)
     assert False == any("Updated" in x for x in nomad_setup.acl.get_policies())
 
 
 @pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 7, 0), reason="Nomad dispatch not supported")
 def test_delete_policy(nomad_setup):
-    nomad_setup.acl.delete_policy(id="my-policy")
+    nomad_setup.acl.delete_policy(_id="my-policy")
     assert False == any("my-policy" in x for x in nomad_setup.acl.get_policies())
