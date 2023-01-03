@@ -1,4 +1,6 @@
 """Nomad allocation: https://developer.hashicorp.com/nomad/api-docs/allocations"""
+from typing import Optional
+
 from nomad.api.base import Requester
 
 
@@ -10,6 +12,7 @@ class Allocations(Requester):
 
     https://www.nomadproject.io/docs/http/allocs.html
     """
+
     ENDPOINT = "allocations"
 
     def __init__(self, **kwargs):
@@ -32,22 +35,35 @@ class Allocations(Requester):
         response = self.get_allocations()
         return iter(response)
 
-    def get_allocations(self, prefix=None, namespace=None):
-        """ Lists all the allocations.
+    def get_allocations(  # pylint: disable=redefined-builtin,too-many-arguments
+        self,
+        prefix: Optional[str] = None,
+        filter: Optional[str] = None,
+        namespace: Optional[str] = None,
+        resources: Optional[bool] = None,
+        task_states: Optional[bool] = None,
+    ):
+        """Lists all the allocations.
 
-           https://www.nomadproject.io/docs/http/allocs.html
-            arguments:
-              - prefix :(str) optional, specifies a string to filter allocations on based on an prefix.
-                        This is specified as a querystring parameter.
-              - namespace :(str) optional, specifies the target namespace. Specifying * would return all jobs.
-                        This is specified as a querystring parameter.
-            returns: list
-            raises:
-              - nomad.api.exceptions.BaseNomadException
-              - nomad.api.exceptions.URLNotFoundNomadException
+        https://www.nomadproject.io/docs/http/allocs.html
+         arguments:
+           - prefix :(str) optional, specifies a string to filter allocations on based on an prefix.
+                     This is specified as a querystring parameter.
+           - filter :(str) optional
+           - namespace :(str) optional, specifies the target namespace. Specifying * would return all jobs.
+                     This is specified as a querystring parameter.
+           - resources :(bool) optional
+           - task_states :(bool) optional
+         returns: list
+         raises:
+           - nomad.api.exceptions.BaseNomadException
+           - nomad.api.exceptions.URLNotFoundNomadException
         """
-        params = {"prefix": prefix}
-        if namespace:
-            params["namespace"] = namespace
-
+        params = {
+            "prefix": prefix,
+            "filter": filter,
+            "namespace": namespace,
+            "resources": resources,
+            "task_states": task_states,
+        }
         return self.request(method="get", params=params).json()
