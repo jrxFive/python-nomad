@@ -132,9 +132,9 @@ class Requester():  # pylint: disable=too-many-instance-attributes,too-few-publi
             params = query_string
 
         if self.token:
-            try:
+            if headers is not None:
                 headers["X-Nomad-Token"] = self.token
-            except TypeError:
+            else:
                 headers = {"X-Nomad-Token": self.token}
 
         response = None
