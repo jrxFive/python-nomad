@@ -84,6 +84,9 @@ class Requester():  # pylint: disable=too-many-instance-attributes,too-few-publi
         if not isinstance(params, dict):
             params = {}
 
+        # Remove parameters that are None
+        params = {key: val for key, val in params.items() if val is not None}
+
         if ("namespace" not in params) and (self.namespace and self._required_namespace(endpoint)):
             query_string["namespace"] = self.namespace
 
@@ -132,9 +135,9 @@ class Requester():  # pylint: disable=too-many-instance-attributes,too-few-publi
             params = query_string
 
         if self.token:
-            try:
+            if headers is not None:
                 headers["X-Nomad-Token"] = self.token
-            except TypeError:
+            else:
                 headers = {"X-Nomad-Token": self.token}
 
         response = None
