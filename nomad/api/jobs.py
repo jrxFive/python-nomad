@@ -63,11 +63,11 @@ class Jobs(Requester):
         jobs = self.get_jobs()
         return iter(jobs)
 
-    def get_jobs(  # pylint: disable=redefined-builtin
+    def get_jobs(
         self,
         prefix: Optional[str] = None,
         namespace: Optional[str] = None,
-        filter: Optional[str] = None,
+        filter_: Optional[str] = None,
         meta: Optional[bool] = None,
     ):
         """Lists all the jobs registered with Nomad.
@@ -78,7 +78,8 @@ class Jobs(Requester):
                      This is specified as a querystring parameter.
            - namespace :(str) optional, specifies the target namespace. Specifying * would return all jobs.
                      This is specified as a querystring parameter.
-           - filter :(str) optional, specifies the expression used to filter the result.
+           - filter_ :(str) optional, specifies the expression used to filter the result.
+                     Name has a trailing underscore not to conflict with builtin function.
            - meta :(bool) optional, if set, jobs returned will include a meta field containing
                      key-value pairs provided in the job specification's meta block.
          returns: list
@@ -89,7 +90,7 @@ class Jobs(Requester):
         params = {
             "prefix": prefix,
             "namespace": namespace,
-            "filter": filter,
+            "filter": filter_,
             "meta": meta,
         }
         return self.request(method="get", params=params).json()

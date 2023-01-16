@@ -35,10 +35,10 @@ class Allocations(Requester):
         response = self.get_allocations()
         return iter(response)
 
-    def get_allocations(  # pylint: disable=redefined-builtin,too-many-arguments
+    def get_allocations(  # pylint: disable=too-many-arguments
         self,
         prefix: Optional[str] = None,
-        filter: Optional[str] = None,
+        filter_: Optional[str] = None,
         namespace: Optional[str] = None,
         resources: Optional[bool] = None,
         task_states: Optional[bool] = None,
@@ -49,7 +49,8 @@ class Allocations(Requester):
          arguments:
            - prefix :(str) optional, specifies a string to filter allocations on based on an prefix.
                      This is specified as a querystring parameter.
-           - filter :(str) optional
+           - filter_ :(str) optional
+                     Name has a trailing underscore not to conflict with builtin function.
            - namespace :(str) optional, specifies the target namespace. Specifying * would return all jobs.
                      This is specified as a querystring parameter.
            - resources :(bool) optional
@@ -61,7 +62,7 @@ class Allocations(Requester):
         """
         params = {
             "prefix": prefix,
-            "filter": filter,
+            "filter": filter_,
             "namespace": namespace,
             "resources": resources,
             "task_states": task_states,
