@@ -13,6 +13,7 @@ class Evaluation(Requester):
 
     https://www.nomadproject.io/docs/http/eval.html
     """
+
     ENDPOINT = "evaluation"
 
     def __init__(self, **kwargs):
@@ -45,30 +46,30 @@ class Evaluation(Requester):
         except nomad.api.exceptions.URLNotFoundNomadException as exc:
             raise KeyError from exc
 
-    def get_evaluation(self, _id):
-        """ Query a specific evaluation.
+    def get_evaluation(self, id_):
+        """Query a specific evaluation.
 
-           https://www.nomadproject.io/docs/http/eval.html
+        https://www.nomadproject.io/docs/http/eval.html
 
-            arguments:
-              - _id
-            returns: dict
-            raises:
-              - nomad.api.exceptions.BaseNomadException
-              - nomad.api.exceptions.URLNotFoundNomadException
+         arguments:
+           - id_
+         returns: dict
+         raises:
+           - nomad.api.exceptions.BaseNomadException
+           - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(_id, method="get").json()
+        return self.request(id_, method="get").json()
 
-    def get_allocations(self, _id):
-        """ Query the allocations created or modified by an evaluation.
+    def get_allocations(self, id_):
+        """Query the allocations created or modified by an evaluation.
 
-           https://www.nomadproject.io/docs/http/eval.html
+        https://www.nomadproject.io/docs/http/eval.html
 
-            arguments:
-              - _id
-            returns: list
-            raises:
-              - nomad.api.exceptions.BaseNomadException
-              - nomad.api.exceptions.URLNotFoundNomadException
+         arguments:
+           - id_
+         returns: list
+         raises:
+           - nomad.api.exceptions.BaseNomadException
+           - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(_id, "allocations", method="get").json()
+        return self.request(id_, "allocations", method="get").json()
