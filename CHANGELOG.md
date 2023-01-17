@@ -2,6 +2,7 @@
 ### BREAKING CHANGES
 * Drop Python 2 and Python 3.6 support
 * Rename `id` arguments to `id_` across of code base
+* Rename `type` arguments to `type_` across of code base
 ### Other changes
 * Up `requests` lib version to 2.28.1
 
