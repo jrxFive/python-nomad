@@ -26,45 +26,57 @@ def test_register_job(nomad_setup):
             max_iterations -= 1
 
 
-@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 5, 6), reason="Not supported in version")
+@pytest.mark.skipif(
+    tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 5, 6), reason="Not supported in version"
+)
 def test_ls_list_files(nomad_setup):
 
     a = nomad_setup.allocations.get_allocations()[0]["ID"]
     f = nomad_setup.client.ls.list_files(a)
 
 
-@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 5, 6), reason="Not supported in version")
+@pytest.mark.skipif(
+    tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 5, 6), reason="Not supported in version"
+)
 def test_stat_stat_file(nomad_setup):
     a = nomad_setup.allocations.get_allocations()[0]["ID"]
     f = nomad_setup.client.stat.stat_file(a)
 
 
-@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 8, 1), reason="Not supported in version")
+@pytest.mark.skipif(
+    tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 8, 1), reason="Not supported in version"
+)
 def test_streamfile_fail(nomad_setup):
 
     with pytest.raises(nomad.api.exceptions.BadRequestNomadException):
         a = nomad_setup.allocations.get_allocations()[0]["ID"]
-        _ = nomad_setup.client.stream_file.stream(a, 1, "start", "/redis/executor")  #invalid file name
+        _ = nomad_setup.client.stream_file.stream(a, 1, "start", "/redis/executor")  # invalid file name
 
 
-@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 5, 6), reason="Not supported in version")
+@pytest.mark.skipif(
+    tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 5, 6), reason="Not supported in version"
+)
 def test_read_stats(nomad_setup):
 
     f = nomad_setup.client.stats.read_stats()
 
 
-@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 5, 6), reason="Not supported in version")
+@pytest.mark.skipif(
+    tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 5, 6), reason="Not supported in version"
+)
 def test_read_allocation_stats(nomad_setup):
 
     a = nomad_setup.allocations.get_allocations()[0]["ID"]
     f = nomad_setup.client.allocation.read_allocation_stats(a)
 
 
-@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 8, 1), reason="Not supported in version")
+@pytest.mark.skipif(
+    tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 8, 1), reason="Not supported in version"
+)
 def test_gc_all_allocations(nomad_setup):
 
-    node_id = nomad_setup.nodes.get_nodes()[0]["ID"]
-    nomad_setup.client.gc_all_allocations.garbage_collect(node_id)
+    nodeid_ = nomad_setup.nodes.get_nodes()[0]["ID"]
+    nomad_setup.client.gc_all_allocations.garbage_collect(nodeid_)
     nomad_setup.client.gc_all_allocations.garbage_collect()
 
 

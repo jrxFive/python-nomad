@@ -19,9 +19,9 @@ def test_list_policies(nomad_setup):
                 "EnforcementLevel": "advisory",
                 "Hash": "CIs8aNX5OfFvo4D7ihWcQSexEJpHp+Za+dHSncVx5+8=",
                 "CreateIndex": 8,
-                "ModifyIndex": 8
+                "ModifyIndex": 8,
             }
-        ]
+        ],
     )
 
     policies = nomad_setup.sentinel.get_policies()
@@ -35,26 +35,22 @@ def test_create_policy(nomad_setup):
     responses.add(
         responses.POST,
         "http://{ip}:{port}/v1/sentinel/policy/my-policy".format(ip=common.IP, port=common.NOMAD_PORT),
-        status=200
+        status=200,
     )
 
     policy_example = '{"Name": "my-policy", "Description": "This is a great policy", "Scope": "submit-job", "EnforcementLevel": "advisory", "Policy": "main = rule { true }"}'
     json_policy = json.loads(policy_example)
-    nomad_setup.sentinel.create_policy(_id="my-policy", policy=json_policy)
+    nomad_setup.sentinel.create_policy(id_="my-policy", policy=json_policy)
 
 
 @responses.activate
 def test_update_policy(nomad_setup):
 
-    responses.add(
-        responses.POST,
-        f"http://{common.IP}:{common.NOMAD_PORT}/v1/sentinel/policy/my-policy",
-        status=200
-    )
+    responses.add(responses.POST, f"http://{common.IP}:{common.NOMAD_PORT}/v1/sentinel/policy/my-policy", status=200)
 
     policy_example = '{"Name": "my-policy", "Description": "Update", "Scope": "submit-job", "EnforcementLevel": "advisory", "Policy": "main = rule { true }"}'
     json_policy = json.loads(policy_example)
-    nomad_setup.sentinel.update_policy(_id="my-policy", policy=json_policy)
+    nomad_setup.sentinel.update_policy(id_="my-policy", policy=json_policy)
 
 
 @responses.activate
@@ -71,8 +67,8 @@ def test_get_policy(nomad_setup):
             "Policy": "main = rule { true }\n",
             "Hash": "CIs8aNX5OfFvo4D7ihWcQSexEJpHp+Za+dHSncVx5+8=",
             "CreateIndex": 8,
-            "ModifyIndex": 8
-        }
+            "ModifyIndex": 8,
+        },
     )
 
     policy = nomad_setup.sentinel.get_policy("foo")
@@ -93,8 +89,8 @@ def test_delete_policy(nomad_setup):
             "Policy": "main = rule { true }\n",
             "Hash": "CIs8aNX5OfFvo4D7ihWcQSexEJpHp+Za+dHSncVx5+8=",
             "CreateIndex": 8,
-            "ModifyIndex": 8
-        }
+            "ModifyIndex": 8,
+        },
     )
 
-    nomad_setup.sentinel.delete_policy(_id="my-policy")
+    nomad_setup.sentinel.delete_policy(id_="my-policy")

@@ -33,12 +33,18 @@ def test_get_event_stream_with_customized_topic(nomad_setup):
     stream.daemon = True
     stream.start()
 
-    node_id = nomad_setup.nodes.get_nodes()[0]["ID"]
-    nomad_setup.node.drain_node_with_spec(node_id, None)
+    nodeid_ = nomad_setup.nodes.get_nodes()[0]["ID"]
+    nomad_setup.node.drain_node_with_spec(nodeid_, None)
 
     event = events.get(timeout=5)
     assert event
     assert "Index" in event
-    assert event["Events"][0]["Type"] in ("NodeRegistration", "NodeDeregistration", "NodeEligibility", "NodeDrain", "NodeEvent")
+    assert event["Events"][0]["Type"] in (
+        "NodeRegistration",
+        "NodeDeregistration",
+        "NodeEligibility",
+        "NodeDrain",
+        "NodeEvent",
+    )
 
     stream_exit.set()
