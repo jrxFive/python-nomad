@@ -27,19 +27,19 @@ class Scaling(Requester):
         raise AttributeError(msg)
 
     # we want to have common arguments name with Nomad API
-    def get_scaling_policies(self, job="", type=""):  # pylint: disable=redefined-builtin
+    def get_scaling_policies(self, job="", type_=""):  # pylint: disable=redefined-builtin
         """
         This endpoint returns the scaling policies from all jobs.
 
         https://developer.hashicorp.com/nomad/api-docs/scaling-policies#list-scaling-policies
 
         arguments:
-            - job
-            - type
+          - job
+          - type_
         returns: list of dicts
         raises:
-            - nomad.api.exceptions.BaseNomadException
-            - nomad.api.exceptions.URLNotFoundNomadException
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         type_of_scaling_policies = [
             "horizontal",
@@ -48,12 +48,12 @@ class Scaling(Requester):
             "",
         ]  # we have only horizontal in OSS
 
-        if type not in type_of_scaling_policies:
+        if type_ not in type_of_scaling_policies:
             raise nomad.api.exceptions.InvalidParameters(
-                "type is invalid " f"(expected values are {type_of_scaling_policies} but got {type})"
+                "type is invalid " f"(expected values are {type_of_scaling_policies} but got {type_})"
             )
 
-        params = {"job": job, "type": type}
+        params = {"job": job, "type": type_}
 
         return self.request("policies", method="get", params=params).json()
 
@@ -64,10 +64,10 @@ class Scaling(Requester):
         https://developer.hashicorp.com/nomad/api-docs/scaling-policies#read-scaling-policy
 
         arguments:
-            - id_
+          - id_
         returns: list of dicts
         raises:
-            - nomad.api.exceptions.BaseNomadException
-            - nomad.api.exceptions.URLNotFoundNomadException
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request(f"policy/{id_}", method="get").json()

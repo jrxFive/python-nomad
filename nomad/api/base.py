@@ -4,7 +4,7 @@ import requests
 import nomad.api.exceptions
 
 
-class Requester():  # pylint: disable=too-many-instance-attributes,too-few-public-methods
+class Requester:  # pylint: disable=too-many-instance-attributes,too-few-public-methods
     """
     Base object for endpoints
     """
@@ -23,7 +23,7 @@ class Requester():  # pylint: disable=too-many-instance-attributes,too-few-publi
         verify=False,
         cert=(),
         region=None,
-        session=None
+        session=None,
     ):
         self.uri = uri
         self.port = port
@@ -114,7 +114,7 @@ class Requester():  # pylint: disable=too-many-instance-attributes,too-few-publi
 
         return response
 
-    def _request( # pylint: disable=too-many-arguments, too-many-branches
+    def _request(  # pylint: disable=too-many-arguments, too-many-branches
         self,
         method,
         endpoint,

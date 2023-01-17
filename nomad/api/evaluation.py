@@ -5,7 +5,6 @@ from nomad.api.base import Requester
 
 
 class Evaluation(Requester):
-
     """
     The evaluation endpoint is used to query a specific evaluations.
     By default, the agent's local region is used; another region can

@@ -38,7 +38,7 @@ def test_dunder_getattr(nomad_setup):
 
 
 def test_dunder_iter(nomad_setup):
-    assert hasattr(nomad_setup.allocations, '__iter__')
+    assert hasattr(nomad_setup.allocations, "__iter__")
     for j in nomad_setup.allocations:
         pass
 
@@ -54,20 +54,47 @@ def test_dunder_len(nomad_setup):
 def test_get_allocations_with_namespace(nomad_setup_with_namespace):
     responses.add(
         responses.GET,
-        "http://{ip}:{port}/v1/allocations?namespace={namespace}".format(ip=common.IP, port=common.NOMAD_PORT, namespace=common.NOMAD_NAMESPACE),
+        "http://{ip}:{port}/v1/allocations?namespace={namespace}".format(
+            ip=common.IP, port=common.NOMAD_PORT, namespace=common.NOMAD_NAMESPACE
+        ),
         status=200,
-        json=[{"ID": "a8198d79-cfdb-6593-a999-1e9adabcba2e","EvalID": "5456bd7a-9fc0-c0dd-6131-cbee77f57577","Namespace": common.NOMAD_NAMESPACE, "Name": "example.cache[0]","NodeID": "fb2170a8-257d-3c64-b14d-bc06cc94e34c","PreviousAllocation": "516d2753-0513-cfc7-57ac-2d6fac18b9dc","NextAllocation": "cd13d9b9-4f97-7184-c88b-7b451981616b"}]
+        json=[
+            {
+                "ID": "a8198d79-cfdb-6593-a999-1e9adabcba2e",
+                "EvalID": "5456bd7a-9fc0-c0dd-6131-cbee77f57577",
+                "Namespace": common.NOMAD_NAMESPACE,
+                "Name": "example.cache[0]",
+                "NodeID": "fb2170a8-257d-3c64-b14d-bc06cc94e34c",
+                "PreviousAllocation": "516d2753-0513-cfc7-57ac-2d6fac18b9dc",
+                "NextAllocation": "cd13d9b9-4f97-7184-c88b-7b451981616b",
+            }
+        ],
     )
     assert common.NOMAD_NAMESPACE in nomad_setup_with_namespace.allocations.get_allocations()[0]["Namespace"]
+
 
 @responses.activate
 def test_get_allocations_with_namespace_override_namespace_declared_on_create(nomad_setup_with_namespace):
     override_namespace_name = "namespace=override-namespace"
     responses.add(
         responses.GET,
-        "http://{ip}:{port}/v1/allocations?prefix=a8198d79-cfdb-6593-a999-1e9adabcba2e&namespace={namespace}".format(ip=common.IP, port=common.NOMAD_PORT, namespace=override_namespace_name),
+        "http://{ip}:{port}/v1/allocations?prefix=a8198d79-cfdb-6593-a999-1e9adabcba2e&namespace={namespace}".format(
+            ip=common.IP, port=common.NOMAD_PORT, namespace=override_namespace_name
+        ),
         status=200,
-        json=[{"ID": "a8198d79-cfdb-6593-a999-1e9adabcba2e","EvalID": "5456bd7a-9fc0-c0dd-6131-cbee77f57577","Namespace": override_namespace_name, "Name": "example.cache[0]","NodeID": "fb2170a8-257d-3c64-b14d-bc06cc94e34c","PreviousAllocation": "516d2753-0513-cfc7-57ac-2d6fac18b9dc","NextAllocation": "cd13d9b9-4f97-7184-c88b-7b451981616b"}]
+        json=[
+            {
+                "ID": "a8198d79-cfdb-6593-a999-1e9adabcba2e",
+                "EvalID": "5456bd7a-9fc0-c0dd-6131-cbee77f57577",
+                "Namespace": override_namespace_name,
+                "Name": "example.cache[0]",
+                "NodeID": "fb2170a8-257d-3c64-b14d-bc06cc94e34c",
+                "PreviousAllocation": "516d2753-0513-cfc7-57ac-2d6fac18b9dc",
+                "NextAllocation": "cd13d9b9-4f97-7184-c88b-7b451981616b",
+            }
+        ],
     )
 
-    nomad_setup_with_namespace.allocations.get_allocations("a8198d79-cfdb-6593-a999-1e9adabcba2e", namespace=override_namespace_name)
+    nomad_setup_with_namespace.allocations.get_allocations(
+        "a8198d79-cfdb-6593-a999-1e9adabcba2e", namespace=override_namespace_name
+    )

@@ -46,7 +46,7 @@ def test_dunder_getattr(nomad_setup):
 
 
 def test_dunder_iter(nomad_setup):
-    assert hasattr(nomad_setup.nodes, '__iter__')
+    assert hasattr(nomad_setup.nodes, "__iter__")
     for j in nomad_setup.nodes:
         pass
 

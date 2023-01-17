@@ -5,7 +5,6 @@ from nomad.api.base import Requester
 
 
 class Job(Requester):
-
     """
     The job endpoint is used for CRUD on a single job.
     By default, the agent's local region is used.
@@ -52,14 +51,14 @@ class Job(Requester):
 
         https://www.nomadproject.io/docs/http/job.html
 
-         arguments:
-           - id_
-           - namespace :(str) optional, specifies the target namespace. Specifying * would return all jobs.
-                     This is specified as a querystring parameter.
-         returns: dict
-         raises:
-           - nomad.api.exceptions.BaseNomadException
-           - nomad.api.exceptions.URLNotFoundNomadException
+        arguments:
+          - id_
+          - namespace :(str) optional, specifies the target namespace. Specifying * would return all jobs.
+                    This is specified as a querystring parameter.
+        returns: dict
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         params = {}
 
@@ -73,12 +72,12 @@ class Job(Requester):
 
         https://www.nomadproject.io/docs/http/job.html
 
-         arguments:
-           - id
-         returns: list of dicts
-         raises:
-           - nomad.api.exceptions.BaseNomadException
-           - nomad.api.exceptions.URLNotFoundNomadException
+        arguments:
+          - id
+        returns: list of dicts
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request(id_, "versions", method="get").json()
 
@@ -87,12 +86,12 @@ class Job(Requester):
 
         https://www.nomadproject.io/docs/http/job.html
 
-         arguments:
-           - id_
-         returns: list
-         raises:
-           - nomad.api.exceptions.BaseNomadException
-           - nomad.api.exceptions.URLNotFoundNomadException
+        arguments:
+          - id_
+        returns: list
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request(id_, "allocations", method="get").json()
 
@@ -101,12 +100,12 @@ class Job(Requester):
 
         https://www.nomadproject.io/docs/http/job.html
 
-         arguments:
-           - id_
-         returns: dict
-         raises:
-           - nomad.api.exceptions.BaseNomadException
-           - nomad.api.exceptions.URLNotFoundNomadException
+        arguments:
+          - id_
+        returns: dict
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request(id_, "evaluations", method="get").json()
 
@@ -115,12 +114,12 @@ class Job(Requester):
 
         https://www.nomadproject.io/docs/http/job.html
 
-         arguments:
-           - id_
-         returns: dict
-         raises:
-           - nomad.api.exceptions.BaseNomadException
-           - nomad.api.exceptions.URLNotFoundNomadException
+        arguments:
+          - id_
+        returns: dict
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request(id_, "deployments", method="get").json()
 
@@ -129,12 +128,12 @@ class Job(Requester):
 
         https://www.nomadproject.io/docs/http/job.html
 
-         arguments:
-           - id_
-         returns: list of dicts
-         raises:
-           - nomad.api.exceptions.BaseNomadException
-           - nomad.api.exceptions.URLNotFoundNomadException
+        arguments:
+          - id_
+        returns: list of dicts
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request(id_, "deployment", method="get").json()
 
@@ -143,12 +142,12 @@ class Job(Requester):
 
         https://www.nomadproject.io/docs/http/job.html
 
-         arguments:
-           - id_
-         returns: dict
-         raises:
-           - nomad.api.exceptions.BaseNomadException
-           - nomad.api.exceptions.URLNotFoundNomadException
+        arguments:
+          - id_
+        returns: dict
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request(id_, "summary", method="get").json()
 
@@ -157,27 +156,27 @@ class Job(Requester):
 
         https://www.nomadproject.io/docs/http/job.html
 
-         arguments:
-           - id_
-         returns: dict
-         raises:
-           - nomad.api.exceptions.BaseNomadException
-           - nomad.api.exceptions.URLNotFoundNomadException
+        arguments:
+          - id_
+        returns: dict
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request(id_, json=job, method="post").json()
 
     def evaluate_job(self, id_):
         """Creates a new evaluation for the given job.
-         This can be used to force run the scheduling logic if necessary.
+        This can be used to force run the scheduling logic if necessary.
 
         https://www.nomadproject.io/docs/http/job.html
 
-         arguments:
-           - id_
-         returns: dict
-         raises:
-           - nomad.api.exceptions.BaseNomadException
-           - nomad.api.exceptions.URLNotFoundNomadException
+        arguments:
+          - id_
+        returns: dict
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request(id_, "evaluate", method="post").json()
 
@@ -186,11 +185,11 @@ class Job(Requester):
 
         https://www.nomadproject.io/docs/http/job.html
 
-         arguments:
-           - id_
-           - job, dict
-           - diff, boolean
-           - policy_override, boolean
+        arguments:
+          - id_
+          - job, dict
+          - diff, boolean
+          - policy_override, boolean
          returns: dict
          raises:
            - nomad.api.exceptions.BaseNomadException
@@ -210,12 +209,12 @@ class Job(Requester):
 
         https://www.nomadproject.io/docs/http/job.html
 
-         arguments:
-           - id_
-         returns: dict
-         raises:
-           - nomad.api.exceptions.BaseNomadException
-           - nomad.api.exceptions.URLNotFoundNomadException
+        arguments:
+          - id_
+        returns: dict
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request(id_, "periodic", "force", method="post").json()
 
@@ -224,14 +223,14 @@ class Job(Requester):
 
         https://www.nomadproject.io/docs/http/job.html
 
-         arguments:
-           - id_
-           - payload
-           - meta
-         returns: dict
-         raises:
-           - nomad.api.exceptions.BaseNomadException
-           - nomad.api.exceptions.URLNotFoundNomadException
+        arguments:
+          - id_
+          - payload
+          - meta
+        returns: dict
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         dispatch_json = {"Meta": meta, "Payload": payload}
         return self.request(id_, "dispatch", json=dispatch_json, method="post").json()
@@ -241,17 +240,17 @@ class Job(Requester):
 
         https://www.nomadproject.io/docs/http/job.html
 
-         arguments:
+        arguments:
            - id_
            - version, Specifies the job version to revert to.
-         optional_arguments:
-           - enforce_prior_version, Optional value specifying the current job's version.
-                                    This is checked and acts as a check-and-set value before reverting to the
-                                    specified job.
-         returns: dict
-         raises:
-           - nomad.api.exceptions.BaseNomadException
-           - nomad.api.exceptions.URLNotFoundNomadException
+        optional_arguments:
+          - enforce_prior_version, Optional value specifying the current job's version.
+                                   This is checked and acts as a check-and-set value before reverting to the
+                                   specified job.
+        returns: dict
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         revert_json = {"JobID": id_, "JobVersion": version, "EnforcePriorVersion": enforce_prior_version}
         return self.request(id_, "revert", json=revert_json, method="post").json()
@@ -261,14 +260,14 @@ class Job(Requester):
 
         https://www.nomadproject.io/docs/http/job.html
 
-         arguments:
-           - id_
-           - version, Specifies the job version to revert to.
-           - stable, Specifies whether the job should be marked as stable or not.
-         returns: dict
-         raises:
-           - nomad.api.exceptions.BaseNomadException
-           - nomad.api.exceptions.URLNotFoundNomadException
+        arguments:
+          - id_
+          - version, Specifies the job version to revert to.
+          - stable, Specifies whether the job should be marked as stable or not.
+        returns: dict
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         revert_json = {"JobID": id_, "JobVersion": version, "Stable": stable}
         return self.request(id_, "stable", json=revert_json, method="post").json()
@@ -278,17 +277,17 @@ class Job(Requester):
 
         https://www.nomadproject.io/docs/http/job.html
 
-         arguments:
-           - id_
-           - purge (bool), optionally specifies whether the job should be
-             stopped and purged immediately (`purge=True`) or deferred to the
-             Nomad garbage collector (`purge=False`).
+        arguments:
+          - id_
+          - purge (bool), optionally specifies whether the job should be
+            stopped and purged immediately (`purge=True`) or deferred to the
+            Nomad garbage collector (`purge=False`).
 
-         returns: dict
-         raises:
-           - nomad.api.exceptions.BaseNomadException
-           - nomad.api.exceptions.URLNotFoundNomadException
-           - nomad.api.exceptions.InvalidParameters
+        returns: dict
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
+          - nomad.api.exceptions.InvalidParameters
         """
         params = None
         if purge is not None:

@@ -120,7 +120,7 @@ class read_at(Requester):
         https://www.nomadproject.io/docs/http/client-fs-cat.html
 
          arguments:
-           - id_: (str) allocationid_ required
+           - id_: (str) allocation_id required
            - offset: (int) required
            - limit: (int) required
            - path: (str) optional
@@ -152,7 +152,7 @@ class stream_file(Requester):
         https://www.nomadproject.io/api/client.html#stream-file
 
         arguments:
-          - id_: (str) allocationid_ required
+          - id_: (str) allocation_id required
           - offset: (int) required
           - origin: (str) either start|end
           - path: (str) optional
@@ -184,7 +184,7 @@ class stream_logs(Requester):
         https://www.nomadproject.io/api/client.html#stream-logs
 
         arguments:
-          - id_: (str) allocationid_ required
+          - id_: (str) allocation_id required
           - task: (str) name of the task inside the allocation to stream logs from
           - type_: (str) Specifies the stream to stream. Either "stderr|stdout"
           - follow: (bool) default false
@@ -234,7 +234,6 @@ class stat(Requester):
 
 
 class stats(Requester):
-
     """
     The /stats endpoint queries the actual resources consumed on a node.
     The API endpoint is hosted by the Nomad client and requests have to
@@ -248,8 +247,9 @@ class stats(Requester):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-    def read_stats(self, nodeid_=None):
-        """Query the actual resources consumed on a node.
+    def read_stats(self, node_id=None):
+        """
+        Query the actual resources consumed on a node.
 
         https://www.nomadproject.io/api/client.html#read-stats
 
@@ -259,13 +259,12 @@ class stats(Requester):
           - nomad.api.exceptions.BaseNomadException
           - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(params={"nodeid_": nodeid_}, method="get").json()
+        return self.request(params={"node_id": node_id}, method="get").json()
 
 
 class allocation(Requester):
-
     """
-    The allocation/:allocid_/stats endpoint is used to query the actual
+    The allocation/:alloc_id/stats endpoint is used to query the actual
     resources consumed by an allocation. The API endpoint is hosted by the
     Nomad client and requests have to be made to the nomad client whose
     resource usage metrics are of interest.
@@ -323,7 +322,7 @@ class gc_allocation(Requester):
         https://www.nomadproject.io/api/client.html#gc-allocation
 
         arguments:
-          - id_: (str) full allocationid_
+          - id_: (str) full allocation_id
         raises:
           - nomad.api.exceptions.BaseNomadException
           - nomad.api.exceptions.URLNotFoundNomadException
@@ -332,7 +331,6 @@ class gc_allocation(Requester):
 
 
 class gc_all_allocations(Requester):
-
     """
     This endpoint forces a garbage collection of all stopped allocations on a node.
 
@@ -344,14 +342,14 @@ class gc_all_allocations(Requester):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-    def garbage_collect(self, nodeid_=None):
+    def garbage_collect(self, node_id=None):
         """This endpoint forces a garbage collection of all stopped allocations on a node.
 
         https://www.nomadproject.io/api/client.html#gc-all-allocation
 
         arguments:
-          - nodeid_: (str) full allocationid_
+          - node_id: (str) full allocation_id
         raises:
           - nomad.api.exceptions.BaseNomadException
         """
-        self.request(params={"nodeid_": nodeid_}, method="get")
+        self.request(params={"node_id": node_id}, method="get")

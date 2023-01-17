@@ -5,7 +5,6 @@ from nomad.api.base import Requester
 
 
 class Variable(Requester):
-
     """
     The /var endpoints are used to read or create variables.
     https://developer.hashicorp.com/nomad/api-docs/variables
@@ -45,11 +44,11 @@ class Variable(Requester):
         https://developer.hashicorp.com/nomad/api-docs/variables#read-variable
 
         arguments:
-            - var_path :(str), path to variable
+          - var_path :(str), path to variable
         returns: dict
         raises:
-            - nomad.api.exceptions.BaseNomadException
-            - nomad.api.exceptions.URLNotFoundNomadException
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         params = {}
         if namespace:
@@ -63,18 +62,18 @@ class Variable(Requester):
         https://developer.hashicorp.com/nomad/api-docs/variables#create-variable
 
         arguments:
-            - var_path :(str), path to variable
-            - payload :(dict), variable object. Example:
+          - var_path :(str), path to variable
+          - payload :(dict), variable object. Example:
             https://developer.hashicorp.com/nomad/api-docs/variables#sample-payload
-            - namespace :(str) optional, specifies the target namespace. Specifying * would return all jobs.
-                    This is specified as a querystring parameter.
-            - cas :(int) optional, If set, the variable will only be deleted if the cas value matches the
-                    current variables ModifyIndex.
+          - namespace :(str) optional, specifies the target namespace. Specifying * would return all jobs.
+                This is specified as a querystring parameter.
+          - cas :(int) optional, If set, the variable will only be deleted if the cas value matches the
+            current variables ModifyIndex.
         returns: dict
         raises:
-            - nomad.api.exceptions.BaseNomadException
-            - nomad.api.exceptions.URLNotFoundNomadException
-            - nomad.api.exceptions.VariableConflict
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
+          - nomad.api.exceptions.VariableConflict
         """
         params = {}
         if cas is not None:
@@ -84,23 +83,22 @@ class Variable(Requester):
 
         return self.request(var_path, params=params, json=payload, method="put").json()
 
-
     def delete_variable(self, var_path, namespace=None, cas=None):
         """
         This endpoint reads a specific variable by path. This API returns the decrypted variable body.
         https://developer.hashicorp.com/nomad/api-docs/variables#delete-variable
 
         arguments:
-            - var_path :(str), path to variable
-            - namespace :(str) optional, specifies the target namespace. Specifying * would return all jobs.
-                    This is specified as a querystring parameter.
-            - cas :(int) optional, If set, the variable will only be deleted if the cas value matches the
-                    current variables ModifyIndex.
+          - var_path :(str), path to variable
+          - namespace :(str) optional, specifies the target namespace. Specifying * would return all jobs.
+                This is specified as a querystring parameter.
+          - cas :(int) optional, If set, the variable will only be deleted if the cas value matches the
+                current variables ModifyIndex.
         returns: dict
         raises:
-            - nomad.api.exceptions.BaseNomadException
-            - nomad.api.exceptions.URLNotFoundNomadException
-            - nomad.api.exceptions.VariableConflict
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
+          - nomad.api.exceptions.VariableConflict
         """
         params = {}
         if cas is not None:

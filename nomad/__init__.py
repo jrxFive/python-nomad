@@ -3,51 +3,54 @@ import os
 
 from nomad import api
 
-class Nomad():  # pylint: disable=too-many-public-methods,too-many-instance-attributes
+
+class Nomad:  # pylint: disable=too-many-public-methods,too-many-instance-attributes
     """
     Nomad API
     """
-    def __init__(self,  # pylint: disable=too-many-arguments
-                 host='127.0.0.1',
-                 secure=False,
-                 port=4646,
-                 address=os.getenv('NOMAD_ADDR', None),
-                 namespace=os.getenv('NOMAD_NAMESPACE', None),
-                 token=os.getenv('NOMAD_TOKEN', None),
-                 timeout=5,
-                 region=os.getenv('NOMAD_REGION', None),
-                 version='v1',
-                 verify=False,
-                 cert=(os.getenv('NOMAD_CLIENT_CERT', None),
-                       os.getenv('NOMAD_CLIENT_KEY', None)),
-                 session=None):
-        """ Nomad api client
 
-          https://github.com/jrxFive/python-nomad/
+    def __init__(
+        self,  # pylint: disable=too-many-arguments
+        host="127.0.0.1",
+        secure=False,
+        port=4646,
+        address=os.getenv("NOMAD_ADDR", None),
+        namespace=os.getenv("NOMAD_NAMESPACE", None),
+        token=os.getenv("NOMAD_TOKEN", None),
+        timeout=5,
+        region=os.getenv("NOMAD_REGION", None),
+        version="v1",
+        verify=False,
+        cert=(os.getenv("NOMAD_CLIENT_CERT", None), os.getenv("NOMAD_CLIENT_KEY", None)),
+        session=None,
+    ):
+        """Nomad api client
 
-           optional arguments:
-            - host (defaults 127.0.0.1), string ip or name of the nomad api server/agent that will be used.
-            - port (defaults 4646), integer port that will be used to connect.
-            - secure (defaults False), define if the protocol is secured or not (https or http)
-            - version (defaults v1), vesion of the api of nomad.
-            - verify (defaults False), verify the certificate when tls/ssl is enabled
-                                at nomad.
-            - cert (defaults empty), cert, or key and cert file to validate the certificate
-                                configured at nomad.
-            - region (defaults None), version of the region to use. It will be used then
-                                regions of the current agent of the connection.
-            - namespace (defaults to None), Specifies the enterpise namespace that will
-                                be use to deploy or to ask info to nomad.
-            - token (defaults to None), Specifies to append ACL token to the headers to
-                                make authentication on secured based nomad environemnts.
-            - session (defaults to None), allows for injecting a prepared requests.Session object that
-                                all requests to Nomad should use.
-           returns: Nomad api client object
+        https://github.com/jrxFive/python-nomad/
 
-           raises:
-             - nomad.api.exceptions.BaseNomadException
-             - nomad.api.exceptions.URLNotFoundNomadException
-             - nomad.api.exceptions.URLNotAuthorizedNomadException
+         optional arguments:
+          - host (defaults 127.0.0.1), string ip or name of the nomad api server/agent that will be used.
+          - port (defaults 4646), integer port that will be used to connect.
+          - secure (defaults False), define if the protocol is secured or not (https or http)
+          - version (defaults v1), vesion of the api of nomad.
+          - verify (defaults False), verify the certificate when tls/ssl is enabled
+                              at nomad.
+          - cert (defaults empty), cert, or key and cert file to validate the certificate
+                              configured at nomad.
+          - region (defaults None), version of the region to use. It will be used then
+                              regions of the current agent of the connection.
+          - namespace (defaults to None), Specifies the enterpise namespace that will
+                              be use to deploy or to ask info to nomad.
+          - token (defaults to None), Specifies to append ACL token to the headers to
+                              make authentication on secured based nomad environemnts.
+          - session (defaults to None), allows for injecting a prepared requests.Session object that
+                              all requests to Nomad should use.
+         returns: Nomad api client object
+
+         raises:
+           - nomad.api.exceptions.BaseNomadException
+           - nomad.api.exceptions.URLNotFoundNomadException
+           - nomad.api.exceptions.URLNotAuthorizedNomadException
         """
         self.host = host
         self.secure = secure

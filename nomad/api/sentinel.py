@@ -3,7 +3,6 @@ from nomad.api.base import Requester
 
 
 class Sentinel(Requester):
-
     """
     The endpoint manage sentinel policies (Enterprise Only)
 

@@ -3,7 +3,6 @@ from nomad.api.base import Requester
 
 
 class System(Requester):
-
     """
     The system endpoint is used to for system maintenance
     and should not be necessary for most users.
@@ -28,25 +27,25 @@ class System(Requester):
         raise AttributeError(msg)
 
     def initiate_garbage_collection(self):
-        """ Initiate garbage collection of jobs, evals, allocations and nodes.
+        """Initiate garbage collection of jobs, evals, allocations and nodes.
 
-            https://www.nomadproject.io/docs/http/system.html
+        https://www.nomadproject.io/docs/http/system.html
 
-            returns: Boolean
-            raises:
-              - nomad.api.exceptions.BaseNomadException
-              - nomad.api.exceptions.URLNotFoundNomadException
+        returns: Boolean
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request("gc", method="put").ok
 
     def reconcile_summaries(self):
-        """ This endpoint reconciles the summaries of all registered jobs.
+        """This endpoint reconciles the summaries of all registered jobs.
 
-            https://www.nomadproject.io/docs/http/system.html
+        https://www.nomadproject.io/docs/http/system.html
 
-            returns: Boolean
-            raises:
-              - nomad.api.exceptions.BaseNomadException
-              - nomad.api.exceptions.URLNotFoundNomadException
+        returns: Boolean
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request("reconcile", "summaries", method="put").ok

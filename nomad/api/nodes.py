@@ -5,13 +5,13 @@ from nomad.api.base import Requester
 
 
 class Nodes(Requester):
-
     """
     The nodes endpoint is used to query the status of client nodes.
     By default, the agent's local region is used
 
     https://www.nomadproject.io/docs/http/nodes.html
     """
+
     ENDPOINT = "nodes"
 
     def __init__(self, **kwargs):
@@ -62,16 +62,16 @@ class Nodes(Requester):
         return iter(nodes)
 
     def get_nodes(self, prefix=None):
-        """ Lists all the client nodes registered with Nomad.
+        """Lists all the client nodes registered with Nomad.
 
-           https://www.nomadproject.io/docs/http/nodes.html
-            arguments:
-              - prefix :(str) optional, specifies a string to filter nodes on based on an prefix.
-                        This is specified as a querystring parameter.
-            returns: list
-            raises:
-              - nomad.api.exceptions.BaseNomadException
-              - nomad.api.exceptions.URLNotFoundNomadException
+        https://www.nomadproject.io/docs/http/nodes.html
+        arguments:
+          - prefix :(str) optional, specifies a string to filter nodes on based on an prefix.
+                    This is specified as a querystring parameter.
+        returns: list
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         params = {"prefix": prefix}
         return self.request(method="get", params=params).json()

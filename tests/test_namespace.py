@@ -9,9 +9,7 @@ import responses
 def test_create_namespace(nomad_setup):
 
     responses.add(
-        responses.POST,
-        "http://{ip}:{port}/v1/namespace".format(ip=common.IP, port=common.NOMAD_PORT),
-        status=200
+        responses.POST, "http://{ip}:{port}/v1/namespace".format(ip=common.IP, port=common.NOMAD_PORT), status=200
     )
 
     namespace_api = '{"Name":"api","Description":"api server namespace"}'
@@ -23,9 +21,7 @@ def test_create_namespace(nomad_setup):
 def test_update_namespace(nomad_setup):
 
     responses.add(
-        responses.POST,
-        "http://{ip}:{port}/v1/namespace/api".format(ip=common.IP, port=common.NOMAD_PORT),
-        status=200
+        responses.POST, "http://{ip}:{port}/v1/namespace/api".format(ip=common.IP, port=common.NOMAD_PORT), status=200
     )
 
     namespace_api = '{"Name":"api","Description":"updated namespace"}'
@@ -40,7 +36,7 @@ def test_get_namespace(nomad_setup):
         responses.GET,
         "http://{ip}:{port}/v1/namespace/api".format(ip=common.IP, port=common.NOMAD_PORT),
         status=200,
-        json={"Name": "api", "Description": "api server namespace"}
+        json={"Name": "api", "Description": "api server namespace"},
     )
 
     assert "api" in nomad_setup.namespace.get_namespace("api")["Name"]
@@ -55,7 +51,6 @@ def test_delete_namespace(nomad_setup):
     )
 
     nomad_setup.namespace.delete_namespace("api")
-
 
 
 ######### ENTERPRISE TEST ###########

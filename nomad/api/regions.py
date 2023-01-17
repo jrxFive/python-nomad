@@ -5,10 +5,10 @@ from nomad.api.base import Requester
 
 
 class Regions(Requester):
-
     """
     https://www.nomadproject.io/docs/http/regions.html
     """
+
     ENDPOINT = "regions"
 
     def __init__(self, **kwargs):
@@ -55,13 +55,13 @@ class Regions(Requester):
         return iter(regions)
 
     def get_regions(self):
-        """ Returns the known region names.
+        """Returns the known region names.
 
-            https://www.nomadproject.io/docs/http/regions.html
+        https://www.nomadproject.io/docs/http/regions.html
 
-            returns: list
-            raises:
-              - nomad.api.exceptions.BaseNomadException
-              - nomad.api.exceptions.URLNotFoundNomadException
+        returns: list
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request(method="get").json()

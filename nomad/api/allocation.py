@@ -52,10 +52,10 @@ class Allocation(Requester):
 
         https://www.nomadproject.io/docs/http/alloc.html
 
-         returns: dict
-         raises:
-           - nomad.api.exceptions.BaseNomadException
-           - nomad.api.exceptions.URLNotFoundNomadException
+        returns: dict
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request(id_, method="get").json()
 
@@ -64,9 +64,9 @@ class Allocation(Requester):
 
         https://www.nomadproject.io/api-docs/allocations/#stop-allocation
 
-         returns: dict
-         raises:
-           - nomad.api.exceptions.BaseNomadException
-           - nomad.api.exceptions.URLNotFoundNomadException
+        returns: dict
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request(id_, "stop", method="post").json()

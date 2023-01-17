@@ -5,7 +5,6 @@ from nomad.api.base import Requester
 
 
 class Node(Requester):
-
     """
     The node endpoint is used to query the a specific client node.
     By default, the agent's local region is used.
@@ -55,10 +54,10 @@ class Node(Requester):
 
         https://www.nomadproject.io/docs/http/node.html
 
-         returns: dict
-         raises:
-           - nomad.api.exceptions.BaseNomadException
-           - nomad.api.exceptions.URLNotFoundNomadException
+        returns: dict
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request(id_, method="get").json()
 
@@ -67,10 +66,10 @@ class Node(Requester):
 
         https://www.nomadproject.io/docs/http/node.html
 
-         returns: list
-         raises:
-           - nomad.api.exceptions.BaseNomadException
-           - nomad.api.exceptions.URLNotFoundNomadException
+        returns: list
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request(id_, "allocations", method="get").json()
 
@@ -81,10 +80,10 @@ class Node(Requester):
 
         https://www.nomadproject.io/docs/http/node.html
 
-         returns: dict
-         raises:
-           - nomad.api.exceptions.BaseNomadException
-           - nomad.api.exceptions.URLNotFoundNomadException
+        returns: dict
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request(id_, "evaluate", method="post").json()
 
@@ -95,13 +94,13 @@ class Node(Requester):
 
         https://www.nomadproject.io/docs/http/node.html
 
-         arguments:
-           - id_ (str uuid): node id
-           - enable (bool): enable node drain or not to enable node drain
-         returns: dict
-         raises:
-           - nomad.api.exceptions.BaseNomadException
-           - nomad.api.exceptions.URLNotFoundNomadException
+        arguments:
+          - id_ (str uuid): node id
+          - enable (bool): enable node drain or not to enable node drain
+        returns: dict
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
 
         return self.request(id_, "drain", params={"enable": enable}, method="post").json()
@@ -145,14 +144,14 @@ class Node(Requester):
 
         https://www.nomadproject.io/docs/http/node.html
 
-         arguments:
-           - id_ (str uuid): node id
-           - eligible (bool): Set to True to mark node eligible
-           - ineligible (bool): Set to True to mark node ineligible
-         returns: dict
-         raises:
-           - nomad.api.exceptions.BaseNomadException
-           - nomad.api.exceptions.URLNotFoundNomadException
+        arguments:
+          - id_ (str uuid): node id
+          - eligible (bool): Set to True to mark node eligible
+          - ineligible (bool): Set to True to mark node ineligible
+        returns: dict
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         payload = {}
 

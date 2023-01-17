@@ -5,12 +5,12 @@ from nomad.api.base import Requester
 
 
 class Deployments(Requester):
-
     """
     The /deployment endpoints are used to query for and interact with deployments.
 
     https://www.nomadproject.io/docs/http/deployments.html
     """
+
     ENDPOINT = "deployments"
 
     def __init__(self, **kwargs):
@@ -55,20 +55,20 @@ class Deployments(Requester):
             raise KeyError from exc
 
     def get_deployments(self, prefix="", namespace=None):
-        """ This endpoint lists all deployments.
+        """This endpoint lists all deployments.
 
-           https://www.nomadproject.io/docs/http/deployments.html
+        https://www.nomadproject.io/docs/http/deployments.html
 
-            optional_arguments:
-              - prefix, (default "") Specifies a string to filter deployments on based on an index prefix.
-                        This is specified as a querystring parameter.
-              - namespace :(str) optional, specifies the target namespace. Specifying * would return all jobs.
-                        This is specified as a querystring parameter.
+        optional_arguments:
+          - prefix, (default "") Specifies a string to filter deployments on based on an index prefix.
+                This is specified as a querystring parameter.
+          - namespace :(str) optional, specifies the target namespace. Specifying * would return all jobs.
+                This is specified as a querystring parameter.
 
-            returns: list of dicts
-            raises:
-              - nomad.api.exceptions.BaseNomadException
-              - nomad.api.exceptions.URLNotFoundNomadException
+        returns: list of dicts
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         params = {"prefix": prefix}
         if namespace:

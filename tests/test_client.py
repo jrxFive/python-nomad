@@ -75,8 +75,8 @@ def test_read_allocation_stats(nomad_setup):
 )
 def test_gc_all_allocations(nomad_setup):
 
-    nodeid_ = nomad_setup.nodes.get_nodes()[0]["ID"]
-    nomad_setup.client.gc_all_allocations.garbage_collect(nodeid_)
+    node_id = nomad_setup.nodes.get_nodes()[0]["ID"]
+    nomad_setup.client.gc_all_allocations.garbage_collect(node_id)
     nomad_setup.client.gc_all_allocations.garbage_collect()
 
 

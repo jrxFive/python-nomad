@@ -23,7 +23,9 @@ def test_evaluate_node(nomad_setup):
     assert "EvalIDs" in nomad_setup.node.evaluate_node(nodeID)
 
 
-@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) > (1, 1, 0), reason="Not supported in version")
+@pytest.mark.skipif(
+    tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) > (1, 1, 0), reason="Not supported in version"
+)
 def test_drain_node(nomad_setup):
     nodeID = nomad_setup.nodes["pynomad1"]["ID"]
     assert "EvalIDs" in nomad_setup.node.drain_node(nodeID)
@@ -33,7 +35,9 @@ def test_drain_node(nomad_setup):
     assert nomad_setup.node[nodeID]["Drain"] is False
 
 
-@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 8, 1), reason="Not supported in version")
+@pytest.mark.skipif(
+    tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 8, 1), reason="Not supported in version"
+)
 def test_drain_node_with_spec(nomad_setup):
     nodeID = nomad_setup.nodes["pynomad1"]["ID"]
     assert "EvalIDs" in nomad_setup.node.drain_node_with_spec(nodeID, drain_spec={"Duration": "-100000000"})
@@ -42,7 +46,9 @@ def test_drain_node_with_spec(nomad_setup):
     assert nomad_setup.node[nodeID]["Drain"] is False
 
 
-@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 8, 1), reason="Not supported in version")
+@pytest.mark.skipif(
+    tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 8, 1), reason="Not supported in version"
+)
 def test_eligible_node(nomad_setup):
     nodeID = nomad_setup.nodes["pynomad1"]["ID"]
 

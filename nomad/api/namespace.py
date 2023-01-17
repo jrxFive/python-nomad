@@ -5,7 +5,6 @@ from nomad.api.base import Requester
 
 
 class Namespace(Requester):
-
     """
     The job endpoint is used for CRUD on a single namespace.
     By default, the agent's local region is used.
@@ -55,12 +54,12 @@ class Namespace(Requester):
 
         https://www.nomadproject.io/api/namespaces.html
 
-         arguments:
-           - id_
-         returns: dict
-         raises:
-           - nomad.api.exceptions.BaseNomadException
-           - nomad.api.exceptions.URLNotFoundNomadException
+        arguments:
+          - id_
+        returns: dict
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request(id_, method="get").json()
 
@@ -69,13 +68,13 @@ class Namespace(Requester):
 
         https://www.nomadproject.io/api/namespaces.html
 
-         arguments:
-           - id
-           - namespace (dict)
-         returns: requests.Response
-         raises:
-           - nomad.api.exceptions.BaseNomadException
-           - nomad.api.exceptions.URLNotFoundNomadException
+        arguments:
+          - id
+          - namespace (dict)
+        returns: requests.Response
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request(json=namespace, method="post")
 
@@ -84,13 +83,13 @@ class Namespace(Requester):
 
         https://www.nomadproject.io/api/namespaces.html
 
-         arguments:
-           - id_
-           - namespace (dict)
-         returns: requests.Response
-         raises:
-           - nomad.api.exceptions.BaseNomadException
-           - nomad.api.exceptions.URLNotFoundNomadException
+        arguments:
+          - id_
+          - namespace (dict)
+        returns: requests.Response
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request(id_, json=namespace, method="post")
 
@@ -99,11 +98,11 @@ class Namespace(Requester):
 
         https://www.nomadproject.io/api/namespaces.html
 
-         arguments:
-           - id_
-         returns: requests.Response
-         raises:
-           - nomad.api.exceptions.BaseNomadException
-           - nomad.api.exceptions.URLNotFoundNomadException
+        arguments:
+          - id_
+        returns: requests.Response
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request(id_, method="delete")
