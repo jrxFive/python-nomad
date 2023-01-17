@@ -9,8 +9,8 @@ class Nomad:  # pylint: disable=too-many-public-methods,too-many-instance-attrib
     Nomad API
     """
 
-    def __init__(
-        self,  # pylint: disable=too-many-arguments
+    def __init__(  # pylint: disable=too-many-arguments
+        self,
         host="127.0.0.1",
         secure=False,
         port=4646,
