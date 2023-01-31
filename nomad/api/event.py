@@ -7,10 +7,12 @@ import requests
 
 from nomad.api.base import Requester
 
-class Event():
+
+class Event:
     """
     Nomad Event
     """
+
     def __str__(self):
         return f"{self.__dict__}"
 
@@ -22,6 +24,7 @@ class Event():
 
     def __init__(self, **kwargs):
         self.stream = stream(**kwargs)
+
 
 # backward compatibility
 class stream(Requester):  # pylint: disable=invalid-name
@@ -63,7 +66,9 @@ class stream(Requester):  # pylint: disable=invalid-name
             except requests.exceptions.ConnectionError:
                 continue
 
-    def get_stream(self, index=0, topic=None, namespace=None, event_queue=None, timeout=None): # pylint: disable=too-many-arguments
+    def get_stream(
+        self, index=0, topic=None, namespace=None, event_queue=None, timeout=None
+    ):  # pylint: disable=too-many-arguments
         """
         Usage:
             stream, stream_exit_event, events = n.event.stream.get_stream()
@@ -120,8 +125,8 @@ class stream(Requester):  # pylint: disable=invalid-name
                 "params": params,
                 "timeout": timeout,
                 "event_queue": event_queue,
-                "exit_event": stream_exit_event
-            }
+                "exit_event": stream_exit_event,
+            },
         )
 
         return _stream, stream_exit_event, event_queue

@@ -20,7 +20,10 @@ def test_get_allocation(nomad_setup):
     assert isinstance(nomad_setup.allocation.get_allocation(id), dict) == True
 
 
-@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 9, 2), reason="Nomad alloc stop not supported")
+@pytest.mark.skipif(
+    tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 9, 2),
+    reason="Nomad alloc stop not supported",
+)
 def test_stop_allocation(nomad_setup):
     id = nomad_setup.job.get_allocations("example")[0]["ID"]
     assert isinstance(nomad_setup.allocation.stop_allocation(id), dict) == True
@@ -69,8 +72,21 @@ def test_dunder_getattr(nomad_setup):
 def test_get_allocation_with_namespace(nomad_setup_with_namespace):
     responses.add(
         responses.GET,
-        "http://{ip}:{port}/v1/allocation/a8198d79-cfdb-6593-a999-1e9adabcba2e?namespace={namespace}".format(ip=common.IP, port=common.NOMAD_PORT, namespace=common.NOMAD_NAMESPACE),
+        "http://{ip}:{port}/v1/allocation/a8198d79-cfdb-6593-a999-1e9adabcba2e?namespace={namespace}".format(
+            ip=common.IP, port=common.NOMAD_PORT, namespace=common.NOMAD_NAMESPACE
+        ),
         status=200,
-        json={"ID": "a8198d79-cfdb-6593-a999-1e9adabcba2e","EvalID": "5456bd7a-9fc0-c0dd-6131-cbee77f57577","Namespace": common.NOMAD_NAMESPACE, "Name": "example.cache[0]","NodeID": "fb2170a8-257d-3c64-b14d-bc06cc94e34c","PreviousAllocation": "516d2753-0513-cfc7-57ac-2d6fac18b9dc","NextAllocation": "cd13d9b9-4f97-7184-c88b-7b451981616b"}
+        json={
+            "ID": "a8198d79-cfdb-6593-a999-1e9adabcba2e",
+            "EvalID": "5456bd7a-9fc0-c0dd-6131-cbee77f57577",
+            "Namespace": common.NOMAD_NAMESPACE,
+            "Name": "example.cache[0]",
+            "NodeID": "fb2170a8-257d-3c64-b14d-bc06cc94e34c",
+            "PreviousAllocation": "516d2753-0513-cfc7-57ac-2d6fac18b9dc",
+            "NextAllocation": "cd13d9b9-4f97-7184-c88b-7b451981616b",
+        },
     )
-    assert common.NOMAD_NAMESPACE in nomad_setup_with_namespace.allocation.get_allocation("a8198d79-cfdb-6593-a999-1e9adabcba2e")["Namespace"]
+    assert (
+        common.NOMAD_NAMESPACE
+        in nomad_setup_with_namespace.allocation.get_allocation("a8198d79-cfdb-6593-a999-1e9adabcba2e")["Namespace"]
+    )

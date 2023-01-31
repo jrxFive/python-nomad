@@ -4,8 +4,7 @@ import nomad.api.exceptions
 from nomad.api.base import Requester
 
 
-class Status():
-
+class Status:
     """
     By default, the agent's local region is used
 
@@ -48,14 +47,14 @@ class Leader(Requester):
         return len(leader)
 
     def get_leader(self):
-        """ Returns the address of the current leader in the region.
+        """Returns the address of the current leader in the region.
 
-            https://www.nomadproject.io/docs/http/status.html
+        https://www.nomadproject.io/docs/http/status.html
 
-            returns: string
-            raises:
-              - nomad.api.exceptions.BaseNomadException
-              - nomad.api.exceptions.URLNotFoundNomadException
+        returns: string
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request(method="get").json()
 
@@ -96,13 +95,13 @@ class Peers(Requester):
         return iter(peers)
 
     def get_peers(self):
-        """ Returns the set of raft peers in the region.
+        """Returns the set of raft peers in the region.
 
-            https://www.nomadproject.io/docs/http/status.html
+        https://www.nomadproject.io/docs/http/status.html
 
-            returns: list
-            raises:
-              - nomad.api.exceptions.BaseNomadException
-              - nomad.api.exceptions.URLNotFoundNomadException
+        returns: list
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request(method="get").json()

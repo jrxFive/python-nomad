@@ -6,7 +6,6 @@ from nomad.api.base import Requester
 
 
 class Jobs(Requester):
-
     """
     The jobs endpoint is used to query the status of existing
     jobs in Nomad and to register new jobs.
@@ -14,6 +13,7 @@ class Jobs(Requester):
 
     https://www.nomadproject.io/docs/http/jobs.html
     """
+
     ENDPOINT = "jobs"
 
     def __init__(self, **kwargs):
@@ -73,19 +73,19 @@ class Jobs(Requester):
         """Lists all the jobs registered with Nomad.
 
         https://www.nomadproject.io/docs/http/jobs.html
-         arguments:
-           - prefix :(str) optional, specifies a string to filter jobs on based on an prefix.
-                     This is specified as a querystring parameter.
-           - namespace :(str) optional, specifies the target namespace. Specifying * would return all jobs.
-                     This is specified as a querystring parameter.
-           - filter_ :(str) optional, specifies the expression used to filter the result.
-                     Name has a trailing underscore not to conflict with builtin function.
-           - meta :(bool) optional, if set, jobs returned will include a meta field containing
-                     key-value pairs provided in the job specification's meta block.
-         returns: list
-         raises:
-           - nomad.api.exceptions.BaseNomadException
-           - nomad.api.exceptions.URLNotFoundNomadException
+        arguments:
+          - prefix :(str) optional, specifies a string to filter jobs on based on an prefix.
+                    This is specified as a querystring parameter.
+          - namespace :(str) optional, specifies the target namespace. Specifying * would return all jobs.
+                    This is specified as a querystring parameter.
+          - filter_ :(str) optional, specifies the expression used to filter the result.
+                    Name has a trailing underscore not to conflict with builtin function.
+          - meta :(bool) optional, if set, jobs returned will include a meta field containing
+                    key-value pairs provided in the job specification's meta block.
+        returns: list
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         params = {
             "prefix": prefix,
@@ -96,27 +96,27 @@ class Jobs(Requester):
         return self.request(method="get", params=params).json()
 
     def register_job(self, job):
-        """ Register a job with Nomad.
+        """Register a job with Nomad.
 
-           https://www.nomadproject.io/docs/http/jobs.html
+        https://www.nomadproject.io/docs/http/jobs.html
 
-            returns: dict
-            raises:
-              - nomad.api.exceptions.BaseNomadException
-              - nomad.api.exceptions.URLNotFoundNomadException
+        returns: dict
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request(json=job, method="post").json()
 
     def parse(self, hcl, canonicalize=False):
-        """ Parse a HCL Job file. Returns a dict with the JSON formatted job.
-            This API endpoint is only supported from Nomad version 0.8.3.
+        """Parse a HCL Job file. Returns a dict with the JSON formatted job.
+        This API endpoint is only supported from Nomad version 0.8.3.
 
-            https://www.nomadproject.io/api/jobs.html#parse-job
+        https://www.nomadproject.io/api/jobs.html#parse-job
 
-            returns: dict
-            raises:
-              - nomad.api.exceptions.BaseNomadException
-              - nomad.api.exceptions.URLNotFoundNomadException
+        returns: dict
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request(
             "parse", json={"JobHCL": hcl, "Canonicalize": canonicalize}, method="post", allow_redirects=True

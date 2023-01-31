@@ -25,7 +25,9 @@ def test_get_jobs_prefix(nomad_setup):
     nomad_setup.jobs.get_jobs(prefix="ex")
 
 
-@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 8, 3), reason="Not supported in version")
+@pytest.mark.skipif(
+    tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 8, 3), reason="Not supported in version"
+)
 def test_parse_job(nomad_setup):
     with open("example.nomad") as fh:
         hcl = fh.read()
@@ -68,7 +70,7 @@ def test_dunder_getattr(nomad_setup):
 
 
 def test_dunder_iter(nomad_setup):
-    assert hasattr(nomad_setup.jobs, '__iter__')
+    assert hasattr(nomad_setup.jobs, "__iter__")
     for j in nomad_setup.jobs:
         pass
 
@@ -82,9 +84,21 @@ def test_dunder_len(nomad_setup):
 def test_get_jobs_with_namespace(nomad_setup_with_namespace):
     responses.add(
         responses.GET,
-        "http://{ip}:{port}/v1/jobs?namespace={namespace}".format(ip=common.IP, port=common.NOMAD_PORT, namespace=common.NOMAD_NAMESPACE),
+        "http://{ip}:{port}/v1/jobs?namespace={namespace}".format(
+            ip=common.IP, port=common.NOMAD_PORT, namespace=common.NOMAD_NAMESPACE
+        ),
         status=200,
-        json=[{"Region": "global","ID": "my-job", "ParentID": "", "Name": "my-job","Namespace": common.NOMAD_NAMESPACE, "Type": "batch", "Priority": 50}]
+        json=[
+            {
+                "Region": "global",
+                "ID": "my-job",
+                "ParentID": "",
+                "Name": "my-job",
+                "Namespace": common.NOMAD_NAMESPACE,
+                "Type": "batch",
+                "Priority": 50,
+            }
+        ],
     )
     assert common.NOMAD_NAMESPACE in nomad_setup_with_namespace.jobs.get_jobs()[0]["Namespace"]
 
@@ -93,9 +107,21 @@ def test_get_jobs_with_namespace(nomad_setup_with_namespace):
 def test_get_jobs_with_namespace_override_no_namespace_declared_on_create_incorrect_declared_namespace(nomad_setup):
     responses.add(
         responses.GET,
-        "http://{ip}:{port}/v1/jobs?namespace={namespace}".format(ip=common.IP, port=common.NOMAD_PORT, namespace=common.NOMAD_NAMESPACE),
+        "http://{ip}:{port}/v1/jobs?namespace={namespace}".format(
+            ip=common.IP, port=common.NOMAD_PORT, namespace=common.NOMAD_NAMESPACE
+        ),
         status=200,
-        json=[{"Region": "global","ID": "my-job", "ParentID": "", "Name": "my-job","Namespace": common.NOMAD_NAMESPACE, "Type": "batch", "Priority": 50}]
+        json=[
+            {
+                "Region": "global",
+                "ID": "my-job",
+                "ParentID": "",
+                "Name": "my-job",
+                "Namespace": common.NOMAD_NAMESPACE,
+                "Type": "batch",
+                "Priority": 50,
+            }
+        ],
     )
 
     with pytest.raises(BaseNomadException):
@@ -106,9 +132,21 @@ def test_get_jobs_with_namespace_override_no_namespace_declared_on_create_incorr
 def test_get_jobs_with_namespace_override_no_namespace_declared_on_create(nomad_setup):
     responses.add(
         responses.GET,
-        "http://{ip}:{port}/v1/jobs?namespace={namespace}".format(ip=common.IP, port=common.NOMAD_PORT, namespace=common.NOMAD_NAMESPACE),
+        "http://{ip}:{port}/v1/jobs?namespace={namespace}".format(
+            ip=common.IP, port=common.NOMAD_PORT, namespace=common.NOMAD_NAMESPACE
+        ),
         status=200,
-        json=[{"Region": "global","ID": "my-job", "ParentID": "", "Name": "my-job","Namespace": common.NOMAD_NAMESPACE, "Type": "batch", "Priority": 50}]
+        json=[
+            {
+                "Region": "global",
+                "ID": "my-job",
+                "ParentID": "",
+                "Name": "my-job",
+                "Namespace": common.NOMAD_NAMESPACE,
+                "Type": "batch",
+                "Priority": 50,
+            }
+        ],
     )
 
     nomad_setup.jobs.get_jobs(namespace=common.NOMAD_NAMESPACE)
@@ -118,9 +156,21 @@ def test_get_jobs_with_namespace_override_no_namespace_declared_on_create(nomad_
 def test_get_jobs_with_namespace_override_namespace_declared_on_create(nomad_setup_with_namespace):
     responses.add(
         responses.GET,
-        "http://{ip}:{port}/v1/jobs?namespace={namespace}".format(ip=common.IP, port=common.NOMAD_PORT, namespace="override-namespace"),
+        "http://{ip}:{port}/v1/jobs?namespace={namespace}".format(
+            ip=common.IP, port=common.NOMAD_PORT, namespace="override-namespace"
+        ),
         status=200,
-        json=[{"Region": "global","ID": "my-job", "ParentID": "", "Name": "my-job","Namespace": common.NOMAD_NAMESPACE, "Type": "batch", "Priority": 50}]
+        json=[
+            {
+                "Region": "global",
+                "ID": "my-job",
+                "ParentID": "",
+                "Name": "my-job",
+                "Namespace": common.NOMAD_NAMESPACE,
+                "Type": "batch",
+                "Priority": 50,
+            }
+        ],
     )
 
     nomad_setup_with_namespace.jobs.get_jobs(namespace="override-namespace")

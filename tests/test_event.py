@@ -39,6 +39,12 @@ def test_get_event_stream_with_customized_topic(nomad_setup):
     event = events.get(timeout=5)
     assert event
     assert "Index" in event
-    assert event["Events"][0]["Type"] in ("NodeRegistration", "NodeDeregistration", "NodeEligibility", "NodeDrain", "NodeEvent")
+    assert event["Events"][0]["Type"] in (
+        "NodeRegistration",
+        "NodeDeregistration",
+        "NodeEligibility",
+        "NodeDrain",
+        "NodeEvent",
+    )
 
     stream_exit.set()

@@ -8,8 +8,7 @@ def test_get_leader(nomad_setup):
     if int(sys.version[0]) == 3:
         assert isinstance(nomad_setup.status.leader.get_leader(), str) == True
     else:
-        assert isinstance(
-            nomad_setup.status.leader.get_leader(), unicode) == True
+        assert isinstance(nomad_setup.status.leader.get_leader(), unicode) == True
 
 
 def test_get_peers(nomad_setup):
@@ -35,8 +34,7 @@ def test_peers_dunder_contain_exists(nomad_setup):
 
 
 def test_peers_dunder_contain_not_exist(nomad_setup):
-    assert "{IP}:4647".format(
-        IP="172.16.10.100") not in nomad_setup.status.peers
+    assert "{IP}:4647".format(IP="172.16.10.100") not in nomad_setup.status.peers
 
 
 def test_leader_dunder_contain_exists(nomad_setup):
@@ -44,8 +42,7 @@ def test_leader_dunder_contain_exists(nomad_setup):
 
 
 def test_leader_dunder_contain_not_exist(nomad_setup):
-    assert "{IP}:4647".format(
-        IP="172.16.10.100") not in nomad_setup.status.leader
+    assert "{IP}:4647".format(IP="172.16.10.100") not in nomad_setup.status.leader
 
 
 def test_dunder_str(nomad_setup):
@@ -67,7 +64,7 @@ def test_dunder_getattr(nomad_setup):
 
 
 def test_peers_dunder_iter(nomad_setup):
-    assert hasattr(nomad_setup.status.peers, '__iter__')
+    assert hasattr(nomad_setup.status.peers, "__iter__")
     for p in nomad_setup.status.peers:
         pass
 

@@ -3,7 +3,6 @@ from nomad.api.base import Requester
 
 
 class Sentinel(Requester):
-
     """
     The endpoint manage sentinel policies (Enterprise Only)
 
@@ -26,73 +25,73 @@ class Sentinel(Requester):
         raise AttributeError(msg)
 
     def get_policies(self):
-        """ Get a list of policies.
+        """Get a list of policies.
 
-            https://www.nomadproject.io/api/sentinel-policies.html
+        https://www.nomadproject.io/api/sentinel-policies.html
 
-            returns: list
+        returns: list
 
-            raises:
-              - nomad.api.exceptions.BaseNomadException
-              - nomad.api.exceptions.URLNotFoundNomadException
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request("policies", method="get").json()
 
-    def create_policy(self, _id, policy):
-        """ Create policy.
+    def create_policy(self, id_, policy):
+        """Create policy.
 
-            https://www.nomadproject.io/api/sentinel-policies.html
+        https://www.nomadproject.io/api/sentinel-policies.html
 
-            arguments:
-                - policy
-            returns: requests.Response
+        arguments:
+            - policy
+        returns: requests.Response
 
-            raises:
-              - nomad.api.exceptions.BaseNomadException
-              - nomad.api.exceptions.URLNotFoundNomadException
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request("policy", _id, json=policy, method="post")
+        return self.request("policy", id_, json=policy, method="post")
 
-    def get_policy(self, _id):
-        """ Get a spacific policy.
+    def get_policy(self, id_):
+        """Get a spacific policy.
 
-            https://www.nomadproject.io/api/sentinel-policies.html
+        https://www.nomadproject.io/api/sentinel-policies.html
 
-            returns: dict
+        returns: dict
 
-            raises:
-              - nomad.api.exceptions.BaseNomadException
-              - nomad.api.exceptions.URLNotFoundNomadException
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request("policy", _id, method="get").json()
+        return self.request("policy", id_, method="get").json()
 
-    def update_policy(self, _id, policy):
-        """ Create policy.
+    def update_policy(self, id_, policy):
+        """Create policy.
 
-            https://www.nomadproject.io/api/sentinel-policies.html
+        https://www.nomadproject.io/api/sentinel-policies.html
 
-            arguments:
-                - name
-                - policy
-            returns: requests.Response
+        arguments:
+            - name
+            - policy
+        returns: requests.Response
 
-            raises:
-              - nomad.api.exceptions.BaseNomadException
-              - nomad.api.exceptions.URLNotFoundNomadException
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request("policy", _id, json=policy, method="post")
+        return self.request("policy", id_, json=policy, method="post")
 
-    def delete_policy(self, _id):
-        """ Delete specific policy.
+    def delete_policy(self, id_):
+        """Delete specific policy.
 
-            https://www.nomadproject.io/api/sentinel-policies.html
+        https://www.nomadproject.io/api/sentinel-policies.html
 
-            arguments:
-                - _id
-            returns: Boolean
+        arguments:
+            - id_
+        returns: Boolean
 
-            raises:
-              - nomad.api.exceptions.BaseNomadException
-              - nomad.api.exceptions.URLNotFoundNomadException
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request("policy", _id, method="delete").ok
+        return self.request("policy", id_, method="delete").ok

@@ -3,8 +3,8 @@ import nomad.api.exceptions
 
 from nomad.api.base import Requester
 
-class Evaluations(Requester):
 
+class Evaluations(Requester):
     """
     The evaluations endpoint is used to query the status of evaluations.
     By default, the agent's local region is used; another region can
@@ -12,6 +12,7 @@ class Evaluations(Requester):
 
     https://www.nomadproject.io/docs/http/evals.html
     """
+
     ENDPOINT = "evaluations"
 
     def __init__(self, **kwargs):
@@ -58,16 +59,16 @@ class Evaluations(Requester):
         return iter(evaluations)
 
     def get_evaluations(self, prefix=None):
-        """ Lists all the evaluations.
+        """Lists all the evaluations.
 
-           https://www.nomadproject.io/docs/http/evals.html
-            arguments:
-              - prefix :(str) optional, specifies a string to filter evaluations on based on an prefix.
-                        This is specified as a querystring parameter.
-            returns: list
-            raises:
-              - nomad.api.exceptions.BaseNomadException
-              - nomad.api.exceptions.URLNotFoundNomadException
+        https://www.nomadproject.io/docs/http/evals.html
+        arguments:
+          - prefix :(str) optional, specifies a string to filter evaluations on based on an prefix.
+                    This is specified as a querystring parameter.
+        returns: list
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         params = {"prefix": prefix}
         return self.request(method="get", params=params).json()

@@ -46,19 +46,19 @@ class Allocations(Requester):
         """Lists all the allocations.
 
         https://www.nomadproject.io/docs/http/allocs.html
-         arguments:
-           - prefix :(str) optional, specifies a string to filter allocations on based on an prefix.
-                     This is specified as a querystring parameter.
-           - filter_ :(str) optional
-                     Name has a trailing underscore not to conflict with builtin function.
-           - namespace :(str) optional, specifies the target namespace. Specifying * would return all jobs.
-                     This is specified as a querystring parameter.
-           - resources :(bool) optional
-           - task_states :(bool) optional
-         returns: list
-         raises:
-           - nomad.api.exceptions.BaseNomadException
-           - nomad.api.exceptions.URLNotFoundNomadException
+        arguments:
+          - prefix :(str) optional, specifies a string to filter allocations on based on an prefix.
+                    This is specified as a querystring parameter.
+          - filter_ :(str) optional
+                    Name has a trailing underscore not to conflict with builtin function.
+          - namespace :(str) optional, specifies the target namespace. Specifying * would return all jobs.
+                    This is specified as a querystring parameter.
+          - resources :(bool) optional
+          - task_states :(bool) optional
+        returns: list
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         params = {
             "prefix": prefix,

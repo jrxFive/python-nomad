@@ -3,7 +3,6 @@ from nomad.api.base import Requester
 
 
 class Metrics(Requester):
-
     """
     The /metrics endpoint returns metrics for the current Nomad process.
 
@@ -13,6 +12,7 @@ class Metrics(Requester):
 
     https://www.nomadproject.io/docs/agent/telemetry.html
     """
+
     ENDPOINT = "metrics"
 
     def __init__(self, **kwargs):
@@ -29,13 +29,13 @@ class Metrics(Requester):
         raise AttributeError(msg)
 
     def get_metrics(self):
-        """ Get the metrics
+        """Get the metrics
 
-           https://www.nomadproject.io/api/metrics.html
+        https://www.nomadproject.io/api/metrics.html
 
-            returns: dict
-            raises:
-              - nomad.api.exceptions.BaseNomadException
-              - nomad.api.exceptions.URLNotFoundNomadException
+        returns: dict
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request(method="get").json()

@@ -3,7 +3,9 @@ import os
 
 
 # integration tests requires nomad Vagrant VM or Binary running
-@pytest.mark.skipif(tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 7, 1), reason="Not supported in version")
+@pytest.mark.skipif(
+    tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 7, 1), reason="Not supported in version"
+)
 def test_metrics(nomad_setup):
     nomad_setup.metrics.get_metrics()
 

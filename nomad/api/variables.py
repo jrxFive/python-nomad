@@ -3,7 +3,6 @@ from nomad.api.base import Requester
 
 
 class Variables(Requester):
-
     """
     The /vars endpoints are used to query for and interact with variables.
     https://developer.hashicorp.com/nomad/api-docs/variables
@@ -50,14 +49,14 @@ class Variables(Requester):
         https://developer.hashicorp.com/nomad/api-docs/variables
 
         optional_arguments:
-            - prefix, (default "") Specifies a string to filter variables on based on an index prefix.
-                This is specified as a query string parameter.
-            - namespace :(str) optional, Specifies the target namespace.
-                Specifying * will return all variables across all the authorized namespaces.
+          - prefix, (default "") Specifies a string to filter variables on based on an index prefix.
+            This is specified as a query string parameter.
+          - namespace :(str) optional, Specifies the target namespace.
+            Specifying * will return all variables across all the authorized namespaces.
         returns: list of dicts
         raises:
-            - nomad.api.exceptions.BaseNomadException
-            - nomad.api.exceptions.URLNotFoundNomadException
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         params = {"prefix": prefix}
         if namespace:

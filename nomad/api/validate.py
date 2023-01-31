@@ -28,17 +28,17 @@ class Validate(Requester):
         raise AttributeError(msg)
 
     def validate_job(self, nomad_job_dict):
-        """ This endpoint validates a Nomad job file. The local Nomad agent forwards the request to a server.
+        """This endpoint validates a Nomad job file. The local Nomad agent forwards the request to a server.
         In the event a server can't be reached the agent verifies the job file locally but skips validating driver
         configurations.
 
-            https://www.nomadproject.io/api/validate.html
+        https://www.nomadproject.io/api/validate.html
 
-            arguments:
-              - nomad_job_json, any valid nomad job IN dict FORMAT
-            returns: dict
-            raises:
-              - nomad.api.exceptions.BaseNomadException
-              - nomad.api.exceptions.URLNotFoundNomadException
+        arguments:
+          - nomad_job_json, any valid nomad job IN dict FORMAT
+        returns: dict
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request("job", json=nomad_job_dict, method="post")
