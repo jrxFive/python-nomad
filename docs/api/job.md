@@ -287,7 +287,7 @@ parametrize_job = {
                         "Name": "example-task",
                         "Driver": "docker",
                         "Config": {
-                            "args": ["${NOMAD_META_TIME"],
+                            "args": ["${NOMAD_META_TIME}"],
                             "command": "sleep",
                             "image": "scratch",
                             "logging": [],
