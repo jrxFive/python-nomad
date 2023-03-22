@@ -6,7 +6,7 @@ The deployment endpoints are used to query for and interact with deployments.
 
 This endpoint lists all deployments.
 
-https://www.nomadproject.io/api/deployments.html#list-deployments
+https://developer.hashicorp.com/nomad/api-docs/deployments#list-deployments
 
 Example:
 

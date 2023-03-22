@@ -4,7 +4,7 @@
 
 This endpoint lists all allocations.
 
-https://www.nomadproject.io/api/allocations.html#list-allocations
+https://developer.hashicorp.com/nomad/api-docs/allocations#list-allocations
 
 Example:
 

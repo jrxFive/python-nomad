@@ -6,7 +6,7 @@ The deployment endpoints are used to query for and interact with deployments.
 
 This endpoint reads information about a specific deployment by ID.
 
-https://www.nomadproject.io/api/deployments.html#read-deployment
+https://developer.hashicorp.com/nomad/api-docs/deployments#read-deployment
 
 Example:
 
@@ -25,7 +25,7 @@ print (deployment)
 
 This endpoint lists the allocations created or modified for the given deployment.
 
-https://www.nomadproject.io/api/deployments.html#list-allocations-for-deployment
+https://developer.hashicorp.com/nomad/api-docs/deployments#list-allocations-for-deployment
 
 Example:
 
@@ -44,7 +44,7 @@ for allocation in allocations:
 
 This endpoint is used to mark a deployment as failed. This should be done to force the scheduler to stop creating allocations as part of the deployment or to cause a rollback to a previous job version. This endpoint only triggers a rollback if the most recent stable version of the job has a different specification than the job being reverted.
 
-https://www.nomadproject.io/api/deployments.html#fail-deployment
+https://developer.hashicorp.com/nomad/api-docs/deployments#fail-deployment
 
 example:
 
@@ -69,7 +69,7 @@ fail_deployment = my_nomad.deployment.fail_deployment('a8061a1c-d4c9-2a7d-a4b2-9
 
 This endpoint is used to pause or unpause a deployment. This is done to pause a rolling upgrade or resume it.
 
-https://www.nomadproject.io/api/deployments.html#pause-deployment
+https://developer.hashicorp.com/nomad/api-docs/deployments#pause-deployment
 
 example:
 
@@ -103,7 +103,7 @@ pause = my_nomad.deployment.pause_deployment("52c47d49-eefa-540f-f0f1-d25ba298c8
 
 This endpoint is used to promote task groups that have canaries for a deployment. This should be done when the placed canaries are healthy and the rolling upgrade of the remaining allocations should begin.
 
-https://www.nomadproject.io/api/deployments.html#promote-deployment
+https://developer.hashicorp.com/nomad/api-docs/deployments#promote-deployment
 
 #### Promote All
 
@@ -138,7 +138,7 @@ promote = my_nomad.deployment.promote_deployment_groups("52c47d49-eefa-540f-f0f1
 
 This endpoint is used to set the health of an allocation that is in the deployment manually. In some use cases, automatic detection of allocation health may not be desired. As such those task groups can be marked with an upgrade policy that uses health_check = "manual". Those allocations must have their health marked manually using this endpoint. Marking an allocation as healthy will allow the rolling upgrade to proceed. Marking it as failed will cause the deployment to fail. This endpoint only triggers a rollback if the most recent stable version of the job has a different specification than the job being reverted.
 
-https://www.nomadproject.io/api/deployments.html#set-allocation-health-in-deployment
+https://developer.hashicorp.com/nomad/api-docs/deployments#set-allocation-health-in-deployment
 
 example:
 

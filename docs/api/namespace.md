@@ -8,7 +8,7 @@ You must have nomad **ENTERPRISE Edition**
 
 Create new namespace
 
-https://www.nomadproject.io/api/namespaces.html#create-or-update-namespace
+https://developer.hashicorp.com/nomad/api-docs/namespaces#create-or-update-namespace
 
 Exmample:
 
@@ -52,7 +52,7 @@ print (my_nomad.get_namespace())
 
 This endpoint reads information about a specific namespace.
 
-https://www.nomadproject.io/api/namespaces.html#read-namespace
+https://developer.hashicorp.com/nomad/api-docs/namespaces#read-namespace
 
 Exmample:
 
@@ -69,7 +69,7 @@ namespace = my_nomad.namespace.get_namespace("api-prod")
 
 Update existing namespace
 
-https://www.nomadproject.io/api/namespaces.html#create-or-update-namespace
+https://developer.hashicorp.com/nomad/api-docs/namespaces#create-or-update-namespace
 
 Example:
 
@@ -89,7 +89,7 @@ my_nomad.namespace.create_namespace("api-prod", namespace)
 
 Delete namespace
 
-https://www.nomadproject.io/api/namespaces.html#create-or-update-namespace
+https://developer.hashicorp.com/nomad/api-docs/namespaces#create-or-update-namespace
 
 Exmaple:
 

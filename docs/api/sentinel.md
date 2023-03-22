@@ -8,7 +8,7 @@ You must have nomad **ENTERPRISE Edition**
 
 Get all policies
 
-https://www.nomadproject.io/api/sentinel-policies.html#list-policies
+https://developer.hashicorp.com/nomad/api-docs/sentinel-policies#list-policies
 
 Example:
 
@@ -24,7 +24,7 @@ policies = my_nomad.sentinel.get_policies()
 
 Create a policy
 
-https://www.nomadproject.io/api/sentinel-policies.html#create-or-update-policy
+https://developer.hashicorp.com/nomad/api-docs/sentinel-policies#create-or-update-policy
 
 Example:
 ```
@@ -47,7 +47,7 @@ my_nomad.sentinel.create_policy("my-policy", policy)
 
 Update specific policy
 
-https://www.nomadproject.io/api/sentinel-policies.html#create-or-update-policy
+https://developer.hashicorp.com/nomad/api-docs/sentinel-policies#create-or-update-policy
 
 Example:
 
@@ -71,7 +71,7 @@ my_nomad.sentinel.update_policy("my-policy", policy)
 
 Get specific policy
 
-https://www.nomadproject.io/api/sentinel-policies.html#read-policy
+https://developer.hashicorp.com/nomad/api-docs/sentinel-policies#read-policy
 
 Example:
 
@@ -87,7 +87,7 @@ policy = my_nomad.sentinel.get_policy("my-policy")
 
 Delete specific policy
 
-https://www.nomadproject.io/api/sentinel-policies.html#delete-policy
+https://developer.hashicorp.com/nomad/api-docs/sentinel-policies#delete-policy
 
 Example:
 

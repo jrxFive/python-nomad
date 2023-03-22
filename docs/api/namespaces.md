@@ -8,7 +8,7 @@ You must have nomad **ENTERPRISE Edition**
 
 This endpoint lists all namespaces.
 
-https://www.nomadproject.io/api/namespaces.html#list-namespaces
+https://developer.hashicorp.com/nomad/api-docs/namespaces#list-namespaces
 
 Exmaple:
 

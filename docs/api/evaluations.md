@@ -4,7 +4,7 @@
 
 This endpoint lists all evaluations.
 
-https://www.nomadproject.io/api/evaluations.html#list-evaluations
+https://developer.hashicorp.com/nomad/api-docs/evaluations#list-evaluations
 
 Example:
 
