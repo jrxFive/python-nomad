@@ -4,7 +4,7 @@
 
 This endpoint validates a Nomad job file. The local Nomad agent forwards the request to a server. In the event a server can't be reached the agent verifies the job file locally but skips validating driver configurations.
 
-https://www.nomadproject.io/api/validate.html#validate-job
+https://developer.hashicorp.com/nomad/api-docs/validate#validate-job
 
 Example:
 

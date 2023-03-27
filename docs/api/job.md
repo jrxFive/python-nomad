@@ -4,7 +4,7 @@
 
 This endpoint creates (aka "registers") a new job in the system.
 
-https://www.nomadproject.io/api/jobs.html#create-job
+https://developer.hashicorp.com/nomad/api-docs/jobs#create-job
 
 Example:
 
@@ -109,7 +109,7 @@ response = my_nomad.job.register_job("example", job)
 
 This endpoint reads information about a single job for its specification and status.
 
-https://www.nomadproject.io/api/jobs.html#read-job
+https://developer.hashicorp.com/nomad/api-docs/jobs#read-job
 
 
 Example:
@@ -126,7 +126,7 @@ job = my_nomad.job.get_job("example")
 
 This endpoint reads information about all versions of a job.
 
-https://www.nomadproject.io/api/jobs.html#list-job-versions
+https://developer.hashicorp.com/nomad/api-docs/jobs#list-job-versions
 
 Example:
 
@@ -145,7 +145,7 @@ for version in versions["Versions"]:
 
 This endpoint reads information about a single job's allocations.
 
-https://www.nomadproject.io/api/jobs.html#list-job-allocations
+https://developer.hashicorp.com/nomad/api-docs/jobs#list-job-allocations
 
 Example:
 
@@ -164,7 +164,7 @@ for allocation in allocations:
 
 This endpoint reads information about a single job's evaluations
 
-https://www.nomadproject.io/api/jobs.html#list-job-evaluations
+https://developer.hashicorp.com/nomad/api-docs/jobs#list-job-evaluations
 
 Example:
 
@@ -184,7 +184,7 @@ for evaluation in evaluations:
 
 This endpoint lists a single job's deployments
 
-https://www.nomadproject.io/api/jobs.html#list-job-deployments
+https://developer.hashicorp.com/nomad/api-docs/jobs#list-job-deployments
 
 Example:
 
@@ -204,7 +204,7 @@ for deployment in deployments:
 
 This endpoint returns a single job's most recent deployment.
 
-https://www.nomadproject.io/api/jobs.html#read-job-39-s-most-recent-deployment
+https://developer.hashicorp.com/nomad/api-docs/jobs#read-job-39-s-most-recent-deployment
 
 Example:
 
@@ -221,7 +221,7 @@ deployment = my_nomad.job.get_deployment("example")
 
 This endpoint reads summary information about a job.
 
-https://www.nomadproject.io/api/jobs.html#read-job-summary
+https://developer.hashicorp.com/nomad/api-docs/jobs#read-job-summary
 
 Example:
 
@@ -238,7 +238,7 @@ summary = my_nomad.job.get_summary("example")
 
 This endpoint registers a new job or updates an existing job.
 
-https://www.nomadproject.io/api/jobs.html#update-existing-job
+https://developer.hashicorp.com/nomad/api-docs/jobs#update-existing-job
 
 Example:
 
@@ -249,7 +249,7 @@ See create new job
 
 This endpoint dispatches a new instance of a parameterized job.
 
-https://www.nomadproject.io/api/jobs.html#dispatch-job
+https://developer.hashicorp.com/nomad/api-docs/jobs#dispatch-job
 
 Example:
 
@@ -340,7 +340,7 @@ my_nomad.job.dispatch_job("example-batch", meta={"time": "500"})
 
 This endpoint reverts the job to an older version.
 
-https://www.nomadproject.io/api/jobs.html#revert-to-older-job-version
+https://developer.hashicorp.com/nomad/api-docs/jobs#revert-to-older-job-version
 
 Example:
 
@@ -361,7 +361,7 @@ my_nomad.job.revert_job("example", prior_job_version, current_job_version)
 
 This endpoint sets the job's stability.
 
-https://www.nomadproject.io/api/jobs.html#set-job-stability
+https://developer.hashicorp.com/nomad/api-docs/jobs#set-job-stability
 
 Example:
 
@@ -380,7 +380,7 @@ my_nomad.job.stable_job("example", current_job_version, True)
 
 This endpoint creates a new evaluation for the given job. This can be used to force run the scheduling logic if necessary.
 
-https://www.nomadproject.io/api/jobs.html#create-job-evaluation
+https://developer.hashicorp.com/nomad/api-docs/jobs#create-job-evaluation
 
 Example:
 
@@ -396,7 +396,7 @@ my_nomad.job.evaluate_job("example")
 
 This endpoint invokes a dry-run of the scheduler for the job.
 
-https://www.nomadproject.io/api/jobs.html#create-job-plan
+https://developer.hashicorp.com/nomad/api-docs/jobs#create-job-plan
 
 Example:
 
@@ -500,7 +500,7 @@ plan = my_nomad.job.plan_job("example", job)
 
 This endpoint deregisters a job, and stops all allocations part of it.
 
-https://www.nomadproject.io/api/jobs.html#stop-a-job
+https://developer.hashicorp.com/nomad/api-docs/jobs#stop-a-job
 
 Example of deferred removal of job (performed by Nomad garbage collector):
 

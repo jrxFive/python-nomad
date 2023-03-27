@@ -4,7 +4,7 @@
 
 This endpoint returns the address of the current leader in the region.
 
-https://www.nomadproject.io/api/status.html#read-leader
+https://developer.hashicorp.com/nomad/api-docs/status#read-leader
 
 Example:
 
@@ -20,7 +20,7 @@ leader = my_nomad.status.leader.get_leader()
 
 This endpoint returns the set of raft peers in the region.
 
-https://www.nomadproject.io/api/status.html#list-peers
+https://developer.hashicorp.com/nomad/api-docs/status#list-peers
 
 Example:
 

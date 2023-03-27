@@ -2,7 +2,7 @@
 
 ### List regions
 
-https://www.nomadproject.io/api/regions.html#list-regions
+https://developer.hashicorp.com/nomad/api-docs/regions#list-regions
 
 Example:
 

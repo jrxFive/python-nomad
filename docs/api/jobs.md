@@ -4,7 +4,7 @@
 
 This endpoint lists all known jobs in the system registered with Nomad.
 
-https://www.nomadproject.io/api/jobs.html#list-jobs
+https://developer.hashicorp.com/nomad/api-docs/jobs#list-jobs
 
 Example:
 
@@ -23,7 +23,7 @@ for job in jobs:
 
 This endpoint creates (aka "registers") a new job in the system.
 
-https://www.nomadproject.io/api/jobs.html#create-job
+https://developer.hashicorp.com/nomad/api-docs/jobs#create-job
 
 Example:
 
@@ -129,7 +129,7 @@ To convert to python dict and verify for correctness a hcl/nomad file. The examp
 `nomad job init` and it will assume this file is in the current working directory. In practice this file should already
 be read and used as the parameter hcl.
 
-https://www.nomadproject.io/api/jobs.html#parse-job
+https://developer.hashicorp.com/nomad/api-docs/jobs#parse-job
 
 ```python
 

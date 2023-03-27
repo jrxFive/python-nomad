@@ -4,7 +4,7 @@
 
 This endpoint queries the status of a client node.
 
-https://www.nomadproject.io/api/nodes.html#read-node
+https://developer.hashicorp.com/nomad/api-docs/nodes#read-node
 
 Example:
 
@@ -20,7 +20,7 @@ node = my_nomad.node.get_node('ed1bbae7-c38a-df2d-1de7-50dbc753fc98')
 
 This endpoint lists all of the allocations for the given node. This can be used to determine what allocations have been scheduled on the node, their current status, and the values of dynamically assigned resources, like ports.
 
-https://www.nomadproject.io/api/nodes.html#list-node-allocations
+https://developer.hashicorp.com/nomad/api-docs/nodes#list-node-allocations
 
 Example:
 
@@ -40,7 +40,7 @@ for allocation in allocations:
 
 This endpoint creates a new evaluation for the given node. This can be used to force a run of the scheduling logic.
 
-https://www.nomadproject.io/api/nodes.html#create-node-evaluation
+https://developer.hashicorp.com/nomad/api-docs/nodes#create-node-evaluation
 
 Example:
 
@@ -56,7 +56,7 @@ my_nomad.node.evaluate_node('ed1bbae7-c38a-df2d-1de7-50dbc753fc98')
 
 This endpoint toggles the drain mode of the node. When draining is enabled, no further allocations will be assigned to this node, and existing allocations will be migrated to new nodes.
 
-https://www.nomadproject.io/api/nodes.html#drain-node
+https://developer.hashicorp.com/nomad/api-docs/nodes#drain-node
 
 Example:
 
@@ -76,7 +76,7 @@ my_nomad.node.drain_node('ed1bbae7-c38a-df2d-1de7-50dbc753fc98', enable=False)
 
 This endpoint toggles the drain mode of the node. When draining is enabled, no further allocations will be assigned to this node, and existing allocations will be migrated to new nodes.
 
-https://www.nomadproject.io/api/nodes.html#drain-node
+https://developer.hashicorp.com/nomad/api-docs/nodes#drain-node
 
 Example:
 
@@ -102,7 +102,7 @@ my_nomad.node.drain_node_with_spec('ed1bbae7-c38a-df2d-1de7-50dbc753fc98', drain
 
 This endpoint toggles the eligibility of the node. When a node's "SchedulingEligibility" is ineligible  the scheduler will not consider it for new placements.
 
-https://www.nomadproject.io/api/nodes.html#toggle-node-eligibility
+https://developer.hashicorp.com/nomad/api-docs/nodes#toggle-node-eligibility
 
 Example:
 
@@ -122,7 +122,7 @@ my_nomad.node.eligible_node('ed1bbae7-c38a-df2d-1de7-50dbc753fc98', eligible=Tru
 
 This endpoint purges a node from the system. Nodes can still join the cluster if they are alive.
 
-https://www.nomadproject.io/api/nodes.html#purge-node
+https://developer.hashicorp.com/nomad/api-docs/nodes#purge-node
 
 Example:
 
