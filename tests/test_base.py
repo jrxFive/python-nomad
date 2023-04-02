@@ -147,3 +147,17 @@ def test_base_use_address_instead_on_host_port():
         address=nomad_address, host=common.IP, port=common.NOMAD_PORT, verify=False, token=common.NOMAD_TOKEN
     )
     n.jobs.get_jobs()
+
+@responses.activate
+def test_use_custom_user_agent():
+    custom_agent_name = "custom_agent"
+    responses.add(responses.GET, "https://nomad.service.consul:4646/v1/jobs", status=200, json=[])
+
+    nomad_address = "https://nomad.service.consul:4646"
+    n = nomad.Nomad(
+        address=nomad_address, host=common.IP, port=common.NOMAD_PORT, verify=False,
+        token=common.NOMAD_TOKEN, user_agent=custom_agent_name
+    )
+    n.jobs.get_jobs()
+
+    assert responses.calls[0].request.headers["User-Agent"] == custom_agent_name
