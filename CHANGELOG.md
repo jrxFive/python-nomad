@@ -4,8 +4,9 @@
 * Rename `id` arguments to `id_` across of code base
 * Rename `type` arguments to `type_` across of code base
 ### Other changes
+* Add more missing parameters to allocations.get_allocations()
 * Up `requests` lib version to 2.28.1
-* Add migging parameters to allocations.get_allocations and jobs.get_jobs (#144). Thanks @Kamilcuk
+* Add missing parameters to allocations.get_allocations and jobs.get_jobs (#144). Thanks @Kamilcuk
 
 ## 1.5.0
 * Add `namespace` agrument support for `get_allocations` and `get_deployments` endpoints (#133)
