@@ -57,7 +57,7 @@ jobs:
     - name: Before Tests
       shell: bash
       run: |
-        /tmp/nomad init
+        /tmp/nomad init example.nomad
         /tmp/nomad run -output example.nomad > example.json
     - name: Unit and Integration Tests
       env:
