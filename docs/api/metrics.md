@@ -2,7 +2,7 @@
 
 ### Get node metrics
 
-https://www.nomadproject.io/api/metrics.html
+https://developer.hashicorp.com/nomad/api-docs/metrics.html
 
 Example:
 

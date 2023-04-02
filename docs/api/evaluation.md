@@ -4,7 +4,7 @@
 
 This endpoint reads information about a specific evaluation by ID.
 
-https://www.nomadproject.io/api/evaluations.html#read-evaluation
+https://developer.hashicorp.com/nomad/api-docs/evaluations#read-evaluation
 
 Example:
 
@@ -22,7 +22,7 @@ print (evaluation)
 
 This endpoint lists the allocations created or modified for the given evaluation.
 
-https://www.nomadproject.io/api/evaluations.html#list-allocations-for-evaluation
+https://developer.hashicorp.com/nomad/api-docs/evaluations#list-allocations-for-evaluation
 
 Example:
 

@@ -4,7 +4,7 @@
 
 This endpoint reads information about a specific allocation.
 
-https://www.nomadproject.io/api/allocations.html#read-allocation
+https://developer.hashicorp.com/nomad/api-docs/allocations#read-allocation
 
 ```
 import nomad

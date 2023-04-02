@@ -4,7 +4,7 @@
 
 This endpoint lists all nodes registered with Nomad.
 
-https://www.nomadproject.io/api/nodes.html#list-nodes
+https://developer.hashicorp.com/nomad/api-docs/nodes#list-nodes
 
 Example:
 

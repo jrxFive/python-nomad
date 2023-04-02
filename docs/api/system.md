@@ -4,7 +4,7 @@
 
 This endpoint initializes a garbage collection of jobs, evaluations, allocations, and nodes. This is an asynchronous operation.
 
-https://www.nomadproject.io/api/system.html#force-gc
+https://developer.hashicorp.com/nomad/api-docs/system#force-gc
 
 Example:
 
@@ -20,7 +20,7 @@ my_nomad.system.initiate_garbage_collection()
 
 This endpoint reconciles the summaries of all registered jobs.
 
-https://www.nomadproject.io/api/system.html#reconcile-summaries
+https://developer.hashicorp.com/nomad/api-docs/system#reconcile-summaries
 
 Example:
 
