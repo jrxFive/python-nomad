@@ -1,4 +1,6 @@
 """Requester"""
+from typing import Optional
+
 import requests
 
 import nomad.api.exceptions
@@ -13,20 +15,22 @@ class Requester:  # pylint: disable=too-many-instance-attributes,too-few-public-
 
     def __init__(  # pylint: disable=too-many-arguments
         self,
-        address=None,
-        uri="http://127.0.0.1",
-        port=4646,
-        namespace=None,
-        token=None,
-        timeout=5,
-        version="v1",
-        verify=False,
-        cert=(),
-        region=None,
-        session=None,
+        address: Optional[str] = None,
+        uri: Optional[str] = "http://127.0.0.1",
+        port: int = 4646,
+        user_agent: Optional[str] = None,
+        namespace: Optional[str] = None,
+        token: Optional[str] = None,
+        timeout: int = 5,
+        version: str = "v1",
+        verify: bool = False,
+        cert: tuple = (),
+        region: Optional[str] = None,
+        session: requests.Session = None,
     ):
         self.uri = uri
         self.port = port
+        self.user_agent = user_agent
         self.namespace = namespace
         self.token = token
         self.timeout = timeout
@@ -139,6 +143,9 @@ class Requester:  # pylint: disable=too-many-instance-attributes,too-few-public-
                 headers["X-Nomad-Token"] = self.token
             else:
                 headers = {"X-Nomad-Token": self.token}
+
+        if self.user_agent:
+            headers["User-Agent"] = self.user_agent
 
         response = None
 
