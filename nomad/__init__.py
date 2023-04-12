@@ -1,5 +1,8 @@
 """Nomad Python library"""
 import os
+from typing import Optional
+
+import requests
 
 from nomad import api
 
@@ -11,18 +14,19 @@ class Nomad:  # pylint: disable=too-many-public-methods,too-many-instance-attrib
 
     def __init__(  # pylint: disable=too-many-arguments
         self,
-        host="127.0.0.1",
-        secure=False,
-        port=4646,
-        address=os.getenv("NOMAD_ADDR", None),
-        namespace=os.getenv("NOMAD_NAMESPACE", None),
-        token=os.getenv("NOMAD_TOKEN", None),
-        timeout=5,
-        region=os.getenv("NOMAD_REGION", None),
-        version="v1",
-        verify=False,
-        cert=(os.getenv("NOMAD_CLIENT_CERT", None), os.getenv("NOMAD_CLIENT_KEY", None)),
-        session=None,
+        host: str = "127.0.0.1",
+        secure: bool = False,
+        port: int = 4646,
+        address: Optional[str] = os.getenv("NOMAD_ADDR", None),
+        user_agent: Optional[str] = None,
+        namespace: Optional[str] = os.getenv("NOMAD_NAMESPACE", None),
+        token: Optional[str] = os.getenv("NOMAD_TOKEN", None),
+        timeout: int = 5,
+        region: Optional[str] = os.getenv("NOMAD_REGION", None),
+        version: str = "v1",
+        verify: bool = False,
+        cert: tuple = (os.getenv("NOMAD_CLIENT_CERT", None), os.getenv("NOMAD_CLIENT_KEY", None)),
+        session: requests.Session = None,
     ):
         """Nomad api client
 
@@ -31,18 +35,19 @@ class Nomad:  # pylint: disable=too-many-public-methods,too-many-instance-attrib
          optional arguments:
           - host (defaults 127.0.0.1), string ip or name of the nomad api server/agent that will be used.
           - port (defaults 4646), integer port that will be used to connect.
+          - user_agent (defaults None), custom user agent for requests to Nomad.
           - secure (defaults False), define if the protocol is secured or not (https or http)
-          - version (defaults v1), vesion of the api of nomad.
+          - version (defaults v1), version of the api of nomad.
           - verify (defaults False), verify the certificate when tls/ssl is enabled
                               at nomad.
           - cert (defaults empty), cert, or key and cert file to validate the certificate
                               configured at nomad.
           - region (defaults None), version of the region to use. It will be used then
                               regions of the current agent of the connection.
-          - namespace (defaults to None), Specifies the enterpise namespace that will
+          - namespace (defaults to None), Specifies the enterprise namespace that will
                               be use to deploy or to ask info to nomad.
           - token (defaults to None), Specifies to append ACL token to the headers to
-                              make authentication on secured based nomad environemnts.
+                              make authentication on secured based nomad environments.
           - session (defaults to None), allows for injecting a prepared requests.Session object that
                               all requests to Nomad should use.
          returns: Nomad api client object
@@ -56,6 +61,7 @@ class Nomad:  # pylint: disable=too-many-public-methods,too-many-instance-attrib
         self.secure = secure
         self.port = port
         self.address = address
+        self.user_agent = user_agent
         self.region = region
         self.timeout = timeout
         self.version = version
@@ -69,6 +75,7 @@ class Nomad:  # pylint: disable=too-many-public-methods,too-many-instance-attrib
             "address": self.address,
             "uri": self.get_uri(),
             "port": self.port,
+            "user_agent": self.user_agent,
             "namespace": self.__namespace,
             "token": self.token,
             "timeout": self.timeout,
