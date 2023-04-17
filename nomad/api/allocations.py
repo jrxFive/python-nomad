@@ -38,10 +38,13 @@ class Allocations(Requester):
     def get_allocations(  # pylint: disable=too-many-arguments
         self,
         prefix: Optional[str] = None,
+        next_token: Optional[str] = None,
+        per_page: Optional[int] = None,
         filter_: Optional[str] = None,
         namespace: Optional[str] = None,
         resources: Optional[bool] = None,
         task_states: Optional[bool] = None,
+        reverse: Optional[bool] = None,
     ):
         """Lists all the allocations.
 
@@ -49,12 +52,18 @@ class Allocations(Requester):
         arguments:
           - prefix :(str) optional, specifies a string to filter allocations on based on an prefix.
                     This is specified as a querystring parameter.
+          - next_token :(str) optional.
+                    This endpoint supports paging. The next_token parameter accepts a string which identifies the next
+                    expected allocation. This value can be obtained from the X-Nomad-NextToken header from the previous
+                    response.
+          - per_page :(int) optional
           - filter_ :(str) optional
                     Name has a trailing underscore not to conflict with builtin function.
           - namespace :(str) optional, specifies the target namespace. Specifying * would return all jobs.
                     This is specified as a querystring parameter.
           - resources :(bool) optional
           - task_states :(bool) optional
+          - reverse :(bool) optional
         returns: list
         raises:
           - nomad.api.exceptions.BaseNomadException
@@ -62,9 +71,12 @@ class Allocations(Requester):
         """
         params = {
             "prefix": prefix,
+            "next_token": next_token,
+            "per_page": per_page,
             "filter": filter_,
             "namespace": namespace,
             "resources": resources,
             "task_states": task_states,
+            "reverse": reverse,
         }
         return self.request(method="get", params=params).json()
