@@ -14,6 +14,7 @@ def test_register_job(nomad_setup):
 
 # integration tests requires nomad Vagrant VM or Binary running
 def test_get_allocations(nomad_setup):
+    print(nomad_setup.allocations.get_allocations())
     assert isinstance(nomad_setup.allocations.get_allocations(), list) == True
 
 

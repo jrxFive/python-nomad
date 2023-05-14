@@ -1,4 +1,5 @@
 """Nomad Node: https://developer.hashicorp.com/nomad/api-docs/nodes"""
+from typing import Optional
 import nomad.api.exceptions
 
 from nomad.api.base import Requester
@@ -28,7 +29,6 @@ class Node(Requester):
         raise AttributeError(msg)
 
     def __contains__(self, item):
-
         try:
             self.get_node(item)
             return True
@@ -36,7 +36,6 @@ class Node(Requester):
             return False
 
     def __getitem__(self, item):
-
         try:
             node = self.get_node(item)
 
@@ -49,7 +48,7 @@ class Node(Requester):
         except nomad.api.exceptions.URLNotFoundNomadException as exc:
             raise KeyError from exc
 
-    def get_node(self, id_):
+    def get_node(self, id_: str):
         """Query the status of a client node registered with Nomad.
 
         https://www.nomadproject.io/docs/http/node.html
@@ -61,7 +60,7 @@ class Node(Requester):
         """
         return self.request(id_, method="get").json()
 
-    def get_allocations(self, id_):
+    def get_allocations(self, id_: str):
         """Query the allocations belonging to a single node.
 
         https://www.nomadproject.io/docs/http/node.html
@@ -73,7 +72,7 @@ class Node(Requester):
         """
         return self.request(id_, "allocations", method="get").json()
 
-    def evaluate_node(self, id_):
+    def evaluate_node(self, id_: str):
         """Creates a new evaluation for the given node.
          This can be used to force run the
          scheduling logic if necessary.
@@ -87,7 +86,7 @@ class Node(Requester):
         """
         return self.request(id_, "evaluate", method="post").json()
 
-    def drain_node(self, id_, enable=False):
+    def drain_node(self, id_, enable: bool = False):
         """Toggle the drain mode of the node.
          When enabled, no further allocations will be
          assigned and existing allocations will be migrated.
@@ -105,7 +104,7 @@ class Node(Requester):
 
         return self.request(id_, "drain", params={"enable": enable}, method="post").json()
 
-    def drain_node_with_spec(self, id_, drain_spec, mark_eligible=None):
+    def drain_node_with_spec(self, id_, drain_spec: Optional[dict], mark_eligible: Optional[bool] = None):
         """This endpoint toggles the drain mode of the node. When draining is enabled,
         no further allocations will be assigned to this node, and existing allocations
         will be migrated to new nodes.
@@ -139,7 +138,7 @@ class Node(Requester):
 
         return self.request(id_, "drain", json=payload, method="post").json()
 
-    def eligible_node(self, id_, eligible=None, ineligible=None):
+    def eligible_node(self, id_: str, eligible: Optional[bool] = None, ineligible: Optional[bool] = None):
         """Toggle the eligibility of the node.
 
         https://www.nomadproject.io/docs/http/node.html
@@ -171,7 +170,7 @@ class Node(Requester):
 
         return self.request(id_, "eligibility", json=payload, method="post").json()
 
-    def purge_node(self, id_):
+    def purge_node(self, id_: str):
         """This endpoint purges a node from the system. Nodes can still join the cluster if they are alive.
         arguments:
           - id_ (str uuid): node id
