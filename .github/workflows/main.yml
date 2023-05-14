@@ -45,7 +45,7 @@ jobs:
         echo "unzip nomad"
         unzip -d /tmp /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip
         echo $PATH
-        mv /tmp/nomad /usr/bin/nomad
+        mv /tmp/nomad /usr/local/bin/nomad
     - name: Install Dependencies
       shell: bash
       run: |
