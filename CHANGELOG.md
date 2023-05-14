@@ -4,11 +4,12 @@
 * Rename `id` arguments to `id_` across of code base
 * Rename `type` arguments to `type_` across of code base
 ### Other changes
+* Add more missing parameters to allocations.get_allocations()
 * Up `requests` lib version to 2.28.1
-* Add migging parameters to allocations.get_allocations and jobs.get_jobs (#144). Thanks @Kamilcuk
-
+* Add missing parameters to allocations.get_allocations and jobs.get_jobs (#144). Thanks @Kamilcuk
+* Add option for custom user agent
 ## 1.5.0
-* Add `namespace` agrument support for `get_allocations` and `get_deployments` endpoints (#133)
+* Add `namespace` argument support for `get_allocations` and `get_deployments` endpoints (#133)
 * Add Python 3.10 support (#133)
 * Add support for pre-populated Sessions (#132)
 * Add scaling policy endpoint (#136)
