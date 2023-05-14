@@ -43,9 +43,7 @@ jobs:
         curl -L -o /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip
 
         echo "unzip nomad"
-        unzip -d /tmp /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip
-        echo $PATH
-        mv /tmp/nomad /usr/local/bin/nomad
+        unzip -d /usr/local/bin/ /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip
     - name: Install Dependencies
       shell: bash
       run: |
