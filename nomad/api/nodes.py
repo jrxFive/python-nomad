@@ -63,14 +63,14 @@ class Nodes(Requester):
         nodes = self.get_nodes()
         return iter(nodes)
 
-    def get_nodes(
+    def get_nodes(  # pylint: disable=too-many-arguments
         self,
         prefix: Optional[str] = None,
         next_token: Optional[str] = None,
         per_page: Optional[str] = None,
         filter_: Optional[str] = None,
         resources: Optional[bool] = None,
-        os: Optional[bool] = None,
+        os: Optional[bool] = None,  # pylint: disable=invalid-name
     ):
         """Lists all the client nodes registered with Nomad.
 
