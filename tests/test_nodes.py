@@ -10,7 +10,15 @@ def test_get_nodes_prefix(nomad_setup):
     nodes = nomad_setup.nodes.get_nodes()
     prefix = nodes[0]["ID"][:4]
     nomad_setup.nodes.get_nodes(prefix=prefix)
+def test_get_nodes_resouces(nomad_setup):
+    nodes = nomad_setup.nodes.get_nodes(resources=True)
+    print(nodes)
+    assert "NodeResources" in nodes[0]
 
+def test_get_nodes_os(nomad_setup):
+    nodes = nomad_setup.nodes.get_nodes(os=True)
+    print(nodes)
+    assert "os.name" in nodes[0]["Attributes"]
 
 def test_dunder_getitem_exist(nomad_setup):
     n = nomad_setup.nodes["pynomad1"]
