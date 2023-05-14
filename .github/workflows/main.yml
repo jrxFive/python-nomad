@@ -44,6 +44,8 @@ jobs:
 
         echo "unzip nomad"
         unzip -d /tmp /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip
+        mv /tmp/nomad /usr/bin/nomad
+        echo $PATH
     - name: Install Dependencies
       shell: bash
       run: |
@@ -53,8 +55,8 @@ jobs:
     - name: Before Tests
       shell: bash
       run: |
-        /tmp/nomad init example.nomad
-        /tmp/nomad run -output example.nomad > example.json
+        nomad init example.nomad
+        nomad run -output example.nomad > example.json
     - name: Unit and Integration Tests
       env:
         NOMAD_VERSION: ${{ matrix.nomad-version }}

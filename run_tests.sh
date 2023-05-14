@@ -3,19 +3,16 @@
 # Run tests with local Nomad binaries. 
 set -ueo pipefail
 
-NOMAD_BIN="/tmp/nomad"
-
-if [ "${1-}" == "local" ]; then
+if [ "${1-}" == "init" ]; then
     virtualenv .venv
     pip install -r requirements-dev.txt
     source .venv/bin/activate
-    NOMAD_BIN="nomad"
 fi
 
 NOMAD_VERSION=`nomad --version | awk '{print $2}' | cut -c2-` 
 
 echo "Run Nomad in dev mode"
-$NOMAD_BIN agent -dev -node pynomad1 --acl-enabled &> nomad.log &
+nomad agent -dev -node pynomad1 --acl-enabled &> nomad.log &
 NOMAD_PID=$!
 
 sleep 3
