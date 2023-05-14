@@ -44,10 +44,6 @@ jobs:
 
         echo "unzip nomad"
         unzip -d /tmp /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip
-
-        echo "starting nomad server"
-        /tmp/nomad agent -dev -bind ${NOMAD_IP} -node pynomad1 --acl-enabled > /dev/null 2>&1 &
-        sleep 30
     - name: Install Dependencies
       shell: bash
       run: |
@@ -64,7 +60,7 @@ jobs:
         NOMAD_VERSION: ${{ matrix.nomad-version }}
       shell: bash
       run: |
-        py.test --cov=nomad --cov-report=term-missing --runxfail tests/
+        ./run_tests.sh
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v2
     - name: Create Package
