@@ -2,6 +2,7 @@
 import nomad.api.exceptions
 
 from nomad.api.base import Requester
+from typing import Union
 
 
 class Job(Requester):
@@ -272,28 +273,47 @@ class Job(Requester):
         revert_json = {"JobID": id_, "JobVersion": version, "Stable": stable}
         return self.request(id_, "stable", json=revert_json, method="post").json()
 
-    def deregister_job(self, id_, purge=None):
-        """Deregisters a job, and stops all allocations part of it.
+    def deregister_job(
+        self,
+        id_: str,
+        eval_priority: Union[int, None] = None,
+        global_: Union[bool, None] = None,
+        namespace: Union[str, None] = None,
+        purge: Union[bool, None] = None,
+        ):
+        """ Deregisters a job, and stops all allocations part of it.
 
         https://www.nomadproject.io/docs/http/job.html
 
         arguments:
-          - id_
-          - purge (bool), optionally specifies whether the job should be
-            stopped and purged immediately (`purge=True`) or deferred to the
-            Nomad garbage collector (`purge=False`).
+            - id_
+            - eval_priority (int) optional.
+            Override the priority of the evaluations produced as a result
+            of this job deregistration. By default, this is set to the
+            priority of the job.
+            - global_ (bool) optional.
+            Stop a multi-region job in all its regions. By default, job
+            stop will stop only a single region at a time. Ignored for
+            single-region jobs.
+            - purge (bool) optional.
+            Specifies that the job should be stopped and purged immediately.
+            This means the job will not be queryable after being stopped.
+            If not set, the job will be purged by the garbage collector.
+            - namespace (str) optional.
+            Specifies the target namespace. If ACL is enabled, this value
+            must match a namespace that the token is allowed to access.
+            This is specified as a query string parameter.
 
         returns: dict
         raises:
-          - nomad.api.exceptions.BaseNomadException
-          - nomad.api.exceptions.URLNotFoundNomadException
-          - nomad.api.exceptions.InvalidParameters
+            - nomad.api.exceptions.BaseNomadException
+            - nomad.api.exceptions.URLNotFoundNomadException
+            - nomad.api.exceptions.InvalidParameters
         """
-        params = None
-        if purge is not None:
-            if not isinstance(purge, bool):
-                raise nomad.api.exceptions.InvalidParameters(
-                    "purge is invalid " f"(expected type {type(bool())} but got {type(purge)})"
-                )
-            params = {"purge": purge}
+        params = {
+            "eval_priority": eval_priority,
+            "global": global_,
+            "namespace": namespace,
+            "purge": purge,
+        }
         return self.request(id_, params=params, method="delete").json()
