@@ -1,4 +1,6 @@
 """Nomad Node: https://developer.hashicorp.com/nomad/api-docs/nodes"""
+from typing import Optional
+
 import nomad.api.exceptions
 
 from nomad.api.base import Requester
@@ -61,7 +63,15 @@ class Nodes(Requester):
         nodes = self.get_nodes()
         return iter(nodes)
 
-    def get_nodes(self, prefix=None):
+    def get_nodes(  # pylint: disable=too-many-arguments
+        self,
+        prefix: Optional[str] = None,
+        next_token: Optional[str] = None,
+        per_page: Optional[str] = None,
+        filter_: Optional[str] = None,
+        resources: Optional[bool] = None,
+        os: Optional[bool] = None,  # pylint: disable=invalid-name
+    ):
         """Lists all the client nodes registered with Nomad.
 
         https://www.nomadproject.io/docs/http/nodes.html
@@ -73,5 +83,12 @@ class Nodes(Requester):
           - nomad.api.exceptions.BaseNomadException
           - nomad.api.exceptions.URLNotFoundNomadException
         """
-        params = {"prefix": prefix}
+        params = {
+            "prefix": prefix,
+            "next_token": next_token,
+            "per_page": per_page,
+            "filter_": filter_,
+            "resources": resources,
+            "os": os,
+        }
         return self.request(method="get", params=params).json()

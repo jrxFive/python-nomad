@@ -28,7 +28,6 @@ class Namespace(Requester):
         raise AttributeError(msg)
 
     def __contains__(self, item):
-
         try:
             self.get_namespace(item)
             return True
@@ -36,7 +35,6 @@ class Namespace(Requester):
             return False
 
     def __getitem__(self, item):
-
         try:
             job = self.get_namespace(item)
 

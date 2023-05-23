@@ -22,6 +22,9 @@ def test_get_allocations_prefix(nomad_setup):
     prefix = allocations[0]["ID"][:4]
     nomad_setup.allocations.get_allocations(prefix=prefix)
 
+def test_get_allocations_resouces(nomad_setup):
+    allocations = nomad_setup.allocations.get_allocations(resources=True)
+    assert "AllocatedResources" in allocations[0]
 
 def test_dunder_str(nomad_setup):
     assert isinstance(str(nomad_setup.allocations), str)

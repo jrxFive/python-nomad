@@ -36,7 +36,6 @@ class Evaluation(Requester):
             return False
 
     def __getitem__(self, item):
-
         try:
             evaluation = self.get_evaluation(item)
             if evaluation["ID"] == item:

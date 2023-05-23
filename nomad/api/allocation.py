@@ -47,7 +47,7 @@ class Allocation(Requester):
         except nomad.api.exceptions.URLNotFoundNomadException as exc:
             raise KeyError from exc
 
-    def get_allocation(self, id_):
+    def get_allocation(self, id_: str):
         """Query a specific allocation.
 
         https://www.nomadproject.io/docs/http/alloc.html
@@ -59,7 +59,7 @@ class Allocation(Requester):
         """
         return self.request(id_, method="get").json()
 
-    def stop_allocation(self, id_):
+    def stop_allocation(self, id_: str):
         """Stop a specific allocation.
 
         https://www.nomadproject.io/api-docs/allocations/#stop-allocation

@@ -7,7 +7,8 @@
 * Add more missing parameters to allocations.get_allocations()
 * Up `requests` lib version to 2.28.1
 * Add missing parameters to allocations.get_allocations and jobs.get_jobs (#144). Thanks @Kamilcuk
-* Add option for custom user agent
+* Add option for custom user agent (#150)
+* Add missing parameters to nodes.get_nodes (#152).
 ## 1.5.0
 * Add `namespace` argument support for `get_allocations` and `get_deployments` endpoints (#133)
 * Add Python 3.10 support (#133)
