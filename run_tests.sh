@@ -6,9 +6,9 @@ set -ueo pipefail
 if [ "${1-}" == "init" ]; then
     virtualenv .venv
     pip install -r requirements-dev.txt
+    source .venv/bin/activate
 fi
 
-source .venv/bin/activate
 NOMAD_VERSION=`nomad --version | awk '{print $2}' | cut -c2-` 
 
 echo "Run Nomad in dev mode"

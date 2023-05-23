@@ -25,7 +25,7 @@ jobs:
       fail-fast: false
       matrix:
         python-version: ['3.7', '3.11'] # the oldest and newest support versions
-        nomad-version: ['1.0.18', '1.1.18', '1.2.15', '1.3.8', '1.4.3']
+        nomad-version: ['1.0.18', '1.1.18', '1.2.15', '1.3.14', '1.4.9', '1.5.5']
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
@@ -43,11 +43,7 @@ jobs:
         curl -L -o /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip
 
         echo "unzip nomad"
-        unzip -d /tmp /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip
-
-        echo "starting nomad server"
-        /tmp/nomad agent -dev -bind ${NOMAD_IP} -node pynomad1 --acl-enabled > /dev/null 2>&1 &
-        sleep 30
+        unzip -d /usr/local/bin/ /tmp/nomad_${NOMAD_VERSION}_linux_amd64.zip
     - name: Install Dependencies
       shell: bash
       run: |
@@ -57,14 +53,14 @@ jobs:
     - name: Before Tests
       shell: bash
       run: |
-        /tmp/nomad init
-        /tmp/nomad run -output example.nomad > example.json
+        nomad init example.nomad
+        nomad run -output example.nomad > example.json
     - name: Unit and Integration Tests
       env:
         NOMAD_VERSION: ${{ matrix.nomad-version }}
       shell: bash
       run: |
-        py.test --cov=nomad --cov-report=term-missing --runxfail tests/
+        ./run_tests.sh
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v2
     - name: Create Package
