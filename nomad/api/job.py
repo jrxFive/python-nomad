@@ -110,19 +110,30 @@ class Job(Requester):
         }
         return self.request(id_, "allocations", params=params, method="get").json()
 
-    def get_evaluations(self, id_):
+    def get_evaluations(
+        self,
+        id_: str,
+        namespace: Union[str, None] = None,
+        ):
         """Query the evaluations belonging to a single job.
 
         https://www.nomadproject.io/docs/http/job.html
 
         arguments:
-          - id_
+            - id_
+            - namespace (str) optional.
+            Specifies the target namespace. If ACL is enabled, this value
+            must match a namespace that the token is allowed to access.
+            This is specified as a query string parameter.
         returns: dict
         raises:
-          - nomad.api.exceptions.BaseNomadException
-          - nomad.api.exceptions.URLNotFoundNomadException
+            - nomad.api.exceptions.BaseNomadException
+            - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id_, "evaluations", method="get").json()
+        params = {
+            "namespace": namespace,
+        }
+        return self.request(id_, "evaluations", params=params, method="get").json()
 
     def get_deployments(self, id_):
         """This endpoint lists a single job's deployments
