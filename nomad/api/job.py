@@ -82,19 +82,33 @@ class Job(Requester):
         """
         return self.request(id_, "versions", method="get").json()
 
-    def get_allocations(self, id_):
+    def get_allocations(
+        self,
+        id_: str,
+        all_: Union[bool, None] = None,
+        namespace: Union[str, None] = None,
+        ):
         """Query the allocations belonging to a single job.
 
         https://www.nomadproject.io/docs/http/job.html
 
         arguments:
-          - id_
+            - id_
+            - all (bool optional)
+            - namespace (str) optional.
+            Specifies the target namespace. If ACL is enabled, this value
+            must match a namespace that the token is allowed to access.
+            This is specified as a query string parameter.
         returns: list
         raises:
-          - nomad.api.exceptions.BaseNomadException
-          - nomad.api.exceptions.URLNotFoundNomadException
+            - nomad.api.exceptions.BaseNomadException
+            - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id_, "allocations", method="get").json()
+        params = {
+            "all": all_,
+            "namespace": namespace,
+        }
+        return self.request(id_, "allocations", params=params, method="get").json()
 
     def get_evaluations(self, id_):
         """Query the evaluations belonging to a single job.
