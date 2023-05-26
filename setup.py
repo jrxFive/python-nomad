@@ -6,7 +6,7 @@ with open("README.md", "r", encoding='utf-8') as fh:
 
 setuptools.setup(
     name='python-nomad',
-    version='1.5.0',
+    version='2.0.0',
     install_requires=['requests'],
     packages=['nomad', 'nomad.api'],
     url='http://github.com/jrxfive/python-nomad',
