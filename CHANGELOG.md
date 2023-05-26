@@ -1,4 +1,4 @@
-## 2.0.0 (unreleased)
+## 2.0.0
 ### BREAKING CHANGES
 * Drop Python 2 and Python 3.6 support
 * Rename `id` arguments to `id_` across of code base
