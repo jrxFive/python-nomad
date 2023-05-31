@@ -1,8 +1,9 @@
 """Nomad job: https://developer.hashicorp.com/nomad/api-docs/jobs"""
-import nomad.api.exceptions
+
+from typing import Union
 
 from nomad.api.base import Requester
-from typing import Union
+import nomad.api.exceptions
 
 
 class Job(Requester):
@@ -305,7 +306,7 @@ class Job(Requester):
         global_: Union[bool, None] = None,
         namespace: Union[str, None] = None,
         purge: Union[bool, None] = None,
-        ):
+        ):  # pylint: disable=too-many-arguments
         """ Deregisters a job, and stops all allocations part of it.
 
         https://www.nomadproject.io/docs/http/job.html
