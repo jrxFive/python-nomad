@@ -88,7 +88,7 @@ class Job(Requester):
         id_: str,
         all_: Union[bool, None] = None,
         namespace: Union[str, None] = None,
-        ):
+    ):
         """Query the allocations belonging to a single job.
 
         https://www.nomadproject.io/docs/http/job.html
@@ -115,7 +115,7 @@ class Job(Requester):
         self,
         id_: str,
         namespace: Union[str, None] = None,
-        ):
+    ):
         """Query the evaluations belonging to a single job.
 
         https://www.nomadproject.io/docs/http/job.html
@@ -279,7 +279,11 @@ class Job(Requester):
           - nomad.api.exceptions.BaseNomadException
           - nomad.api.exceptions.URLNotFoundNomadException
         """
-        revert_json = {"JobID": id_, "JobVersion": version, "EnforcePriorVersion": enforce_prior_version}
+        revert_json = {
+            "JobID": id_,
+            "JobVersion": version,
+            "EnforcePriorVersion": enforce_prior_version,
+        }
         return self.request(id_, "revert", json=revert_json, method="post").json()
 
     def stable_job(self, id_, version, stable):
@@ -306,8 +310,8 @@ class Job(Requester):
         global_: Union[bool, None] = None,
         namespace: Union[str, None] = None,
         purge: Union[bool, None] = None,
-        ):  # pylint: disable=too-many-arguments
-        """ Deregisters a job, and stops all allocations part of it.
+    ):  # pylint: disable=too-many-arguments
+        """Deregisters a job, and stops all allocations part of it.
 
         https://www.nomadproject.io/docs/http/job.html
 
