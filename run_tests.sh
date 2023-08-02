@@ -9,7 +9,7 @@ if [ "${1-}" == "init" ]; then
     source .venv/bin/activate
 fi
 
-NOMAD_VERSION=`nomad --version | awk '{print $2}' | cut -c2-` 
+NOMAD_VERSION=`nomad --version | awk 'NR==1{print $2}' | cut -c2-` 
 
 echo "Run Nomad in dev mode"
 nomad agent -dev -node pynomad1 --acl-enabled &> nomad.log &
