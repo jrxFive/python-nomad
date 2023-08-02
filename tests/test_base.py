@@ -161,3 +161,10 @@ def test_use_custom_user_agent():
     n.jobs.get_jobs()
 
     assert responses.calls[0].request.headers["User-Agent"] == custom_agent_name
+
+def test_env_variables():
+    # This ensures that the env variables are only read upon initialization of Nomad() instance,
+    # and not before.
+    with mock.patch.dict(os.environ, {"NOMAD_ADDR": "https://foo"}):
+        n = nomad.Nomad()
+        assert n.address == os.environ["NOMAD_ADDR"]

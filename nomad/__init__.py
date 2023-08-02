@@ -17,15 +17,15 @@ class Nomad:  # pylint: disable=too-many-public-methods,too-many-instance-attrib
         host: str = "127.0.0.1",
         secure: bool = False,
         port: int = 4646,
-        address: Optional[str] = os.getenv("NOMAD_ADDR", None),
+        address: Optional[str] = None,
         user_agent: Optional[str] = None,
-        namespace: Optional[str] = os.getenv("NOMAD_NAMESPACE", None),
-        token: Optional[str] = os.getenv("NOMAD_TOKEN", None),
+        namespace: Optional[str] = None,
+        token: Optional[str] = None,
         timeout: int = 5,
-        region: Optional[str] = os.getenv("NOMAD_REGION", None),
+        region: Optional[str] = None,
         version: str = "v1",
         verify: bool = False,
-        cert: tuple = (os.getenv("NOMAD_CLIENT_CERT", None), os.getenv("NOMAD_CLIENT_KEY", None)),
+        cert: tuple = (),
         session: requests.Session = None,
     ):
         """Nomad api client
@@ -57,19 +57,21 @@ class Nomad:  # pylint: disable=too-many-public-methods,too-many-instance-attrib
            - nomad.api.exceptions.URLNotFoundNomadException
            - nomad.api.exceptions.URLNotAuthorizedNomadException
         """
+        cert = cert or (os.getenv("NOMAD_CLIENT_CERT", None), os.getenv("NOMAD_CLIENT_KEY", None))
+
         self.host = host
         self.secure = secure
         self.port = port
-        self.address = address
+        self.address = address or os.getenv("NOMAD_ADDR", None)
         self.user_agent = user_agent
-        self.region = region
+        self.region = region or os.getenv("NOMAD_REGION", None)
         self.timeout = timeout
         self.version = version
-        self.token = token
+        self.token = token or os.getenv("NOMAD_TOKEN", None)
         self.verify = verify
         self.cert = cert if all(cert) else ()
         self.session = session
-        self.__namespace = namespace
+        self.__namespace = namespace or os.getenv("NOMAD_NAMESPACE", None)
 
         self.requester_settings = {
             "address": self.address,
