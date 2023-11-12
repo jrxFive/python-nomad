@@ -16,6 +16,7 @@ pages:
    - Deployments: 'api/deployments.md'
    - Evaluations: 'api/evaluations.md'
    - Evaluation: 'api/evaluation.md'
+   - Event: 'api/event.md'
    - Job: 'api/job.md'
    - Jobs: 'api/jobs.md'
    - Metrics: 'api/metrics.md'

@@ -57,6 +57,7 @@ NOMAD_REGION=us-east-1a
 |client|N|N|N|N
 |evaluation|Y|N|Y|N
 |evaluations|Y|Y|Y|Y
+|event|N|N|N|N
 |job|Y|N|Y|N
 |jobs|Y|Y|Y|Y
 |node|Y|N|Y|N
