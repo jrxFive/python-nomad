@@ -18,7 +18,7 @@ import nomad
 my_nomad = nomad.Nomad(host='192.168.33.10')
 
 namespace = {
-              "Namespace": "api-prod",
+              "Name": "api-prod",
               "Description": "Production API Servers"
             }
 my_nomad.namespace.create_namespace(namespace)
@@ -36,7 +36,7 @@ import nomad
 my_nomad = nomad.Nomad(host='192.168.33.10')
 
 namespace = {
-              "Namespace": "api-prod",
+              "Name": "api-prod",
               "Description": "Production API Servers"
             }
 my_nomad.namespace.create_namespace(namespace)
@@ -79,7 +79,7 @@ import nomad
 my_nomad = nomad.Nomad(host='192.168.33.10')
 
 namespace = {
-              "Namespace": "api-prod",
+              "Name": "api-prod",
               "Description": "Production API Servers"
             }
 my_nomad.namespace.create_namespace("api-prod", namespace)
