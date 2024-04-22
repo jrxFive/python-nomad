@@ -28,9 +28,7 @@ class Scaling(Requester):
         raise AttributeError(msg)
 
     # we want to have common arguments name with Nomad API
-    def get_scaling_policies(
-        self, job="", type_=""
-    ):  # pylint: disable=redefined-builtin
+    def get_scaling_policies(self, job="", type_=""):  # pylint: disable=redefined-builtin
         """
         This endpoint returns the scaling policies from all jobs.
 
@@ -53,8 +51,7 @@ class Scaling(Requester):
 
         if type_ not in type_of_scaling_policies:
             raise nomad.api.exceptions.InvalidParameters(
-                "type is invalid "
-                f"(expected values are {type_of_scaling_policies} but got {type_})"
+                "type is invalid " f"(expected values are {type_of_scaling_policies} but got {type_})"
             )
 
         params = {"job": job, "type": type_}

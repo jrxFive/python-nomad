@@ -59,8 +59,7 @@ class Search(Requester):
         )
         if context not in accetaple_contexts:
             raise nomad.api.exceptions.InvalidParameters(
-                "context is invalid "
-                f"(expected values are {accetaple_contexts} but got {context})"
+                "context is invalid " f"(expected values are {accetaple_contexts} but got {context})"
             )
         params = {"Prefix": prefix, "Context": context}
 
@@ -93,8 +92,7 @@ class Search(Requester):
         accetaple_contexts = ("jobs", "allocs", "nodes", "plugins", "all")
         if context not in accetaple_contexts:
             raise nomad.api.exceptions.InvalidParameters(
-                "context is invalid "
-                f"(expected values are {accetaple_contexts} but got {context})"
+                "context is invalid " f"(expected values are {accetaple_contexts} but got {context})"
             )
 
         return self.request("fuzzy", json=params, method="post").json()

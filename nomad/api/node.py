@@ -103,13 +103,9 @@ class Node(Requester):
           - nomad.api.exceptions.URLNotFoundNomadException
         """
 
-        return self.request(
-            id_, "drain", params={"enable": enable}, method="post"
-        ).json()
+        return self.request(id_, "drain", params={"enable": enable}, method="post").json()
 
-    def drain_node_with_spec(
-        self, id_, drain_spec: Optional[dict], mark_eligible: Optional[bool] = None
-    ):
+    def drain_node_with_spec(self, id_, drain_spec: Optional[dict], mark_eligible: Optional[bool] = None):
         """This endpoint toggles the drain mode of the node. When draining is enabled,
         no further allocations will be assigned to this node, and existing allocations
         will be migrated to new nodes.

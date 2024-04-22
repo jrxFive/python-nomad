@@ -173,9 +173,7 @@ class stream_logs(Requester):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-    def stream(
-        self, id_, task, type_, follow=False, offset=0, origin="start", plain=False
-    ):
+    def stream(self, id_, task, type_, follow=False, offset=0, origin="start", plain=False):
         """This endpoint streams a task's stderr/stdout logs.
 
         https://www.nomadproject.io/api/client.html#stream-logs

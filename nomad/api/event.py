@@ -40,9 +40,7 @@ class stream(Requester):  # pylint: disable=invalid-name
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-    def _get_stream(
-        self, method, params, timeout, event_queue, exit_event
-    ):  # pylint: disable=too-many-arguments
+    def _get_stream(self, method, params, timeout, event_queue, exit_event):  # pylint: disable=too-many-arguments
         """
         Used as threading target, to obtain json() value
         Args:
@@ -55,9 +53,7 @@ class stream(Requester):  # pylint: disable=invalid-name
 
         while exit_event.is_set() is False:
             try:
-                with self.request(
-                    method=method, params=params, timeout=timeout, stream=True
-                ) as resp:
+                with self.request(method=method, params=params, timeout=timeout, stream=True) as resp:
                     for raw_msg in resp.iter_lines():
                         msg = json.loads(raw_msg)
 
