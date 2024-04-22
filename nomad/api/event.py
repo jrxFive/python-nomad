@@ -1,4 +1,5 @@
 """Nomad Events: https://developer.hashicorp.com/nomad/api-docs/events"""
+
 import json
 import threading
 import queue

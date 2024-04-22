@@ -1,4 +1,5 @@
 """Nomad System API: https://developer.hashicorp.com/nomad/api-docs/system"""
+
 from nomad.api.base import Requester
 
 

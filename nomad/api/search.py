@@ -1,4 +1,5 @@
 """Nomad Search API: https://developer.hashicorp.com/nomad/api-docs/search"""
+
 import nomad.api.exceptions
 
 from nomad.api.base import Requester
@@ -46,7 +47,16 @@ class Search(Requester):
           - nomad.api.exceptions.URLNotFoundNomadException
           - nomad.api.exceptions.InvalidParameters
         """
-        accetaple_contexts = ("jobs", "evals", "allocs", "nodes", "deployment", "plugins", "volumes", "all")
+        accetaple_contexts = (
+            "jobs",
+            "evals",
+            "allocs",
+            "nodes",
+            "deployment",
+            "plugins",
+            "volumes",
+            "all",
+        )
         if context not in accetaple_contexts:
             raise nomad.api.exceptions.InvalidParameters(
                 "context is invalid " f"(expected values are {accetaple_contexts} but got {context})"

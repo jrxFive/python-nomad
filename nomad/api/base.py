@@ -1,4 +1,5 @@
 """Requester"""
+
 from typing import Optional
 
 import requests

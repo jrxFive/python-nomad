@@ -1,4 +1,5 @@
 """Nomad Scalling API: https://developer.hashicorp.com/nomad/api-docs/scaling-policies"""
+
 import nomad.api.exceptions
 
 from nomad.api.base import Requester

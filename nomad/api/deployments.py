@@ -1,4 +1,5 @@
 """Nomad Deployment: https://developer.hashicorp.com/nomad/api-docs/deployments"""
+
 import nomad.api.exceptions
 
 from nomad.api.base import Requester

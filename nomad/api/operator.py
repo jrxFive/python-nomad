@@ -1,4 +1,5 @@
 """Nomad Operator: https://developer.hashicorp.com/nomad/api-docs/operator"""
+
 from nomad.api.base import Requester
 
 

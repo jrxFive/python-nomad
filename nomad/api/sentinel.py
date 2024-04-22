@@ -1,4 +1,5 @@
 """Nomad Sentinel API: https://developer.hashicorp.com/nomad/api-docs/sentinel-policies"""
+
 from nomad.api.base import Requester
 
 

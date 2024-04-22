@@ -1,4 +1,5 @@
 """Internal library exceptions"""
+
 import requests
 
 

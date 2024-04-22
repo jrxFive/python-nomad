@@ -1,9 +1,9 @@
 """Nomad Validate API: https://developer.hashicorp.com/nomad/api-docs/validate"""
+
 from nomad.api.base import Requester
 
 
 class Validate(Requester):
-
     """
     The system endpoint is used to for system maintenance
     and should not be necessary for most users.

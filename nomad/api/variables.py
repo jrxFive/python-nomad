@@ -1,4 +1,5 @@
 """Nomad Valiables API: https://developer.hashicorp.com/nomad/api-docs/variables"""
+
 from nomad.api.base import Requester
 
 

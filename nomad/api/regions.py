@@ -1,4 +1,5 @@
 """Nomad region: https://developer.hashicorp.com/nomad/api-docs/regions"""
+
 import nomad.api.exceptions
 
 from nomad.api.base import Requester

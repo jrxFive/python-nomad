@@ -1,4 +1,5 @@
 """Nomad Node: https://developer.hashicorp.com/nomad/api-docs/nodes"""
+
 from typing import Optional
 import nomad.api.exceptions
 
@@ -125,7 +126,11 @@ class Node(Requester):
         payload = {}
 
         if drain_spec and mark_eligible is not None:
-            payload = {"NodeID": id_, "DrainSpec": drain_spec, "MarkEligible": mark_eligible}
+            payload = {
+                "NodeID": id_,
+                "DrainSpec": drain_spec,
+                "MarkEligible": mark_eligible,
+            }
         elif drain_spec and mark_eligible is None:
             payload = {"NodeID": id_, "DrainSpec": drain_spec}
         elif not drain_spec and mark_eligible is not None:
@@ -138,7 +143,12 @@ class Node(Requester):
 
         return self.request(id_, "drain", json=payload, method="post").json()
 
-    def eligible_node(self, id_: str, eligible: Optional[bool] = None, ineligible: Optional[bool] = None):
+    def eligible_node(
+        self,
+        id_: str,
+        eligible: Optional[bool] = None,
+        ineligible: Optional[bool] = None,
+    ):
         """Toggle the eligibility of the node.
 
         https://www.nomadproject.io/docs/http/node.html
