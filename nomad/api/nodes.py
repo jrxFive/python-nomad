@@ -88,7 +88,7 @@ class Nodes(Requester):
             "prefix": prefix,
             "next_token": next_token,
             "per_page": per_page,
-            "filter_": filter_,
+            "filter": filter_,
             "resources": resources,
             "os": os,
         }
