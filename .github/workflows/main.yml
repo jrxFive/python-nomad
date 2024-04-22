@@ -10,8 +10,6 @@ on:
     branches: [ master ]
   registry_package:
     types: [published]
-  release:
-    types: [created, published, released]
   workflow_dispatch:
 
 jobs:
@@ -62,15 +60,4 @@ jobs:
       run: |
         ./run_tests.sh
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v2
-    - name: Create Package
-      shell: bash
-      run: |
-        python -m pip install build
-        python -m build --sdist --wheel
-    - name: Publish/Release Package
-      if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
-      uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        user: __token__
-        password: ${{ secrets.PYPI_API_TOKEN }}
+      uses: codecov/codecov-action@v3
