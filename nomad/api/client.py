@@ -33,7 +33,6 @@ class Client:
 
 
 class ls(Requester):
-
     """
     The /fs/ls endpoint is used to list files in an allocation directory.
     This API endpoint is hosted by the Nomad client and requests have to be
@@ -67,7 +66,6 @@ class ls(Requester):
 
 
 class cat(Requester):
-
     """
     The /fs/cat endpoint is used to read the contents of a file in an
     allocation directory. This API endpoint is hosted by the Nomad
@@ -102,7 +100,6 @@ class cat(Requester):
 
 
 class read_at(Requester):
-
     """
     This endpoint reads the contents of a file in an allocation directory at a particular offset and limit.
 
@@ -134,7 +131,6 @@ class read_at(Requester):
 
 
 class stream_file(Requester):
-
     """
     This endpoint streams the contents of a file in an allocation directory.
 
@@ -166,7 +162,6 @@ class stream_file(Requester):
 
 
 class stream_logs(Requester):
-
     """
     This endpoint streams a task's stderr/stdout logs.
 
@@ -178,7 +173,9 @@ class stream_logs(Requester):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-    def stream(self, id_, task, type_, follow=False, offset=0, origin="start", plain=False):
+    def stream(
+        self, id_, task, type_, follow=False, offset=0, origin="start", plain=False
+    ):
         """This endpoint streams a task's stderr/stdout logs.
 
         https://www.nomadproject.io/api/client.html#stream-logs
@@ -196,7 +193,14 @@ class stream_logs(Requester):
           - nomad.api.exceptions.BaseNomadException
           - nomad.api.exceptions.BadRequestNomadException
         """
-        params = {"task": task, "type": type_, "follow": follow, "offset": offset, "origin": origin, "plain": plain}
+        params = {
+            "task": task,
+            "type": type_,
+            "follow": follow,
+            "offset": offset,
+            "origin": origin,
+            "plain": plain,
+        }
         return self.request(id_, params=params, method="get").text
 
 
@@ -304,7 +308,6 @@ class allocation(Requester):
 
 
 class gc_allocation(Requester):
-
     """
     This endpoint forces a garbage collection of a particular, stopped allocation on a node.
 

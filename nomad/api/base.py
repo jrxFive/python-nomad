@@ -1,4 +1,5 @@
 """Requester"""
+
 from typing import Optional
 
 import requests
@@ -91,7 +92,9 @@ class Requester:  # pylint: disable=too-many-instance-attributes,too-few-public-
         # Remove parameters that are None
         params = {key: val for key, val in params.items() if val is not None}
 
-        if ("namespace" not in params) and (self.namespace and self._required_namespace(endpoint)):
+        if ("namespace" not in params) and (
+            self.namespace and self._required_namespace(endpoint)
+        ):
             query_string["namespace"] = self.namespace
 
         if "region" not in params and self.region:

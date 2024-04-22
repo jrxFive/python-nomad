@@ -1,4 +1,5 @@
 """Nomad Status API: https://developer.hashicorp.com/nomad/api-docs/status"""
+
 import nomad.api.exceptions
 
 from nomad.api.base import Requester

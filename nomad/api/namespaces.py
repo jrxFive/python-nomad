@@ -1,4 +1,5 @@
 """Nomad namespace: https://developer.hashicorp.com/nomad/api-docs/namespaces"""
+
 import nomad.api.exceptions
 
 from nomad.api.base import Requester

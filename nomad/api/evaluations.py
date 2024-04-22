@@ -1,4 +1,5 @@
 """Nomad Evaluations: https://developer.hashicorp.com/nomad/api-docs/evaluations"""
+
 import nomad.api.exceptions
 
 from nomad.api.base import Requester

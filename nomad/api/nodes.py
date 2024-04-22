@@ -1,4 +1,5 @@
 """Nomad Node: https://developer.hashicorp.com/nomad/api-docs/nodes"""
+
 from typing import Optional
 
 import nomad.api.exceptions

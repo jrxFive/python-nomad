@@ -1,4 +1,5 @@
 """Nomad Agent: https://developer.hashicorp.com/nomad/api-docs/agent"""
+
 from nomad.api.base import Requester
 
 

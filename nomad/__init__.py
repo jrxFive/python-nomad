@@ -1,4 +1,5 @@
 """Nomad Python library"""
+
 import os
 from typing import Optional
 
@@ -25,7 +26,10 @@ class Nomad:  # pylint: disable=too-many-public-methods,too-many-instance-attrib
         region: Optional[str] = os.getenv("NOMAD_REGION", None),
         version: str = "v1",
         verify: bool = False,
-        cert: tuple = (os.getenv("NOMAD_CLIENT_CERT", None), os.getenv("NOMAD_CLIENT_KEY", None)),
+        cert: tuple = (
+            os.getenv("NOMAD_CLIENT_CERT", None),
+            os.getenv("NOMAD_CLIENT_KEY", None),
+        ),
         session: requests.Session = None,
     ):
         """Nomad api client

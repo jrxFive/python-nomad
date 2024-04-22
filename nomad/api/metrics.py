@@ -1,4 +1,5 @@
 """Nomad Metrics: https://developer.hashicorp.com/nomad/api-docs/metrics"""
+
 from nomad.api.base import Requester
 
 

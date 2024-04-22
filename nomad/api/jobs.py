@@ -1,4 +1,5 @@
 """Nomad job: https://developer.hashicorp.com/nomad/api-docs/jobs"""
+
 from typing import Optional
 import nomad.api.exceptions
 
@@ -119,5 +120,8 @@ class Jobs(Requester):
           - nomad.api.exceptions.URLNotFoundNomadException
         """
         return self.request(
-            "parse", json={"JobHCL": hcl, "Canonicalize": canonicalize}, method="post", allow_redirects=True
+            "parse",
+            json={"JobHCL": hcl, "Canonicalize": canonicalize},
+            method="post",
+            allow_redirects=True,
         ).json()

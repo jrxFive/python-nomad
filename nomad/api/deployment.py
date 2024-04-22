@@ -1,11 +1,11 @@
 """Nomad Deployment: https://developer.hashicorp.com/nomad/api-docs/deployments"""
+
 import nomad.api.exceptions
 
 from nomad.api.base import Requester
 
 
 class Deployment(Requester):
-
     """
     The /deployment endpoints are used to query for and interact with deployments.
 
@@ -138,9 +138,13 @@ class Deployment(Requester):
         if groups is None:
             groups = []
         promote_groups_json = {"Groups": groups, "DeploymentID": id_}
-        return self.request("promote", id_, json=promote_groups_json, method="post").json()
+        return self.request(
+            "promote", id_, json=promote_groups_json, method="post"
+        ).json()
 
-    def deployment_allocation_health(self, id_, healthy_allocations=None, unhealthy_allocations=None):
+    def deployment_allocation_health(
+        self, id_, healthy_allocations=None, unhealthy_allocations=None
+    ):
         """This endpoint is used to set the health of an allocation that is in the deployment manually. In some use
         cases, automatic detection of allocation health may not be desired. As such those task groups can be marked
         with an upgrade policy that uses health_check = "manual". Those allocations must have their health marked
@@ -169,4 +173,6 @@ class Deployment(Requester):
             "UnHealthyAllocationIDs": unhealthy_allocations,
             "DeploymentID": id_,
         }
-        return self.request("allocation-health", id_, json=allocations, method="post").json()
+        return self.request(
+            "allocation-health", id_, json=allocations, method="post"
+        ).json()

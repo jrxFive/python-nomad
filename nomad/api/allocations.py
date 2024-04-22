@@ -1,4 +1,5 @@
 """Nomad allocation: https://developer.hashicorp.com/nomad/api-docs/allocations"""
+
 from typing import Optional
 
 from nomad.api.base import Requester

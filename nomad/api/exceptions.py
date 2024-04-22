@@ -1,4 +1,5 @@
 """Internal library exceptions"""
+
 import requests
 
 
@@ -9,7 +10,9 @@ class BaseNomadException(Exception):
         self.nomad_resp = nomad_resp
 
     def __str__(self):
-        if isinstance(self.nomad_resp, requests.Response) and hasattr(self.nomad_resp, "text"):
+        if isinstance(self.nomad_resp, requests.Response) and hasattr(
+            self.nomad_resp, "text"
+        ):
             return f"The {self.__class__.__name__} was raised with following response: {self.nomad_resp.text}."
 
         return f"The {self.__class__.__name__} was raised due to the following error: {self.nomad_resp}"
