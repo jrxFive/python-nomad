@@ -58,7 +58,10 @@ class Nomad:  # pylint: disable=too-many-public-methods,too-many-instance-attrib
            - nomad.api.exceptions.URLNotFoundNomadException
            - nomad.api.exceptions.URLNotAuthorizedNomadException
         """
-        cert = cert or (os.getenv("NOMAD_CLIENT_CERT", None), os.getenv("NOMAD_CLIENT_KEY", None))
+        cert = cert or (
+            os.getenv("NOMAD_CLIENT_CERT", None),
+            os.getenv("NOMAD_CLIENT_KEY", None),
+        )
 
         self.host = host
         self.secure = secure
