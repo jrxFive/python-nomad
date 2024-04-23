@@ -17,7 +17,7 @@ jobs:
     - name: Set up Python 3
       uses: actions/setup-python@v4
       with:
-        python-version: '3.11'
+        python-version: '3.12'
 
     - name: Install Dependencies
       shell: bash
@@ -29,4 +29,4 @@ jobs:
       shell: bash
       run: |
         pylint nomad/
-        black --check -l 120 -t py311 nomad/
+        black --check -l 120 -t py312 nomad/
