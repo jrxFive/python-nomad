@@ -1,3 +1,10 @@
+**Changes of the next versions will be published in the [releases](https://github.com/jrxFive/python-nomad/releases) section of the repository**
+
+## 2.0.1
+* update parameters in `Job` functions by @IgnacioHeredia #153
+* Fix nodes API filter by @bernardoVale #162
+* Read env variables on __init__ by @atwam #157
+
 ## 2.0.0
 ### BREAKING CHANGES
 * Drop Python 2 and Python 3.6 support
