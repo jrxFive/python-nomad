@@ -1,11 +1,27 @@
 import pytest
 import json
+import signal
 import time
 import os
 
 import nomad
 
 from flaky import flaky
+
+
+def get_running_allocation(nomad_setup):
+    max_iterations = 6
+    for _ in range(max_iterations):
+        try:
+            return next(
+                alloc
+                for alloc in nomad_setup.allocations.get_allocations()
+                if alloc["ClientStatus"] == "running"
+            )
+        except StopIteration:
+            # No alloc running
+            time.sleep(5)
+    raise ValueError("No allocations running")
 
 
 # integration tests requires nomad Vagrant VM or Binary running
@@ -17,7 +33,6 @@ def test_register_job(nomad_setup):
         assert "example" in nomad_setup.job
 
         max_iterations = 6
-
         while nomad_setup.job["example"]["Status"] != "running":
             time.sleep(5)
             if max_iterations == 0:
@@ -71,10 +86,36 @@ def test_read_allocation_stats(nomad_setup):
 
 
 @pytest.mark.skipif(
+    tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 9, 1), reason="Not supported in version"
+)
+def test_signal_allocation(nomad_setup):
+    alloc_id = get_running_allocation(nomad_setup)["ID"]
+    nomad_setup.client.allocation.signal_allocation(alloc_id, signal.SIGUSR1.name)
+
+
+@pytest.mark.skipif(
+    tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 9, 1), reason="Not supported in version"
+)
+def test_signal_allocation_task(nomad_setup):
+    allocation = get_running_allocation(nomad_setup)
+    alloc_id = allocation["ID"]
+    task = list(allocation["TaskStates"].keys())[0]
+    nomad_setup.client.allocation.signal_allocation(alloc_id, signal.SIGUSR1.name, task)
+
+
+@pytest.mark.skipif(
+    tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 9, 1), reason="Not supported in version"
+)
+def test_signal_allocation_invalid_signal(nomad_setup):
+    alloc_id = get_running_allocation(nomad_setup)["ID"]
+    with pytest.raises(nomad.api.exceptions.BaseNomadException, match="invalid signal"):
+        nomad_setup.client.allocation.signal_allocation(alloc_id, "INVALID-SIGNAL")
+
+
+@pytest.mark.skipif(
     tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 8, 1), reason="Not supported in version"
 )
 def test_gc_all_allocations(nomad_setup):
-
     node_id = nomad_setup.nodes.get_nodes()[0]["ID"]
     nomad_setup.client.gc_all_allocations.garbage_collect(node_id)
     nomad_setup.client.gc_all_allocations.garbage_collect()
