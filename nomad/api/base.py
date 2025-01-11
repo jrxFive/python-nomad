@@ -1,6 +1,6 @@
 """Requester"""
 
-from typing import Optional
+from typing import Optional, Union
 
 import requests
 
@@ -24,7 +24,7 @@ class Requester:  # pylint: disable=too-many-instance-attributes,too-few-public-
         token: Optional[str] = None,
         timeout: int = 5,
         version: str = "v1",
-        verify: bool = False,
+        verify: Union[bool, str] = False,  
         cert: tuple = (),
         region: Optional[str] = None,
         session: requests.Session = None,
