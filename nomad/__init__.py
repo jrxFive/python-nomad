@@ -1,7 +1,7 @@
 """Nomad Python library"""
 
 import os
-from typing import Optional
+from typing import Optional, Union
 
 import requests
 
@@ -25,7 +25,7 @@ class Nomad:  # pylint: disable=too-many-public-methods,too-many-instance-attrib
         timeout: int = 5,
         region: Optional[str] = None,
         version: str = "v1",
-        verify: bool = False,
+        verify: Union[bool, str] = False,
         cert: tuple = (),
         session: requests.Session = None,
     ):
@@ -39,8 +39,8 @@ class Nomad:  # pylint: disable=too-many-public-methods,too-many-instance-attrib
           - user_agent (defaults None), custom user agent for requests to Nomad.
           - secure (defaults False), define if the protocol is secured or not (https or http)
           - version (defaults v1), version of the api of nomad.
-          - verify (defaults False), verify the certificate when tls/ssl is enabled
-                              at nomad.
+          - verify (defaults False), verify SSL certificates for HTTPS requests. Can be a boolean to enable/disable
+                              verification, or a string path to a CA certificate file.
           - cert (defaults empty), cert, or key and cert file to validate the certificate
                               configured at nomad.
           - region (defaults None), version of the region to use. It will be used then
