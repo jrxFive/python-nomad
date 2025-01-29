@@ -245,7 +245,14 @@ class Job(Requester):
         """
         return self.request(id_, "periodic", "force", method="post").json()
 
-    def dispatch_job(self, id_, payload=None, meta=None):
+    def dispatch_job(
+      self,
+      id_,
+      payload=None,
+      meta=None,
+      id_prefix_template=None,
+      idempotency_token=None
+    ):  # pylint: disable=too-many-arguments
         """Dispatches a new instance of a parameterized job.
 
         https://www.nomadproject.io/docs/http/job.html
@@ -254,12 +261,19 @@ class Job(Requester):
           - id_
           - payload
           - meta
+          - id_prefix_template
+          - idempotency_token
         returns: dict
         raises:
           - nomad.api.exceptions.BaseNomadException
           - nomad.api.exceptions.URLNotFoundNomadException
         """
-        dispatch_json = {"Meta": meta, "Payload": payload}
+        dispatch_json = {
+            "Meta": meta,
+            "Payload": payload,
+            "idempotency_token": idempotency_token,
+            "IdPrefixTemplate": id_prefix_template,
+        }
         return self.request(id_, "dispatch", json=dispatch_json, method="post").json()
 
     def revert_job(self, id_, version, enforce_prior_version=None):
