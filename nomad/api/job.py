@@ -246,12 +246,12 @@ class Job(Requester):
         return self.request(id_, "periodic", "force", method="post").json()
 
     def dispatch_job(
-      self,
-      id_,
-      payload=None,
-      meta=None,
-      id_prefix_template=None,
-      idempotency_token=None
+        self,
+        id_,
+        payload=None,
+        meta=None,
+        id_prefix_template=None,
+        idempotency_token=None,
     ):  # pylint: disable=too-many-arguments
         """Dispatches a new instance of a parameterized job.
 
