@@ -38,6 +38,9 @@ n = nomad.Nomad(host="172.16.100.10", secure=True, timeout=5, verify=True, cert=
 # For HTTPS Nomad instances with cert file and key
 n = nomad.Nomad(host="https://172.16.100.10", secure=True, timeout=5, verify=True, cert=("/path/to/certfile", "/path/to/key")) # See http://docs.python-requests.org/en/master/user/advanced/#ssl-cert-verification
 
+# For HTTPS Nomad instance with cert file and key and CA file
+n = nomad.Nomad(host="https://172.16.100.10", secure=True, timeout=5, verify="/path/to/cacert", cert=("/path/to/certfile", "/path/to/key"))
+
 # For HTTPS Nomad instances with namespace and acl token
 n = nomad.Nomad(host="172.16.100.10", secure=True, timeout=5, verify=False, namespace='Namespace-example',token='3f4a0fcd-7c42-773c-25db-2d31ba0c05fe')
 
