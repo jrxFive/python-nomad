@@ -125,56 +125,57 @@ def test_delete_job(nomad_setup):
 
 
 @flaky(max_runs=5, min_passes=1)
-@pytest.mark.skipif(
-    tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 5, 3), reason="Nomad dispatch not supported"
-)
 def test_dispatch_job(nomad_setup):
     with open("example_batch_parameterized.json") as fh:
         job = json.loads(fh.read())
         nomad_setup.job.register_job("example-batch", job)
     try:
-        nomad_setup.job.dispatch_job("example-batch", meta={"time": "500"})
+        nomad_setup.job.dispatch_job("example-batch", meta={"time": "500"}, id_prefix_template="run1")
     except (exceptions.URLNotFoundNomadException, exceptions.BaseNomadException) as e:
         print(e.nomad_resp.text)
         raise e
     assert "example-batch" in nomad_setup.job
 
 
-@pytest.mark.skipif(
-    tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 5, 3), reason="Nomad dispatch not supported"
-)
+@flaky(max_runs=5, min_passes=1)
+def test_dispatch_job_idempotency(nomad_setup):
+    with open("example_batch_parameterized.json") as fh:
+        job = json.loads(fh.read())
+        nomad_setup.job.register_job("example-batch-idempotent", job)
+
+    # First dispatch should succeed
+    try:
+        nomad_setup.job.dispatch_job("example-batch-idempotent", meta={"time": "500"}, id_prefix_template="run1", idempotency_token="737ae8cd-f237-43a5-8fad-0e6a3f94ad55")
+    except (exceptions.URLNotFoundNomadException, exceptions.BaseNomadException) as e:
+        print(e.nomad_resp.text)
+        raise e
+    assert "example-batch-idempotent" in nomad_setup.job
+
+    # Second dispatch with the same idempotency token should fail
+    with pytest.raises(exceptions.BaseNomadException):
+        nomad_setup.job.dispatch_job("example-batch-idempotent", meta={"time": "500"}, id_prefix_template="run2", idempotency_token="737ae8cd-f237-43a5-8fad-0e6a3f94ad55")
+
+
 def test_summary_job(nomad_setup):
     j = nomad_setup.job["example"]
     assert "JobID" in nomad_setup.job.get_summary(j["ID"])
 
 
-@pytest.mark.skipif(
-    tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 4, 0), reason="Not supported in version"
-)
 def test_plan_job(nomad_setup):
     with open("example.json") as fh:
         job = json.loads(fh.read())
         assert "Index" in nomad_setup.job.plan_job(nomad_setup.job["example"]["ID"], job)
 
 
-@pytest.mark.skipif(
-    tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version"
-)
 def test_versions_job(nomad_setup):
     assert "Versions" in nomad_setup.job.get_versions("example")
 
 
-@pytest.mark.skipif(
-    tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version"
-)
 def test_versions_job_missing(nomad_setup):
     with pytest.raises(nomad.api.exceptions.URLNotFoundNomadException):
         assert "Versions" in nomad_setup.job.get_versions("example1")
 
 
-@pytest.mark.skipif(
-    tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version"
-)
 def test_get_job_deployments(nomad_setup):
     assert "JobID" in nomad_setup.job.get_deployments("example")[0]
     assert isinstance(nomad_setup.job.get_deployments("example"), list)
@@ -182,36 +183,24 @@ def test_get_job_deployments(nomad_setup):
     assert "example" == nomad_setup.job.get_deployments("example")[0]["JobID"]
 
 
-@pytest.mark.skipif(
-    tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version"
-)
 def test_get_job_deployment(nomad_setup):
     assert "JobID" in nomad_setup.job.get_deployment("example")
     assert isinstance(nomad_setup.job.get_deployment("example"), dict)
     assert "example" == nomad_setup.job.get_deployment("example")["JobID"]
 
 
-@pytest.mark.skipif(
-    tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version"
-)
 def test_get_summary(nomad_setup):
     assert "JobID" in nomad_setup.job.get_summary("example")
     assert isinstance(nomad_setup.job.get_summary("example"), dict)
     assert "example" == nomad_setup.job.get_summary("example")["JobID"]
 
 
-@pytest.mark.skipif(
-    tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version"
-)
 def test_revert_job(nomad_setup):
     current_job_version = nomad_setup.job.get_deployment("example")["JobVersion"]
     prior_job_version = current_job_version - 1
     nomad_setup.job.revert_job("example", prior_job_version, current_job_version)
 
 
-@pytest.mark.skipif(
-    tuple(int(i) for i in os.environ.get("NOMAD_VERSION").split(".")) < (0, 6, 0), reason="Not supported in version"
-)
 def test_stable_job(nomad_setup):
     current_job_version = nomad_setup.job.get_deployment("example")["JobVersion"]
     nomad_setup.job.stable_job("example", current_job_version, True)
