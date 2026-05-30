@@ -192,7 +192,7 @@ class Job(Requester):
         """
         return self.request(id_, json=job, method="post").json()
 
-    def evaluate_job(self, id_):
+    def evaluate_job(self, id_, force_reschedule=False, namespace=None):
         """Creates a new evaluation for the given job.
         This can be used to force run the scheduling logic if necessary.
 
@@ -200,12 +200,20 @@ class Job(Requester):
 
         arguments:
           - id_
+          - force_reschedule
+          - namespace
         returns: dict
         raises:
           - nomad.api.exceptions.BaseNomadException
           - nomad.api.exceptions.URLNotFoundNomadException
         """
-        return self.request(id_, "evaluate", method="post").json()
+        json_dict = {"JobID": id_}
+        if force_reschedule:
+            json_dict["EvalOptions"] = {"ForceReschedule": force_reschedule}
+        params = {}
+        if namespace:
+            params["namespace"] = namespace
+        return self.request(id_, "evaluate", json=json_dict, params=params, method="post").json()
 
     def plan_job(self, id_, job, diff=False, policy_override=False):
         """Invoke a dry-run of the scheduler for the job.
