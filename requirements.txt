@@ -1,2 +1,2 @@
-requests==2.32.2
+requests==2.32.4
 requests-unixsocket==0.4.1
