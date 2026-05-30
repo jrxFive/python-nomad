@@ -4,6 +4,8 @@ import os
 from typing import Optional, Union
 
 import requests
+from urllib.parse import quote
+from requests_unixsocket import Session
 
 from nomad import api
 
@@ -67,6 +69,8 @@ class Nomad:  # pylint: disable=too-many-public-methods,too-many-instance-attrib
         self.secure = secure
         self.port = port
         self.address = address or os.getenv("NOMAD_ADDR", None)
+        if self.address and self.address.startswith("unix://"):
+            self.address = "http+unix://" + quote(self.address[7:], safe = "")
         self.user_agent = user_agent
         self.region = region or os.getenv("NOMAD_REGION", None)
         self.timeout = timeout
@@ -75,6 +79,8 @@ class Nomad:  # pylint: disable=too-many-public-methods,too-many-instance-attrib
         self.verify = verify
         self.cert = cert if all(cert) else ()
         self.session = session
+        if not self.session and self.address and self.address.startswith("http+unix://"):
+            self.session = Session()
         self.__namespace = namespace or os.getenv("NOMAD_NAMESPACE", None)
 
         self.requester_settings = {
