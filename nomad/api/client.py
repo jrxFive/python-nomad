@@ -20,6 +20,7 @@ class Client:
         self.stream_logs = stream_logs(**kwargs)
         self.gc_allocation = gc_allocation(**kwargs)
         self.gc_all_allocations = gc_all_allocations(**kwargs)
+        self.metadata = metadata(**kwargs)
 
     def __str__(self):
         return f"{self.__dict__}"
@@ -370,3 +371,48 @@ class gc_all_allocations(Requester):
           - nomad.api.exceptions.BaseNomadException
         """
         self.request(params={"node_id": node_id}, method="get")
+
+
+class metadata(Requester):
+    """
+    The /client/metadata endpoint is used to read and update dynamic Node metadata.
+
+    https://developer.hashicorp.com/nomad/api-docs/client#read-dynamic-node-metadata
+    """
+
+    ENDPOINT = "client/metadata"
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def read_metadata(self, node_id: str):
+        """Query Node metadata on a specific Client agent.
+
+        https://developer.hashicorp.com/nomad/api-docs/client#read-dynamic-node-metadata
+
+        arguments:
+          - node_id: (str) required
+        returns: dict
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
+        """
+        params = {"node_id": node_id}
+        return self.request(params=params, method="get").json()
+
+    def update_metadata(self, node_id: str, meta: dict):
+        """Update dynamic Node metadata on a specific Client agent.
+
+        https://developer.hashicorp.com/nomad/api-docs/client#update-dynamic-node-metadata
+
+        arguments:
+          - node_id: (str) required
+          - meta: (dict) required. Specifies the Node metadata keys to update.
+        returns: dict
+        raises:
+          - nomad.api.exceptions.BaseNomadException
+          - nomad.api.exceptions.URLNotFoundNomadException
+        """
+        params = {"node_id": node_id}
+        payload = {"Meta": meta}
+        return self.request(json=payload, params=params, method="post").json()
